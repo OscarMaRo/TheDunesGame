@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.LinkedList;
 
+// Primer Nivel del Juego.
 class PantallaPrimerNivel extends Pantalla {
     // Juego: allows to create another screen when the listener is activated.
     private final Juego juego;
