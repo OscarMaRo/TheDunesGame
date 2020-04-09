@@ -15,6 +15,8 @@ class PantallaPrimerNivel extends Pantalla {
     private final Juego juego;
 
     // Texturas: The sprites initialized.
+    
+    Texture texturaFondo;
 
     // Boogie
     private Boogie boogie;
@@ -24,6 +26,14 @@ class PantallaPrimerNivel extends Pantalla {
     private Texture texturaBala;
     private LinkedList<Bala> b = new LinkedList<>();
     private float direccionBala;
+    
+    //ENEMIGOS
+    private Array<EnemigoBasico> arrEnemigos;
+    private Texture texturaEnemigos;
+    private int MAX_PASOS = 1100;
+    private  int numeroPasos = 0;
+    private int cantidadEnemigos = 20;
+    private int horda = 1;
 
     // Mover automático... soon mover con flechas
     private float TIEMPO_PASO = 0.5f;
@@ -37,8 +47,32 @@ class PantallaPrimerNivel extends Pantalla {
     @Override
     public void show() {
         Gdx.gl.glClearColor(0,0,0,1);
+        cargarTexturas();
         crearBoogie();
+        crearTorre();
+        crearEnemigos();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+    }
+    
+    //TO-DO: Creo que es mejor que pongamos todas las texturas aquí, pero no quise mover código sin antes saber. 
+    private void cargarTexturas() {
+        texturaEnemigos = new Texture("Sprites/enemigo1.png");
+        texturaFondo = new Texture(("Fondos/fondoNivel1.jpg"));
+    }
+    
+    private void crearEnemigos() {
+        arrEnemigos = new Array<>(cantidadEnemigos);
+        float dy = ALTO * 0.8f / cantidadEnemigos;
+        //Para primera horda
+        for (int y = 0; y < 10; y++) {
+            EnemigoBasico enemigo = new EnemigoBasico(texturaEnemigos, ANCHO-texturaEnemigos.getWidth(), y*dy + ALTO * 0.45f);
+            arrEnemigos.add(enemigo);
+        }
+        //Para horda = 2
+        for (int y = 0; y < cantidadEnemigos-1; y++) {
+            EnemigoBasico enemigo = new EnemigoBasico(texturaEnemigos, ANCHO-texturaEnemigos.getWidth(), y*dy + ALTO * 0.35f);
+            arrEnemigos.add(enemigo);
+        }
     }
 
 
@@ -53,6 +87,10 @@ class PantallaPrimerNivel extends Pantalla {
     public void render(float delta) {
         // Imprime datos en consola.
         //Gdx.app.log("CENTRO", "(" + boogie.sprite.getWidth()/2 + ", " + boogie.sprite.getHeight()/2 + ")");
+        
+        //Actualizaciones
+        moverEnemigos(delta);
+        llamarHorda();
 
         // Init: Default initializers.
         borrarPantalla();
@@ -62,7 +100,7 @@ class PantallaPrimerNivel extends Pantalla {
         batch.begin();
 
         // Background: The image of the background is displayed.
-        Gdx.gl.glClearColor(0,0,0,1);
+        batch.draw(texturaFondo,0,0);
         // Boogie: The image of the boogie is displayed.
         boogie.render(batch);
 
@@ -73,10 +111,59 @@ class PantallaPrimerNivel extends Pantalla {
                 moverBala(b.get(i), delta);
             }
         }
+        
+        // Enemigos
+        for (EnemigoBasico enemigo: arrEnemigos) {
+            if(enemigo.estado == Enemigo.Estado.ACTIVADO){
+                enemigo.render(batch);
+            }
+        }
 
         // Finaliza el batch.
         batch.end();
 
+    }
+    
+    /* Cambia el número de horda de acuerdo al número de pasos que los enemigos han dado y activa los enemigos correspondientes
+    a la horda */
+    private void llamarHorda() {
+        if(horda ==1){
+            for(int i = 0; i < 10; i++ ){
+                EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+                enemigoBasico.estado = Enemigo.Estado.ACTIVADO;
+            }
+        }
+        if (numeroPasos == 500){
+            horda = 2;
+            for(int i = 10; i < cantidadEnemigos-1; i++ ){
+                EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+                enemigoBasico.estado = Enemigo.Estado.ACTIVADO;
+            }
+        }
+    }
+    
+    //TO-DO: falta poner los límites de la pantalla para que los enemigos no se salgan
+    private void moverEnemigos(float delta) {
+        float posYBoogie = boogie.getY();
+
+        if(numeroPasos< MAX_PASOS) {
+            for (EnemigoBasico enemigoBasico : arrEnemigos) {
+                if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO)
+                    enemigoBasico.mover(-1);
+            }
+            numeroPasos ++;
+            if(numeroPasos%5 == 0){  //A partir de aquí la posición en Y cambia de acuerdo a la posY del Boogie
+                for (EnemigoBasico enemigoBasico:arrEnemigos) {
+                    if(posYBoogie > 0 && posYBoogie <= ALTO*.33){
+                        enemigoBasico.seguirBoggie(5,1);
+                    }else if(posYBoogie < ALTO*.33 && posYBoogie <= ALTO*.66){
+                        enemigoBasico.seguirBoggie(5,2);
+                    }else{
+                        enemigoBasico.seguirBoggie(5,3);
+                    }
+                }
+            }
+        }
     }
 
     // Bala: Mueve la bala cuando no es null.
