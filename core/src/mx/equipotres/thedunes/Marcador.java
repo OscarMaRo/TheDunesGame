@@ -26,6 +26,8 @@ class Marcador {
         this.puntos += puntos;
     }
 
+    public void restarVidas(int vidas) { this.vidaBoogie -= vidas; }
+
     public void render(SpriteBatch batch){
         String mensaje = "Puntos: " + puntos + "  Vidas:" + vidaBoogie;
         texto.render(batch, mensaje, x, y);

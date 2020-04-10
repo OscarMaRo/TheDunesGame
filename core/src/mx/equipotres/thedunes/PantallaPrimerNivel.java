@@ -37,6 +37,9 @@ class PantallaPrimerNivel extends Pantalla {
     private Texture texturaBala;
     private LinkedList<Bala> b = new LinkedList<>();
     private float direccionBala;
+
+    // Marcador
+    private Marcador marcador;
     
     //ENEMIGOS
     private Array<EnemigoBasico> arrEnemigos;
@@ -63,7 +66,12 @@ class PantallaPrimerNivel extends Pantalla {
         crearBoogie();
         crearEnemigos();
         crearTorre();
+        crearMarcador();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+    }
+
+    private void crearMarcador() {
+        marcador = new Marcador(0.2f*ANCHO, 0.9f*ALTO, boogie);
     }
 
     private void crearTorre() {
@@ -71,6 +79,7 @@ class PantallaPrimerNivel extends Pantalla {
         torre = new Objeto(texturaTorre, ANCHO/2, ALTO/2);
     }
 
+    // Botones: Funcionalidad llevada a la pantalla gráficamente.
     private void crearBotones() {
         escenaMenu = new Stage(vista);
 
@@ -156,6 +165,8 @@ class PantallaPrimerNivel extends Pantalla {
         boogie.render(batch);
         // Torre: The image of the torre is displayed.
         torre.render(batch);
+        // Marcador: Lo dibuja en la pantalla.
+        marcador.render(batch);
 
         // Balas: Mover al ser creadas.
         for (int i = 0; i < b.size(); i++) {
@@ -175,8 +186,6 @@ class PantallaPrimerNivel extends Pantalla {
         //escenaMenu.draw();
         // Finaliza el batch.
         batch.end();
-
-
 
     }
     
@@ -232,10 +241,22 @@ class PantallaPrimerNivel extends Pantalla {
                     Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
                     if (rectEnemigoBasico.overlaps(rectBala)) {
                         arrEnemigos.removeIndex(i);
-                        //b.get(j).sprite.;
+                        b.remove(j);
+                        marcador.agregarPuntos(5);
                         break;
                     }
                 }
+            }
+        }
+
+        for (int i = arrEnemigos.size - 1; i >= 0; i--) {
+            EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+            if (rectEnemigoBasico.overlaps(rectBoogie)) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
             }
         }
     }

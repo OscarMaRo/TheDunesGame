@@ -9,13 +9,13 @@ public class Boogie extends Objeto {
 
     // Variables.
     private final int ROTACION = 360 / 8;
-    private final int PASO = 10;
-    private int vidas;
+    private final int PASO = 20;
+    public int vidas;
 
     // Constructor principal.
     public Boogie(Texture textura, float x, float y) {
         super(textura, x, y);
-         vidas = 5;
+        vidas = 5;
     }
     public void restarVida(int cantidad){
         vidas -= cantidad;
