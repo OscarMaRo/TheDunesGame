@@ -10,10 +10,19 @@ public class Boogie extends Objeto {
     // Variables.
     private final int ROTACION = 360 / 8;
     private final int PASO = 10;
+    private int vidas;
 
     // Constructor principal.
     public Boogie(Texture textura, float x, float y) {
         super(textura, x, y);
+         vidas = 5;
+    }
+    public void restarVida(int cantidad){
+        vidas -= cantidad;
+    }
+
+    public void agregarVida(int cantidad){
+        vidas += cantidad;
     }
 
     // Mover: Mueve el vehiculo a las coordenadas (x, y).
