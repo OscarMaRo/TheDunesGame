@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 
 import java.util.LinkedList;
 
@@ -49,7 +50,7 @@ class PantallaPrimerNivel extends Pantalla {
         Gdx.gl.glClearColor(0,0,0,1);
         cargarTexturas();
         crearBoogie();
-        crearTorre();
+        //crearTorre();
         crearEnemigos();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
@@ -57,7 +58,7 @@ class PantallaPrimerNivel extends Pantalla {
     //TO-DO: Creo que es mejor que pongamos todas las texturas aquí, pero no quise mover código sin antes saber. 
     private void cargarTexturas() {
         texturaEnemigos = new Texture("Sprites/enemigo1.png");
-        texturaFondo = new Texture(("Fondos/fondoNivel1.jpg"));
+        texturaFondo = new Texture(("Fondos/fondoNivel1.jpeg"));
     }
     
     private void crearEnemigos() {
@@ -144,7 +145,7 @@ class PantallaPrimerNivel extends Pantalla {
     
     //TO-DO: falta poner los límites de la pantalla para que los enemigos no se salgan
     private void moverEnemigos(float delta) {
-        float posYBoogie = boogie.getY();
+        float posYBoogie = boogie.sprite.getY();
 
         if(numeroPasos< MAX_PASOS) {
             for (EnemigoBasico enemigoBasico : arrEnemigos) {
@@ -166,6 +167,18 @@ class PantallaPrimerNivel extends Pantalla {
         }
     }
 
+    //Metodo para los enemigos que sigan al boogie
+    /*private void moverEnemigosSeguidor() {
+        float posYBoogie = boogie.sprite.getY();
+        float posXBoogie = boogie.sprite.getX();
+
+        for (EnemigoBasico enemigoBasico : arrEnemigos) {
+            if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO)
+                enemigoBasico.perseguirBoggie(0.2f, posYBoogie, posXBoogie);
+        }
+        numeroPasos ++;
+    }*/
+
     // Bala: Mueve la bala cuando no es null.
     private void moverBala(Bala bala, float delta) {
         if (bala != null) {
@@ -177,6 +190,14 @@ class PantallaPrimerNivel extends Pantalla {
                 bala.moverDown(delta);
             } else if (bala.sprite.getRotation() == 90 || bala.sprite.getRotation() == -270) {  // works
                 bala.moverLeft(delta);
+            } else if (bala.sprite.getRotation() == 45 || bala.sprite.getRotation() == -315) {  // works
+                bala.moverDiagonalArrIzq(delta);
+            } else if (bala.sprite.getRotation() == -45 || bala.sprite.getRotation() == 315) {  // works
+                bala.moverDiagonalArrDer(delta);
+            } else if (bala.sprite.getRotation() == 135 || bala.sprite.getRotation() == -225) {  // works
+                bala.moverDiagonalAbjIzq(delta);
+            } else if (bala.sprite.getRotation() == -135 || bala.sprite.getRotation() == 225) {  // works
+                bala.moverDiagonalAbjDer(delta);
             }
 
             // Salió de la pantalla.

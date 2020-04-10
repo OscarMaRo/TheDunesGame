@@ -18,29 +18,36 @@ public class Boogie extends Objeto {
 
     // Mover: Mueve el vehiculo a las coordenadas (x, y).
     public void mover() {
-        out_of_bounds();
-        if (sprite.getRotation() == -90 || sprite.getRotation() == 270) {
+        //out_of_bounds();
+        if (sprite.getX()+sprite.getHeight() < 1280 &&
+                (sprite.getRotation() == -90 || sprite.getRotation() == 270)) {
             sprite.setX(sprite.getX() + PASO);
-            sprite.setY(sprite.getY());
-        } else if (sprite.getRotation() == 0) {
+        } else if (sprite.getY()+sprite.getHeight() < 720 &&
+                sprite.getRotation() == 0) {
             sprite.setX(sprite.getX());
             sprite.setY(sprite.getY() + PASO);
-        } else if (Math.abs(sprite.getRotation()) == 180) {
+        } else if (sprite.getY() > 0 &&
+                Math.abs(sprite.getRotation()) == 180) {
             sprite.setX(sprite.getX());
             sprite.setY(sprite.getY() - PASO);
-        } else if (sprite.getRotation() == 90 || sprite.getRotation() == -270) {
+        } else if (sprite.getX() > 0 &&
+                (sprite.getRotation() == 90 || sprite.getRotation() == -270)) {
             sprite.setX(sprite.getX() - PASO);
             sprite.setY(sprite.getY());
-        } else if (sprite.getRotation() == -45 || sprite.getRotation() == 315) {
+        } else if (sprite.getY()+sprite.getHeight()<720 && sprite.getX()+sprite.getHeight()<1280 &&
+                (sprite.getRotation() == -45 || sprite.getRotation() == 315)) {
             sprite.setX(sprite.getX() + PASO);
             sprite.setY(sprite.getY() + PASO);
-        } else if (sprite.getRotation() == -135 || sprite.getRotation() == 225) {
+        } else if (sprite.getY()>0 && sprite.getX()+sprite.getHeight()<1280 &&
+                (sprite.getRotation() == -135 || sprite.getRotation() == 225)) {
             sprite.setX(sprite.getX() + PASO);
             sprite.setY(sprite.getY() - PASO);
-        } else if (sprite.getRotation() == 45 || sprite.getRotation() == -315) {
+        } else if (sprite.getY()+sprite.getHeight()<720 && sprite.getX()>0 &&
+                (sprite.getRotation() == 45 || sprite.getRotation() == -315)) {
             sprite.setX(sprite.getX() - PASO);
             sprite.setY(sprite.getY() + PASO);
-        } else if (sprite.getRotation() == 135 || sprite.getRotation() == -225) {
+        } else if (sprite.getY()>0 && sprite.getX()>0 &&
+                (sprite.getRotation() == 135 || sprite.getRotation() == -225)) {
             sprite.setX(sprite.getX() - PASO);
             sprite.setY(sprite.getY() - PASO);
         }

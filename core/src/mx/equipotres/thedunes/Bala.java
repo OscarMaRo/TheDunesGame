@@ -30,6 +30,30 @@ public class Bala extends Objeto {
         sprite.setX(sprite.getX() - d);
     }
 
+    public void moverDiagonalArrDer(float dt){
+        float d = vy * dt;
+        sprite.setX(sprite.getX() + d);
+        sprite.setY(sprite.getY() + d);
+    }
+
+    public void moverDiagonalArrIzq(float dt){
+        float d = vy * dt;
+        sprite.setX(sprite.getX() - d);
+        sprite.setY(sprite.getY() + d);
+    }
+
+    public void moverDiagonalAbjDer(float dt){
+        float d = vy * dt;
+        sprite.setX(sprite.getX() + d);
+        sprite.setY(sprite.getY() - d);
+    }
+
+    public void moverDiagonalAbjIzq(float dt){
+        float d = vy * dt;
+        sprite.setX(sprite.getX() - d);
+        sprite.setY(sprite.getY() - d);
+    }
+
 
 
 }

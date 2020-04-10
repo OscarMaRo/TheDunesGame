@@ -1,5 +1,7 @@
 package mx.equipotres.thedunes;
 
+import com.badlogic.gdx.graphics.Texture;
+
 public class Enemigo extends Objeto {
 
     public Estado estado;
@@ -24,6 +26,23 @@ public class Enemigo extends Objeto {
             sprite.setY(posY);
         }
     }
+
+    //Perseguir al Boogie por toda la pantalla
+    /*public void perseguirBoggie(float PASO, float boogieY, float boogieX) {
+        float posY = sprite.getY();
+        float posX = sprite.getX();
+
+        if (boogieY < posY){
+            sprite.setY(posY - PASO);
+        }else if (boogieY > posY){
+            sprite.setY(posY + PASO);
+        }
+        if (boogieX < posX){
+            sprite.setX(posX - PASO);
+        }else if (boogieX > posX){
+            sprite.setX(posX + PASO);
+        }
+    }*/
     
     //Estado del sprite 
     public enum Estado{
