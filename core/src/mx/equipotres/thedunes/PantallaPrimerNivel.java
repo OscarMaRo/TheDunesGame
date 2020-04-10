@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
+import java.awt.Point;
 import java.util.LinkedList;
 
 // Primer Nivel del Juego.
@@ -41,7 +43,7 @@ class PantallaPrimerNivel extends Pantalla {
     // Marcador
     private Marcador marcador;
     
-    //ENEMIGOS
+    //ENEMIGOS: En movimiento.
     private Array<EnemigoBasico> arrEnemigos;
     private Texture texturaEnemigos;
     private int MAX_PASOS = 1100;
@@ -49,9 +51,15 @@ class PantallaPrimerNivel extends Pantalla {
     private int cantidadEnemigos = 20;
     private int horda = 1;
 
+    // ENEMIGOS: En circulo.
+    private LinkedList<EnemigoBasico> arrEnemigosCirculo;
+    private int cantidadEnemigosCirculo = 10;
+
     // Mover automático... soon mover con flechas
     private float TIEMPO_PASO = 0.5f;
-    private float tiempoMoverBoogie = 0;
+    private float tiempoMoverEnemigo = 0;
+    private float MAX_PASOS_CIRCLE = 50;
+    private int counter = 0;
 
     // MENU: The values of the class are generated.
     private Stage escenaMenu;
@@ -62,20 +70,41 @@ class PantallaPrimerNivel extends Pantalla {
     public void show() {
         Gdx.gl.glClearColor(0,0,0,1);
         cargarTexturas();
-        crearBotones();
-        crearBoogie();
-        crearEnemigos();
-        crearTorre();
-        crearMarcador();
+        crearObjetos();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
 
+    // Creación: Crea todos los objetos.
+    private void crearObjetos() {
+        crearBoogie();
+        crearMarcador();
+        crearTorre();
+        crearBotones();
+        crearEnemigos();
+        crearEnemigosAlrededorTorre();
+    }
+
+    // Texturas: Carga todas las texturas.
+    private void cargarTexturas() {
+        texturaEnemigos = new Texture("Sprites/enemigo1.png");
+        texturaFondo = new Texture(("Fondos/fondoNivel1.jpeg"));
+        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
+        texturaBala = new Texture("Sprites/bala1.png");
+        texturaTorre = new Texture("Sprites/torre.png");
+    }
+
+    // Boogie
+    private void crearBoogie() {
+        boogie = new Boogie(texturaBoogie, 10, 10);
+    }
+
+    // Marcador
     private void crearMarcador() {
         marcador = new Marcador(0.2f*ANCHO, 0.9f*ALTO, boogie);
     }
 
+    // Torre
     private void crearTorre() {
-        texturaTorre = new Texture("Sprites/torre.png");
         torre = new Objeto(texturaTorre, ANCHO/2, ALTO/2);
     }
 
@@ -112,12 +141,7 @@ class PantallaPrimerNivel extends Pantalla {
         Gdx.input.setInputProcessor(escenaMenu);
     }
 
-    //TO-DO: Creo que es mejor que pongamos todas las texturas aquí, pero no quise mover código sin antes saber. 
-    private void cargarTexturas() {
-        texturaEnemigos = new Texture("Sprites/enemigo1.png");
-        texturaFondo = new Texture(("Fondos/fondoNivel1.jpeg"));
-    }
-    
+    // Enemigos
     private void crearEnemigos() {
         arrEnemigos = new Array<>(cantidadEnemigos);
         float dy = ALTO * 0.8f / cantidadEnemigos;
@@ -133,14 +157,39 @@ class PantallaPrimerNivel extends Pantalla {
         }
     }
 
+    // Enemigos: Círculo alrededor de la torre.
+    private void crearEnemigosAlrededorTorre() {
+        float x = ANCHO/2;
+        float y = ALTO/2;
+        float dx = 0, dy = 0;
+        float paso = 100;
+        arrEnemigosCirculo = new LinkedList<>();
+        for (int i = 0; i < 8; i++) {
+            if (i == 0) {
+                dx = x + paso; dy = y;
+            } else if(i == 1) {
+                dx = x + paso/2; dy = y + paso/2;
+            } else if (i == 2) {
+                dx = x; dy = y + paso;
+            } else if (i == 3) {
+                dx = x - paso/2; dy = y + paso/2;
+            } else if (i == 4) {
+                dx = x - paso; dy = y;
+            } else if (i == 5) {
+                dx = x - paso/2; dy = y - paso/2;
+            } else if (i == 6) {
+                dx = x; dy = y - paso;
+            } else if (i == 7) {
+                dx = x + paso/2; dy = y - paso/2;
+            }
 
-    // Boogie: Crea el Boogie. Le asigna una textura, y una posición inicial (x, y).
-    private void crearBoogie() {
-        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
-        texturaBala = new Texture("Sprites/bala1.png");
-        boogie = new Boogie(texturaBoogie, 10, 10);
+            EnemigoBasico enemigoBasico = new EnemigoBasico(texturaEnemigos, dx, dy);
+            arrEnemigosCirculo.add(enemigoBasico);
+
+        }
     }
 
+    // Dibuja
     @Override
     public void render(float delta) {
         // Imprime datos en consola.
@@ -149,7 +198,9 @@ class PantallaPrimerNivel extends Pantalla {
         //Actualizaciones
         moverEnemigos(delta);
         llamarHorda();
+        moverEnemigosCirculo(delta);
 
+        // Colisones
         probarColisiones();
 
         // Init: Default initializers.
@@ -182,17 +233,72 @@ class PantallaPrimerNivel extends Pantalla {
                 enemigo.render(batch);
             }
         }
+
+        for (EnemigoBasico enemigoBasico: arrEnemigosCirculo) {
+            enemigoBasico.render(batch);
+        }
+
         // Visibility: When this is activated everything is visible from show().
         //escenaMenu.draw();
         // Finaliza el batch.
         batch.end();
 
     }
-    
+
+    private void moverEnemigosCirculo(float delta) {
+        tiempoMoverEnemigo += delta;
+        if (counter < MAX_PASOS_CIRCLE) {
+            if (tiempoMoverEnemigo >= TIEMPO_PASO) {
+                tiempoMoverEnemigo = 0;
+                counter += 5;
+                float paso = 10;
+                for (int i = 0; i < arrEnemigosCirculo.size(); i++) {
+                    EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
+                    if (i == 0) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() + paso);
+                    } else if (i == 2) {
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() + paso);
+                    } else if (i == 4) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() - paso);
+                    } else if (i == 6) {
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
+                    }
+                }
+            }
+        } else if (counter >= MAX_PASOS_CIRCLE) {
+            if (tiempoMoverEnemigo >= TIEMPO_PASO) {
+                tiempoMoverEnemigo = 0;
+                counter += 5;
+                float paso = 10;
+                for (int i = 0; i < arrEnemigosCirculo.size(); i++) {
+                    EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
+                    if (i == 0) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() - paso);
+                    } else if (i == 2) {
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
+                    } else if (i == 4) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() + paso);
+                    } else if (i == 6) {
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() + paso);
+                    }
+                }
+            }
+            if (counter > 100) {
+                counter = 0;
+            }
+        }
+
+    }
+
+
+
+
+
+
     /* Cambia el número de horda de acuerdo al número de pasos que los enemigos han dado y activa los enemigos correspondientes
     a la horda */
     private void llamarHorda() {
-        if(horda ==1){
+        if(horda == 1){
             for(int i = 0; i < 10; i++ ){
                 EnemigoBasico enemigoBasico = arrEnemigos.get(i);
                 enemigoBasico.estado = Enemigo.Estado.ACTIVADO;
@@ -211,17 +317,17 @@ class PantallaPrimerNivel extends Pantalla {
     private void moverEnemigos(float delta) {
         float posYBoogie = boogie.sprite.getY();
 
-        if(numeroPasos< MAX_PASOS) {
+        if(numeroPasos < MAX_PASOS) {
             for (EnemigoBasico enemigoBasico : arrEnemigos) {
                 if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO)
                     enemigoBasico.mover(-1);
             }
             numeroPasos ++;
-            if(numeroPasos%5 == 0){  //A partir de aquí la posición en Y cambia de acuerdo a la posY del Boogie
+            if(numeroPasos % 5 == 0){  //A partir de aquí la posición en Y cambia de acuerdo a la posY del Boogie
                 for (EnemigoBasico enemigoBasico:arrEnemigos) {
-                    if(posYBoogie > 0 && posYBoogie <= ALTO*.33){
+                    if(posYBoogie > 0 && posYBoogie <= ALTO * 0.33){
                         enemigoBasico.seguirBoggie(5,1);
-                    }else if(posYBoogie < ALTO*.33 && posYBoogie <= ALTO*.66){
+                    }else if(posYBoogie < ALTO * 0.33 && posYBoogie <= ALTO * 0.66){
                         enemigoBasico.seguirBoggie(5,2);
                     }else{
                         enemigoBasico.seguirBoggie(5,3);

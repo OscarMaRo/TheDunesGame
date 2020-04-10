@@ -12,7 +12,7 @@ public class Enemigo extends Objeto {
     }
 
     public void mover(float dx) {
-        sprite.setX(sprite.getX()+dx);
+        sprite.setX(sprite.getX()+ dx);
     }
     
     //Dependiendo del bloque en que está el boggie, ajusta la posición del sprite para estár más cerca del boogie 
