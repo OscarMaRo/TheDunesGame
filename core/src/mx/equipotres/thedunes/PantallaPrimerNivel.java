@@ -3,9 +3,14 @@ package mx.equipotres.thedunes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.LinkedList;
@@ -16,8 +21,13 @@ class PantallaPrimerNivel extends Pantalla {
     private final Juego juego;
 
     // Texturas: The sprites initialized.
-    
-    Texture texturaFondo;
+    private Texture texturaFondo;
+    private Texture texturaBotonAcelerar;
+
+    // Torre enemiga
+    private Texture texturaTorre;
+    private Objeto torre;
+    private float vidaTorre = 1000f;
 
     // Boogie
     private Boogie boogie;
@@ -49,12 +59,50 @@ class PantallaPrimerNivel extends Pantalla {
     public void show() {
         Gdx.gl.glClearColor(0,0,0,1);
         cargarTexturas();
+        crearBotones();
         crearBoogie();
-        //crearTorre();
         crearEnemigos();
+        crearTorre();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
-    
+
+    private void crearTorre() {
+        texturaTorre = new Texture("Sprites/torre.png");
+        torre = new Objeto(texturaTorre, ANCHO/2, ALTO/2);
+    }
+
+    private void crearBotones() {
+        escenaMenu = new Stage(vista);
+
+        // Botón: Acelerar.
+        // Steps to create a fully functional button.
+        // 1.1 Texturize: Creates the image in the game. Idle.
+        Texture texturaBotonAcelerar = new Texture("Botones/move.jpg");
+        TextureRegionDrawable trdAcelerar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
+        // 1.2 Texturize: Creates the image in the game. Clicked.
+        //Texture texturaBotonJugarPress = new Texture("Botones/button_jugarP.png");
+        //TextureRegionDrawable trdJugarP = new TextureRegionDrawable(new TextureRegion(texturaBotonJugarPress));
+        // 2. Creation: Creates the button to be used.
+        ImageButton btnAcelerar = new ImageButton(trdAcelerar);
+        // 3. Position: Sets the position of the button.
+        btnAcelerar.setPosition(ANCHO - btnAcelerar.getWidth(),0);
+
+        // Listener: This calls the functionality of the buttons.
+        btnAcelerar.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO ACTIVATE EVENT: Click in order to accelerate character.
+                boogie.mover();
+                //System.out.println("Move");
+            }
+        });
+
+        // Display images: This attributes draw the images in screen.
+        escenaMenu.addActor(btnAcelerar);
+        // Action: This attributes allow the buttons to have interaction with the user.
+        Gdx.input.setInputProcessor(escenaMenu);
+    }
+
     //TO-DO: Creo que es mejor que pongamos todas las texturas aquí, pero no quise mover código sin antes saber. 
     private void cargarTexturas() {
         texturaEnemigos = new Texture("Sprites/enemigo1.png");
@@ -93,6 +141,8 @@ class PantallaPrimerNivel extends Pantalla {
         moverEnemigos(delta);
         llamarHorda();
 
+        probarColisiones();
+
         // Init: Default initializers.
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
@@ -104,6 +154,8 @@ class PantallaPrimerNivel extends Pantalla {
         batch.draw(texturaFondo,0,0);
         // Boogie: The image of the boogie is displayed.
         boogie.render(batch);
+        // Torre: The image of the torre is displayed.
+        torre.render(batch);
 
         // Balas: Mover al ser creadas.
         for (int i = 0; i < b.size(); i++) {
@@ -119,9 +171,12 @@ class PantallaPrimerNivel extends Pantalla {
                 enemigo.render(batch);
             }
         }
-
+        // Visibility: When this is activated everything is visible from show().
+        //escenaMenu.draw();
         // Finaliza el batch.
         batch.end();
+
+
 
     }
     
@@ -161,6 +216,24 @@ class PantallaPrimerNivel extends Pantalla {
                         enemigoBasico.seguirBoggie(5,2);
                     }else{
                         enemigoBasico.seguirBoggie(5,3);
+                    }
+                }
+            }
+        }
+    }
+
+    // Colisiones: Probar las colisisones.
+    private void probarColisiones() {
+        if (b.size() > 0) {
+            for (int i = arrEnemigos.size - 1; i >= 0; i--) {
+                for (int j = 0; j < b.size(); j++) {
+                    EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+                    Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+                    Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
+                    if (rectEnemigoBasico.overlaps(rectBala)) {
+                        arrEnemigos.removeIndex(i);
+                        //b.get(j).sprite.;
+                        break;
                     }
                 }
             }
