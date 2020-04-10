@@ -15,7 +15,7 @@ class Marcador {
         this.y = y;
         texto = new Texto("Fuentes/fuente.fnt");
         puntos = 0;
-        vidaBoogie = boogie.vida;
+        vidaBoogie = boogie.vidas;
     }
 
     public void reset(){
