@@ -28,7 +28,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Torre enemiga
     private Texture texturaTorre;
-    private Objeto torre;
+    private Torre torre;
     private float vidaTorre = 1000f;
 
     // Boogie
@@ -60,6 +60,7 @@ class PantallaPrimerNivel extends Pantalla {
     private float tiempoMoverEnemigo = 0;
     private float MAX_PASOS_CIRCLE = 50;
     private int counter = 0;
+    private boolean trigger = false;
 
     // MENU: The values of the class are generated.
     private Stage escenaMenu;
@@ -105,7 +106,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Torre
     private void crearTorre() {
-        torre = new Objeto(texturaTorre, ANCHO/2, ALTO/2);
+        torre = new Torre(texturaTorre, ANCHO/2 - texturaTorre.getWidth()/2, ALTO/2 - texturaTorre.getHeight()/2);
     }
 
     // Botones: Funcionalidad llevada a la pantalla gráficamente.
@@ -192,9 +193,6 @@ class PantallaPrimerNivel extends Pantalla {
     // Dibuja
     @Override
     public void render(float delta) {
-        // Imprime datos en consola.
-        //Gdx.app.log("CENTRO", "(" + boogie.sprite.getWidth()/2 + ", " + boogie.sprite.getHeight()/2 + ")");
-        
         //Actualizaciones
         moverEnemigos(delta);
         llamarHorda();
@@ -214,7 +212,7 @@ class PantallaPrimerNivel extends Pantalla {
         batch.draw(texturaFondo,0,0);
         // Boogie: The image of the boogie is displayed.
         boogie.render(batch);
-        // Torre: The image of the torre is displayed.
+        // mx.equipotres.thedunes.Torre: The image of the torre is displayed.
         torre.render(batch);
         // Marcador: Lo dibuja en la pantalla.
         marcador.render(batch);
@@ -245,6 +243,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     }
 
+    // Mover Enemigos alrededor del Castillo.
     private void moverEnemigosCirculo(float delta) {
         tiempoMoverEnemigo += delta;
         if (counter < MAX_PASOS_CIRCLE) {
@@ -264,9 +263,29 @@ class PantallaPrimerNivel extends Pantalla {
                         enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
                     }
                 }
+
+                if (trigger) {
+                    for (int i = 0; i < arrEnemigosCirculo.size(); i++) {
+                        EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
+                        if (i == 1) {
+                            enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() - paso);
+                            enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
+                        } else if (i == 3) {
+                            enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() + paso);
+                            enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
+                        } else if (i == 5) {
+                            enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() + paso);
+                            enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() + paso);
+                        } else if (i == 7) {
+                            enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() - paso);
+                            enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() + paso);
+                        }
+                    }
+                }
             }
         } else if (counter >= MAX_PASOS_CIRCLE) {
             if (tiempoMoverEnemigo >= TIEMPO_PASO) {
+                trigger = true;
                 tiempoMoverEnemigo = 0;
                 counter += 5;
                 float paso = 10;
@@ -274,12 +293,24 @@ class PantallaPrimerNivel extends Pantalla {
                     EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
                     if (i == 0) {
                         enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() - paso);
+                    } else if (i == 1) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() + paso);
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() + paso);
                     } else if (i == 2) {
                         enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
+                    } else if (i == 3) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() - paso);
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() + paso);
                     } else if (i == 4) {
                         enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() + paso);
+                    } else if (i == 5) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() - paso);
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
                     } else if (i == 6) {
                         enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() + paso);
+                    } else if (i == 7) {
+                        enemigoBasico.sprite.setX(enemigoBasico.sprite.getX() + paso);
+                        enemigoBasico.sprite.setY(enemigoBasico.sprite.getY() - paso);
                     }
                 }
             }
@@ -289,10 +320,6 @@ class PantallaPrimerNivel extends Pantalla {
         }
 
     }
-
-
-
-
 
 
     /* Cambia el número de horda de acuerdo al número de pasos que los enemigos han dado y activa los enemigos correspondientes
@@ -353,10 +380,35 @@ class PantallaPrimerNivel extends Pantalla {
                     }
                 }
             }
+
+            for (int i = arrEnemigosCirculo.size() - 1; i >= 0; i--) {
+                for (int j = 0; j < b.size(); j++) {
+                    EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
+                    Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+                    Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
+                    if (rectEnemigoBasico.overlaps(rectBala)) {
+                        arrEnemigosCirculo.remove(i);
+                        b.remove(j);
+                        marcador.agregarPuntos(5);
+                        break;
+                    }
+                }
+            }
         }
 
         for (int i = arrEnemigos.size - 1; i >= 0; i--) {
             EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+            if (rectEnemigoBasico.overlaps(rectBoogie)) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
+            }
+        }
+
+        for (int i = arrEnemigosCirculo.size() - 1; i >= 0; i--) {
+            EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
             Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
             Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
             if (rectEnemigoBasico.overlaps(rectBoogie)) {
