@@ -34,7 +34,7 @@ class PantallaPrimerNivel extends Pantalla {
     // Torre enemiga
     private Texture texturaTorre;
     private Torre torre;
-    private float vidaTorre = 1000f;
+    private Shield escudoTorre;
 
     // Boogie
     private Boogie boogie;
@@ -131,6 +131,7 @@ class PantallaPrimerNivel extends Pantalla {
     // Torre
     private void crearTorre() {
         torre = new Torre(texturaTorre, ANCHO/2 - texturaTorre.getWidth()/2, ALTO/2 - texturaTorre.getHeight()/2);
+        escudoTorre = new Shield(vista, batch);
     }
 
     // Barra Vida
@@ -299,6 +300,9 @@ class PantallaPrimerNivel extends Pantalla {
         if ( estadoJuego == EstadoJuego.JUGANDO) {
             // Visibility: When this is activated everything is visible from show().
             escenaMenu.draw();
+            escudoTorre.draw();
+
+
         }
 
         // Juego Pausado.
