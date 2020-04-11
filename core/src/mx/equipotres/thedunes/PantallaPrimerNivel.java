@@ -626,13 +626,14 @@ class PantallaPrimerNivel extends Pantalla {
             super(vista, batch);
 
             Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO * 0.8f), Pixmap.Format.RGBA8888);
-            pixmap.setColor(0,0.5f,0,0.5f);
-            pixmap.fillCircle(300,300,300);
-            Texture texturaCirculo = new Texture(pixmap);
+            pixmap.setColor(0,0,0,1);
+            //pixmap.fillCircle(300,300,300);
+            pixmap.fillRectangle((int)(ANCHO * 0.03), 50, (int)ANCHO - 450, (int)ALTO - 100);
+            Texture texturaRectangulo = new Texture(pixmap);
 
-            Image imgCirculo = new Image(texturaCirculo);
-            imgCirculo.setPosition(ANCHO/2 - pixmap.getWidth()/2, ALTO/2 - pixmap.getHeight()/2);
-            this.addActor(imgCirculo);
+            Image imgRectangulo = new Image(texturaRectangulo);
+            imgRectangulo.setPosition(ANCHO/2 - pixmap.getWidth()/2, ALTO/2 - pixmap.getHeight()/2);
+            this.addActor(imgRectangulo);
         }
     }
 
