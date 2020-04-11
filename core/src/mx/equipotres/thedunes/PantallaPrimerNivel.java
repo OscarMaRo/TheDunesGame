@@ -60,6 +60,9 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Health Bars
     private HealthBar healthBarTorre;
+    private HealthBar healthBarTorreSuperiorDerecha;
+    private HealthBar healthBarTorreInferiorDerecha;
+    private HealthBar healthBarTorreSuperiorIzquierda;
 
     // Texto
     private Texto ganar;
@@ -145,7 +148,7 @@ class PantallaPrimerNivel extends Pantalla {
 
         torreSuperiorDerecha = new Torre(texturaTorre, ANCHO - texturaTorre.getWidth()/2 - 200, ALTO - texturaTorre.getHeight()/2 - 100);
         escudoTorreSuperiorDerecha = new Shield(vista, batch);
-        escudoTorreSuperiorDerecha.posicionarEscudo(440, 260);
+        //escudoTorreSuperiorDerecha.posicionarEscudo(440, 260);
 
         torreInferiorDerecha = new Torre(texturaTorre, ANCHO - texturaTorre.getWidth()/2 - 300, texturaTorre.getHeight()/2 + 100);
         escudoTorreInferiorDerecha = new Shield(vista, batch);
@@ -158,7 +161,10 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Barra Vida
     private void crearBarraVidaTorre() {
-        healthBarTorre = new HealthBar();//ANCHO/2, ALTO/2 + texturaTorre.getHeight());
+        healthBarTorre = new HealthBar();
+        healthBarTorreSuperiorDerecha = new HealthBar();
+        healthBarTorreInferiorDerecha = new HealthBar();
+        healthBarTorreSuperiorIzquierda = new HealthBar();
     }
 
     // Botones: Funcionalidad llevada a la pantalla gráficamente.
@@ -290,6 +296,7 @@ class PantallaPrimerNivel extends Pantalla {
             marcador.render(batch);
             // Health Bar: Torre.
             healthBarTorre.render(batch, torre, ANCHO / 2 - 50, ALTO / 2 + 30);
+            healthBarTorreSuperiorDerecha.render(batch, torreSuperiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 200, ALTO - texturaTorre.getHeight()/2 - 70);
             batch.setColor(Color.WHITE);
 
             // Balas: Mover al ser creadas.
@@ -493,9 +500,14 @@ class PantallaPrimerNivel extends Pantalla {
 
         for (int j = 0; j < b.size(); j++) {
             Rectangle rectTorre = torre.sprite.getBoundingRectangle();
+            Rectangle rectTorreSuperiorDerecha = torreSuperiorDerecha.sprite.getBoundingRectangle();
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectTorre.overlaps(rectBala)) {
                 torre.restarVida();
+                b.remove(j);
+                break;
+            } else if (rectTorreSuperiorDerecha.overlaps(rectBala)) {
+                torreSuperiorDerecha.restarVida();
                 b.remove(j);
                 break;
             }
