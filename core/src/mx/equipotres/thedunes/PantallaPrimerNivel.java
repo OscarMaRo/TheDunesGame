@@ -3,6 +3,7 @@ package mx.equipotres.thedunes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
@@ -42,7 +43,13 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Marcador
     private Marcador marcador;
-    
+
+    // Health Bars
+    private HealthBar healthBarTorre;
+
+    // Texto
+    private Texto ganar;
+
     //ENEMIGOS: En movimiento.
     private Array<EnemigoBasico> arrEnemigos;
     private Texture texturaEnemigos;
@@ -80,9 +87,14 @@ class PantallaPrimerNivel extends Pantalla {
         crearBoogie();
         crearMarcador();
         crearTorre();
+        crearBarraVidaTorre();
         crearBotones();
         crearEnemigos();
         crearEnemigosAlrededorTorre();
+    }
+
+    private void crearBarraVidaTorre() {
+        healthBarTorre = new HealthBar();//ANCHO/2, ALTO/2 + texturaTorre.getHeight());
     }
 
     // Texturas: Carga todas las texturas.
@@ -92,6 +104,7 @@ class PantallaPrimerNivel extends Pantalla {
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
+        ganar = new Texto("Fuentes/fuente.fnt");
     }
 
     // Boogie
@@ -216,6 +229,14 @@ class PantallaPrimerNivel extends Pantalla {
         torre.render(batch);
         // Marcador: Lo dibuja en la pantalla.
         marcador.render(batch);
+        // Health Bar: Torre.
+        healthBarTorre.render(batch, torre, ANCHO/2 - 50, ALTO/2 + 30);
+        batch.setColor(Color.WHITE);
+
+        if (torre.vida <= 0.0f) {
+            String mensaje = "Enhorabuena, has ganado!";
+            ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
+        }
 
         // Balas: Mover al ser creadas.
         for (int i = 0; i < b.size(); i++) {
@@ -393,6 +414,16 @@ class PantallaPrimerNivel extends Pantalla {
                         break;
                     }
                 }
+            }
+        }
+
+        for (int j = 0; j < b.size(); j++) {
+            Rectangle rectTorre = torre.sprite.getBoundingRectangle();
+            Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
+            if (rectTorre.overlaps(rectBala)) {
+                torre.restarVida();
+                b.remove(j);
+                break;
             }
         }
 

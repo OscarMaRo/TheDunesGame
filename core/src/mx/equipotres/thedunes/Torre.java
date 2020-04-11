@@ -2,18 +2,21 @@ package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.graphics.Texture;
 
+import java.awt.Rectangle;
+
 import mx.equipotres.thedunes.Objeto;
 
 public class Torre extends Objeto {
 
-    private int vida;
+    public float vida;
 
     public Torre(Texture textura, float x, float y) {
         super(textura, x, y);
-        vida = 1000;
+        vida = 1.0f;
     }
 
-    private void restarVida(int cantidad) {
-        vida -= cantidad;
+    public void restarVida() {
+        vida -= 0.1f;
     }
+
 }
