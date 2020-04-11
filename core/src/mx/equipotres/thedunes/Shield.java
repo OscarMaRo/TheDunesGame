@@ -12,6 +12,7 @@ public class Shield extends Stage {
     protected Sprite sprite;
     private int ANCHO = 1280;
     private int ALTO = 720;
+    private Image imgEscudo;
 
     public Shield(Viewport vista, SpriteBatch batch) {
         super(vista, batch);
@@ -21,9 +22,13 @@ public class Shield extends Stage {
         pixmap.fillCircle((int)(ANCHO * 0.5),(int)(ALTO * 0.3),35);
         Texture texturaEscudo = new Texture(pixmap);
 
-        Image imgEscudo = new Image(texturaEscudo);
+        imgEscudo = new Image(texturaEscudo);
         //imgEscudo.setPosition(ANCHO/2 , ALTO/2);
         this.addActor(imgEscudo);
+    }
+
+    public void posicionarEscudo(float x, float y) {
+        imgEscudo.setPosition(x, y);
     }
 
 }

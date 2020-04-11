@@ -36,6 +36,16 @@ class PantallaPrimerNivel extends Pantalla {
     private Torre torre;
     private Shield escudoTorre;
 
+    // Torres de Poder: Superior Derecha
+    private Torre torreSuperiorDerecha;
+    private Shield escudoTorreSuperiorDerecha;
+    // Torres de Poder: Inferior Derecha
+    private Torre torreInferiorDerecha;
+    private Shield escudoTorreInferiorDerecha;
+    // Torres de Poder: Superior Izquierda
+    private Torre torreSuperiorIzquierda;
+    private Shield escudoTorreSuperiorIzquierda;
+
     // Boogie
     private Boogie boogie;
     private Texture texturaBoogie;
@@ -99,7 +109,7 @@ class PantallaPrimerNivel extends Pantalla {
     private void crearObjetos() {
         crearBoogie();
         crearMarcador();
-        crearTorre();
+        crearTorres();
         crearBarraVidaTorre();
         crearBotones();
         crearEnemigos();
@@ -129,9 +139,21 @@ class PantallaPrimerNivel extends Pantalla {
     }
 
     // Torre
-    private void crearTorre() {
+    private void crearTorres() {
         torre = new Torre(texturaTorre, ANCHO/2 - texturaTorre.getWidth()/2, ALTO/2 - texturaTorre.getHeight()/2);
         escudoTorre = new Shield(vista, batch);
+
+        torreSuperiorDerecha = new Torre(texturaTorre, ANCHO - texturaTorre.getWidth()/2 - 200, ALTO - texturaTorre.getHeight()/2 - 100);
+        escudoTorreSuperiorDerecha = new Shield(vista, batch);
+        escudoTorreSuperiorDerecha.posicionarEscudo(440, 260);
+
+        torreInferiorDerecha = new Torre(texturaTorre, ANCHO - texturaTorre.getWidth()/2 - 300, texturaTorre.getHeight()/2 + 100);
+        escudoTorreInferiorDerecha = new Shield(vista, batch);
+        escudoTorreInferiorDerecha.posicionarEscudo(340, -220);
+
+        torreSuperiorIzquierda = new Torre(texturaTorre, 200, ALTO - texturaTorre.getHeight()/2 - 170);
+        escudoTorreSuperiorIzquierda = new Shield(vista, batch);
+        escudoTorreSuperiorIzquierda.posicionarEscudo(-420, 190);
     }
 
     // Barra Vida
@@ -261,6 +283,9 @@ class PantallaPrimerNivel extends Pantalla {
             boogie.render(batch);
             // mx.equipotres.thedunes.Torre: The image of the torre is displayed.
             torre.render(batch);
+            torreSuperiorDerecha.render(batch);
+            torreInferiorDerecha.render(batch);
+            torreSuperiorIzquierda.render(batch);
             // Marcador: Lo dibuja en la pantalla.
             marcador.render(batch);
             // Health Bar: Torre.
@@ -301,8 +326,9 @@ class PantallaPrimerNivel extends Pantalla {
             // Visibility: When this is activated everything is visible from show().
             escenaMenu.draw();
             escudoTorre.draw();
-
-
+            escudoTorreSuperiorDerecha.draw();
+            escudoTorreInferiorDerecha.draw();
+            escudoTorreSuperiorIzquierda.draw();
         }
 
         // Juego Pausado.
