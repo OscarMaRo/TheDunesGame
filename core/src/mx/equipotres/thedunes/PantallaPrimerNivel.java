@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -583,7 +584,18 @@ class PantallaPrimerNivel extends Pantalla {
 
         @Override
         public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            return false;
+            Vector3 v = new Vector3(screenX, screenY, 0);
+            camara.unproject(v);
+
+            if (v.y >= ALTO - texturaBotonPausa.getHeight()) {
+                if (v.x >= ANCHO - texturaBotonPausa.getWidth()) {
+                    estadoJuego = EstadoJuego.PAUSADO;
+                    if (escenaPausa == null) {
+                        escenaPausa = new EscenaPausa(vista, batch);
+                    }
+                }
+            }
+            return true;
         }
 
         @Override
