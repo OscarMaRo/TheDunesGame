@@ -289,14 +289,26 @@ class PantallaPrimerNivel extends Pantalla {
             boogie.render(batch);
             // mx.equipotres.thedunes.Torre: The image of the torre is displayed.
             torre.render(batch);
-            torreSuperiorDerecha.render(batch);
-            torreInferiorDerecha.render(batch);
-            torreSuperiorIzquierda.render(batch);
+
+            if (torreSuperiorDerecha.vida >= 0.0f) {
+                torreSuperiorDerecha.render(batch);
+                healthBarTorreSuperiorDerecha.render(batch, torreSuperiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 230, ALTO - texturaTorre.getHeight()/2 - 50);
+            }
+
+            if (torreInferiorDerecha.vida >= 0.0f) {
+                torreInferiorDerecha.render(batch);
+                healthBarTorreInferiorDerecha.render(batch, torreInferiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 330, texturaTorre.getHeight()/2 + 145);
+            }
+
+            if (torreSuperiorIzquierda.vida >= 0.0f) {
+                torreSuperiorIzquierda.render(batch);
+                healthBarTorreSuperiorIzquierda.render(batch, torreSuperiorIzquierda, 170, ALTO - texturaTorre.getHeight()/2 - 125);
+            }
+
             // Marcador: Lo dibuja en la pantalla.
             marcador.render(batch);
-            // Health Bar: Torre.
+            // Health Bar: Torre Central.
             healthBarTorre.render(batch, torre, ANCHO / 2 - 50, ALTO / 2 + 30);
-            healthBarTorreSuperiorDerecha.render(batch, torreSuperiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 200, ALTO - texturaTorre.getHeight()/2 - 70);
             batch.setColor(Color.WHITE);
 
             // Balas: Mover al ser creadas.
@@ -320,7 +332,8 @@ class PantallaPrimerNivel extends Pantalla {
         }
 
         // Indicador de Victoria
-        if (torre.vida <= 0.0f) {
+        if (torre.vida <= 0.0f && torreSuperiorDerecha.vida <= 0.0f &&
+            torreInferiorDerecha.vida <= 0.0f && torreSuperiorIzquierda.vida <= 0.0f) {
             String mensaje = "Enhorabuena, has ganado!";
             ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
             estadoJuego = EstadoJuego.GANO;
@@ -333,7 +346,7 @@ class PantallaPrimerNivel extends Pantalla {
             // Visibility: When this is activated everything is visible from show().
             escenaMenu.draw();
             escudoTorre.draw();
-            escudoTorreSuperiorDerecha.draw();
+            //escudoTorreSuperiorDerecha.draw();
             escudoTorreInferiorDerecha.draw();
             escudoTorreSuperiorIzquierda.draw();
         }
@@ -501,6 +514,8 @@ class PantallaPrimerNivel extends Pantalla {
         for (int j = 0; j < b.size(); j++) {
             Rectangle rectTorre = torre.sprite.getBoundingRectangle();
             Rectangle rectTorreSuperiorDerecha = torreSuperiorDerecha.sprite.getBoundingRectangle();
+            Rectangle rectTorreInferiorDerecha = torreInferiorDerecha.sprite.getBoundingRectangle();
+            Rectangle rectTorreSuperiorIzquierda = torreSuperiorIzquierda.sprite.getBoundingRectangle();
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectTorre.overlaps(rectBala)) {
                 torre.restarVida();
@@ -508,7 +523,21 @@ class PantallaPrimerNivel extends Pantalla {
                 break;
             } else if (rectTorreSuperiorDerecha.overlaps(rectBala)) {
                 torreSuperiorDerecha.restarVida();
-                b.remove(j);
+                if (torreSuperiorDerecha.vida >= 0.0f) {
+                    b.remove(j);
+                }
+                break;
+            } else if (rectTorreInferiorDerecha.overlaps(rectBala)) {
+                torreInferiorDerecha.restarVida();
+                if (torreInferiorDerecha.vida >= 0.0f) {
+                    b.remove(j);
+                }
+                break;
+            } else if (rectTorreSuperiorIzquierda.overlaps(rectBala)) {
+                torreSuperiorIzquierda.restarVida();
+                if (torreSuperiorIzquierda.vida >= 0.0f) {
+                    b.remove(j);
+                }
                 break;
             }
         }
