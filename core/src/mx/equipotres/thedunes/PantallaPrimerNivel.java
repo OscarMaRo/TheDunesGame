@@ -4,16 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.awt.Point;
 import java.util.LinkedList;
@@ -25,7 +29,6 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Texturas: The sprites initialized.
     private Texture texturaFondo;
-    private Texture texturaBotonAcelerar;
 
     // Torre enemiga
     private Texture texturaTorre;
@@ -49,6 +52,16 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Texto
     private Texto ganar;
+
+    // Pausa
+    private EscenaPausa escenaPausa;
+    private Texture texturaBotonPausa;
+
+    // Mover
+    private Texture texturaBotonAcelerar;
+
+    // Estado
+    private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
 
     //ENEMIGOS: En movimiento.
     private Array<EnemigoBasico> arrEnemigos;
@@ -104,6 +117,8 @@ class PantallaPrimerNivel extends Pantalla {
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
+        texturaBotonPausa = new Texture("Botones/pausa.png");
+        texturaBotonAcelerar = new Texture("Botones/move.jpg");
         ganar = new Texto("Fuentes/fuente.fnt");
     }
 
@@ -127,17 +142,15 @@ class PantallaPrimerNivel extends Pantalla {
         escenaMenu = new Stage(vista);
 
         // Botón: Acelerar.
-        // Steps to create a fully functional button.
-        // 1.1 Texturize: Creates the image in the game. Idle.
-        Texture texturaBotonAcelerar = new Texture("Botones/move.jpg");
         TextureRegionDrawable trdAcelerar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
-        // 1.2 Texturize: Creates the image in the game. Clicked.
-        //Texture texturaBotonJugarPress = new Texture("Botones/button_jugarP.png");
-        //TextureRegionDrawable trdJugarP = new TextureRegionDrawable(new TextureRegion(texturaBotonJugarPress));
-        // 2. Creation: Creates the button to be used.
         ImageButton btnAcelerar = new ImageButton(trdAcelerar);
-        // 3. Position: Sets the position of the button.
         btnAcelerar.setPosition(ANCHO - btnAcelerar.getWidth(),0);
+
+        // Botón pausa
+        TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
+        ImageButton btnPausa = new ImageButton(trdPausa);
+        btnPausa.setPosition(ANCHO - btnPausa.getWidth() + 20,ALTO - btnPausa.getHeight() + 10);
+
 
         // Listener: This calls the functionality of the buttons.
         btnAcelerar.addListener(new ClickListener(){
@@ -149,8 +162,22 @@ class PantallaPrimerNivel extends Pantalla {
             }
         });
 
+        // Listener: This calls the functionality of the buttons.
+        btnPausa.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO ACTIVATE EVENT: Click in order to accelerate character.
+                // Pausar el juego
+                estadoJuego = EstadoJuego.PAUSADO;
+                if (escenaPausa == null) {
+                    escenaPausa = new EscenaPausa(vista, batch);
+                }
+            }
+        });
+
         // Display images: This attributes draw the images in screen.
         escenaMenu.addActor(btnAcelerar);
+        escenaMenu.addActor(btnPausa);
         // Action: This attributes allow the buttons to have interaction with the user.
         Gdx.input.setInputProcessor(escenaMenu);
     }
@@ -206,13 +233,15 @@ class PantallaPrimerNivel extends Pantalla {
     // Dibuja
     @Override
     public void render(float delta) {
-        //Actualizaciones
-        moverEnemigos(delta);
-        llamarHorda();
-        moverEnemigosCirculo(delta);
 
-        // Colisones
-        probarColisiones();
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            //Actualizaciones
+            moverEnemigos(delta);
+            llamarHorda();
+            moverEnemigosCirculo(delta);
+            // Colisones
+            probarColisiones();
+        }
 
         // Init: Default initializers.
         borrarPantalla();
@@ -257,10 +286,16 @@ class PantallaPrimerNivel extends Pantalla {
             enemigoBasico.render(batch);
         }
 
-        // Visibility: When this is activated everything is visible from show().
-        //escenaMenu.draw();
         // Finaliza el batch.
         batch.end();
+
+        // Visibility: When this is activated everything is visible from show().
+        escenaMenu.draw();
+
+        // Juego Pausado.
+        if (estadoJuego == EstadoJuego.PAUSADO) {
+            escenaPausa.draw();
+        }
 
     }
 
@@ -570,5 +605,29 @@ class PantallaPrimerNivel extends Pantalla {
         public boolean scrolled(int amount) {
             return false;
         }
+    }
+
+
+    // Clase Pausa (ventana que se muestra cuando el usuario pausa la aplicación).
+    class EscenaPausa extends Stage {
+        public EscenaPausa(Viewport vista, SpriteBatch batch) {
+            super(vista, batch);
+
+            Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO * 0.8f), Pixmap.Format.RGBA8888);
+            pixmap.setColor(0,0.5f,0,0.5f);
+            pixmap.fillCircle(300,300,300);
+            Texture texturaCirculo = new Texture(pixmap);
+
+            Image imgCirculo = new Image(texturaCirculo);
+            imgCirculo.setPosition(ANCHO/2 - pixmap.getWidth()/2, ALTO/2 - pixmap.getHeight()/2);
+            this.addActor(imgCirculo);
+        }
+    }
+
+    private enum EstadoJuego {
+        JUGANDO,
+        PAUSADO,
+        GANO,
+        PERDIO
     }
 }
