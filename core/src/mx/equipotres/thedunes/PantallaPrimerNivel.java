@@ -20,11 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import java.awt.Point;
 import java.util.LinkedList;
 
 // Primer Nivel del Juego.
 class PantallaPrimerNivel extends Pantalla {
+
     // Juego: allows to create another screen when the listener is activated.
     private final Juego juego;
 
@@ -72,20 +72,19 @@ class PantallaPrimerNivel extends Pantalla {
     private int cantidadEnemigos = 20;
     private int horda = 1;
 
-    // ENEMIGOS: En circulo.
+    // ENEMIGOS: Torre.
     private LinkedList<EnemigoBasico> arrEnemigosCirculo;
     private int cantidadEnemigosCirculo = 10;
-
-    // Mover automático... soon mover con flechas
     private float TIEMPO_PASO = 0.5f;
     private float tiempoMoverEnemigo = 0;
     private float MAX_PASOS_CIRCLE = 50;
     private int counter = 0;
     private boolean trigger = false;
 
-    // MENU: The values of the class are generated.
+    // ESCENA MENU
     private Stage escenaMenu;
 
+    // CONSTRUCTOR
     public PantallaPrimerNivel(Juego juego) { this.juego = juego; }
 
     @Override
@@ -96,7 +95,7 @@ class PantallaPrimerNivel extends Pantalla {
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
 
-    // Creación: Crea todos los objetos.
+    // CREACIÓN: Crea todos los objetos.
     private void crearObjetos() {
         crearBoogie();
         crearMarcador();
@@ -105,10 +104,6 @@ class PantallaPrimerNivel extends Pantalla {
         crearBotones();
         crearEnemigos();
         crearEnemigosAlrededorTorre();
-    }
-
-    private void crearBarraVidaTorre() {
-        healthBarTorre = new HealthBar();//ANCHO/2, ALTO/2 + texturaTorre.getHeight());
     }
 
     // Texturas: Carga todas las texturas.
@@ -136,6 +131,11 @@ class PantallaPrimerNivel extends Pantalla {
     // Torre
     private void crearTorre() {
         torre = new Torre(texturaTorre, ANCHO/2 - texturaTorre.getWidth()/2, ALTO/2 - texturaTorre.getHeight()/2);
+    }
+
+    // Barra Vida
+    private void crearBarraVidaTorre() {
+        healthBarTorre = new HealthBar();//ANCHO/2, ALTO/2 + texturaTorre.getHeight());
     }
 
     // Botones: Funcionalidad llevada a la pantalla gráficamente.
@@ -183,7 +183,7 @@ class PantallaPrimerNivel extends Pantalla {
         Gdx.input.setInputProcessor(escenaMenu);
     }
 
-    // Enemigos
+    // Enemigos: Patrones
     private void crearEnemigos() {
         arrEnemigos = new Array<>(cantidadEnemigos);
         float dy = ALTO * 0.8f / cantidadEnemigos;
@@ -231,7 +231,7 @@ class PantallaPrimerNivel extends Pantalla {
         }
     }
 
-    // Dibuja
+    // Dibuja el juego
     @Override
     public void render(float delta) {
 
@@ -255,6 +255,7 @@ class PantallaPrimerNivel extends Pantalla {
         batch.draw(texturaFondo, 0, 0);
 
         if (estadoJuego == EstadoJuego.JUGANDO || estadoJuego == EstadoJuego.PAUSADO) {
+
             // Boogie: The image of the boogie is displayed.
             boogie.render(batch);
             // mx.equipotres.thedunes.Torre: The image of the torre is displayed.
@@ -264,7 +265,6 @@ class PantallaPrimerNivel extends Pantalla {
             // Health Bar: Torre.
             healthBarTorre.render(batch, torre, ANCHO / 2 - 50, ALTO / 2 + 30);
             batch.setColor(Color.WHITE);
-
 
             // Balas: Mover al ser creadas.
             for (int i = 0; i < b.size(); i++) {
@@ -286,6 +286,7 @@ class PantallaPrimerNivel extends Pantalla {
             }
         }
 
+        // Indicador de Victoria
         if (torre.vida <= 0.0f) {
             String mensaje = "Enhorabuena, has ganado!";
             ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
