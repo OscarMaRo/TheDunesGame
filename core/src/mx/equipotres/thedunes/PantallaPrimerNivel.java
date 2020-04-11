@@ -252,46 +252,53 @@ class PantallaPrimerNivel extends Pantalla {
         batch.begin();
 
         // Background: The image of the background is displayed.
-        batch.draw(texturaFondo,0,0);
-        // Boogie: The image of the boogie is displayed.
-        boogie.render(batch);
-        // mx.equipotres.thedunes.Torre: The image of the torre is displayed.
-        torre.render(batch);
-        // Marcador: Lo dibuja en la pantalla.
-        marcador.render(batch);
-        // Health Bar: Torre.
-        healthBarTorre.render(batch, torre, ANCHO/2 - 50, ALTO/2 + 30);
-        batch.setColor(Color.WHITE);
+        batch.draw(texturaFondo, 0, 0);
+
+        if (estadoJuego == EstadoJuego.JUGANDO || estadoJuego == EstadoJuego.PAUSADO) {
+            // Boogie: The image of the boogie is displayed.
+            boogie.render(batch);
+            // mx.equipotres.thedunes.Torre: The image of the torre is displayed.
+            torre.render(batch);
+            // Marcador: Lo dibuja en la pantalla.
+            marcador.render(batch);
+            // Health Bar: Torre.
+            healthBarTorre.render(batch, torre, ANCHO / 2 - 50, ALTO / 2 + 30);
+            batch.setColor(Color.WHITE);
+
+
+            // Balas: Mover al ser creadas.
+            for (int i = 0; i < b.size(); i++) {
+                if (b.get(i) != null) {
+                    b.get(i).render(batch);
+                    moverBala(b.get(i), delta);
+                }
+            }
+
+            // Enemigos
+            for (EnemigoBasico enemigo : arrEnemigos) {
+                if (enemigo.estado == Enemigo.Estado.ACTIVADO) {
+                    enemigo.render(batch);
+                }
+            }
+
+            for (EnemigoBasico enemigoBasico : arrEnemigosCirculo) {
+                enemigoBasico.render(batch);
+            }
+        }
 
         if (torre.vida <= 0.0f) {
             String mensaje = "Enhorabuena, has ganado!";
             ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
-        }
-
-        // Balas: Mover al ser creadas.
-        for (int i = 0; i < b.size(); i++) {
-            if (b.get(i) != null) {
-                b.get(i).render(batch);
-                moverBala(b.get(i), delta);
-            }
-        }
-        
-        // Enemigos
-        for (EnemigoBasico enemigo: arrEnemigos) {
-            if(enemigo.estado == Enemigo.Estado.ACTIVADO){
-                enemigo.render(batch);
-            }
-        }
-
-        for (EnemigoBasico enemigoBasico: arrEnemigosCirculo) {
-            enemigoBasico.render(batch);
+            estadoJuego = EstadoJuego.GANO;
         }
 
         // Finaliza el batch.
         batch.end();
 
-        // Visibility: When this is activated everything is visible from show().
-        escenaMenu.draw();
+        if ( estadoJuego == EstadoJuego.JUGANDO) {
+            // Visibility: When this is activated everything is visible from show().
+            escenaMenu.draw();
+        }
 
         // Juego Pausado.
         if (estadoJuego == EstadoJuego.PAUSADO) {
