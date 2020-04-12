@@ -105,6 +105,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // ESCENA MENU
     private Stage escenaMenu;
+    private Stage escenaPausado;
 
     // CONSTRUCTOR
     public PantallaPrimerNivel(Juego juego) { this.juego = juego; }
@@ -366,6 +367,21 @@ class PantallaPrimerNivel extends Pantalla {
             String mensaje = "Enhorabuena, has ganado!";
             ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
             estadoJuego = EstadoJuego.GANO;
+
+            Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
+            TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
+            Image btnVolverMenu = new Image(trVM);
+            btnVolverMenu.setPosition(ANCHO/2-250, ALTO/2-144);
+
+            btnVolverMenu.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaMenu(juego));
+                }
+            });
+
+            escenaMenu.addActor(btnVolverMenu);
+            Gdx.input.setInputProcessor(escenaMenu);
         }
 
         // Indicador de derrota
@@ -373,6 +389,21 @@ class PantallaPrimerNivel extends Pantalla {
             String mensaje = "Has sido derrotado";
             ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
             estadoJuego = EstadoJuego.PERDIO;
+
+            Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
+            TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
+            Image btnVolverMenu = new Image(trVM);
+            btnVolverMenu.setPosition(ANCHO/2-250, ALTO/2-144);
+
+            btnVolverMenu.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaMenu(juego));
+                }
+            });
+
+            escenaMenu.addActor(btnVolverMenu);
+            Gdx.input.setInputProcessor(escenaMenu);
         }
 
         // Finaliza el batch.
@@ -398,6 +429,14 @@ class PantallaPrimerNivel extends Pantalla {
         // Juego Pausado.
         if (estadoJuego == EstadoJuego.PAUSADO) {
             escenaPausa.draw();
+        }
+
+        if (estadoJuego == EstadoJuego.PERDIO) {
+            escenaMenu.draw();
+        }
+
+        if (estadoJuego == EstadoJuego.GANO) {
+            escenaMenu.draw();
         }
 
     }
