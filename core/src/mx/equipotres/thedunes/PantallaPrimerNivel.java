@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -81,6 +82,9 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Música
     private Music musicaFondo;
+    private Sound shoot;
+    private Sound shield;
+    private int hit = 0;
 
     //ENEMIGOS: En movimiento.
     private LinkedList<EnemigoBasico> arrEnemigos;
@@ -117,10 +121,17 @@ class PantallaPrimerNivel extends Pantalla {
     public void cargarMusica() {
         AssetManager manager = new AssetManager();
         manager.load("Musica/musicaFondo.mp3", Music.class);
+        manager.load("Musica/shoot.wav", Sound.class);
+        manager.load("Musica/shieldDown.mp3", Sound.class);
         manager.finishLoading();  // carga sincrona
+
         musicaFondo = manager.get("Musica/musicaFondo.mp3");
         musicaFondo.setLooping(true);  // Infinito
         musicaFondo.play();
+
+        // Disparo
+        shoot = manager.get("Musica/shoot.wav");
+        shield = manager.get("Musica/shieldDown.mp3");
     }
 
     // CREACIÓN: Crea todos los objetos.
@@ -564,19 +575,36 @@ class PantallaPrimerNivel extends Pantalla {
             } else if (rectTorreSuperiorDerecha.overlaps(rectBala)) {
                 torreSuperiorDerecha.restarVida();
                 if (torreSuperiorDerecha.vida >= 0.0f) {
+                    hit++;
                     b.remove(j);
+                    if (hit == 9) {
+                        System.out.println(hit);
+                        shield.play();
+                        hit = 0;
+                    }
                 }
                 break;
             } else if (rectTorreInferiorDerecha.overlaps(rectBala)) {
                 torreInferiorDerecha.restarVida();
                 if (torreInferiorDerecha.vida >= 0.0f) {
+                    hit++;
                     b.remove(j);
+                    if (hit == 9) {
+                        shield.play();
+                        hit = 0;
+                    }
                 }
                 break;
             } else if (rectTorreSuperiorIzquierda.overlaps(rectBala)) {
                 torreSuperiorIzquierda.restarVida();
                 if (torreSuperiorIzquierda.vida >= 0.0f) {
+                    hit++;
+                    System.out.println(hit);
                     b.remove(j);
+                    if (hit == 9) {
+                        shield.play();
+                        hit = 0;
+                    }
                 }
                 break;
             }
@@ -684,6 +712,7 @@ class PantallaPrimerNivel extends Pantalla {
                     break;
                 case Input.Keys.SPACE:
                     createBala();
+                    shoot.play();
                     break;
             }
             return true;
