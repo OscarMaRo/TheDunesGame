@@ -516,6 +516,7 @@ class PantallaPrimerNivel extends Pantalla {
             Rectangle rectTorreSuperiorDerecha = torreSuperiorDerecha.sprite.getBoundingRectangle();
             Rectangle rectTorreInferiorDerecha = torreInferiorDerecha.sprite.getBoundingRectangle();
             Rectangle rectTorreSuperiorIzquierda = torreSuperiorIzquierda.sprite.getBoundingRectangle();
+            Rectangle rectEscudoTorre = escudoTorre.getBoundaries(ANCHO/2 - 30, ALTO/2 - 30);
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectTorre.overlaps(rectBala)) {
                 torre.restarVida();
@@ -539,6 +540,8 @@ class PantallaPrimerNivel extends Pantalla {
                     b.remove(j);
                 }
                 break;
+            } else if (rectEscudoTorre.overlaps(rectBala)) {
+                b.remove(j);
             }
         }
 
