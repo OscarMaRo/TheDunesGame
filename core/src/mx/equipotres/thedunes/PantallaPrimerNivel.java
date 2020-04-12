@@ -347,10 +347,18 @@ class PantallaPrimerNivel extends Pantalla {
         if ( estadoJuego == EstadoJuego.JUGANDO) {
             // Visibility: When this is activated everything is visible from show().
             escenaMenu.draw();
-            escudoTorre.draw();
+
+            if (torreSuperiorIzquierda.vida >= 0.0f) {
+                escudoTorre.draw();
+            }
             //escudoTorreSuperiorDerecha.draw();
-            escudoTorreInferiorDerecha.draw();
-            escudoTorreSuperiorIzquierda.draw();
+            if (torreSuperiorDerecha.vida >= 0.0f) {
+                escudoTorreInferiorDerecha.draw();
+            }
+            if (torreInferiorDerecha.vida >= 0.0f) {
+                escudoTorreSuperiorIzquierda.draw();
+            }
+
         }
 
         // Juego Pausado.
@@ -578,13 +586,19 @@ class PantallaPrimerNivel extends Pantalla {
             Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60);
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectEscudoTorre.overlaps(rectBala)) {
-                b.remove(j);
+                if (torreSuperiorIzquierda.vida >= 0.0f) {
+                    b.remove(j);
+                }
                 break;
             } else if (rectEscudoTorreInferiorDerecha.overlaps(rectBala)) {
-                b.remove(j);
+                if (torreSuperiorDerecha.vida >= 0.0f) {
+                    b.remove(j);
+                }
                 break;
             } else if (rectEscudoTorreSuperiorIzquierda.overlaps(rectBala)) {
-                b.remove(j);
+                if (torreInferiorDerecha.vida >= 0.0f) {
+                    b.remove(j);
+                }
                 break;
             }
         }
