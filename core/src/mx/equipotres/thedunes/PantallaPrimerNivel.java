@@ -143,8 +143,9 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Torre
     private void crearTorres() {
-        torre = new Torre(texturaTorre, ANCHO/2 - texturaTorre.getWidth()/2, ALTO/2 - texturaTorre.getHeight()/2);
+        torre = new Torre(texturaTorre, ANCHO/2 - texturaTorre.getWidth()/2 + 30, ALTO/2 - texturaTorre.getHeight()/2 + 30);
         escudoTorre = new Shield(vista, batch);
+        escudoTorre.posicionarEscudo(30, 30);
 
         torreSuperiorDerecha = new Torre(texturaTorre, ANCHO - texturaTorre.getWidth()/2 - 200, ALTO - texturaTorre.getHeight()/2 - 100);
         escudoTorreSuperiorDerecha = new Shield(vista, batch);
@@ -152,11 +153,11 @@ class PantallaPrimerNivel extends Pantalla {
 
         torreInferiorDerecha = new Torre(texturaTorre, ANCHO - texturaTorre.getWidth()/2 - 300, texturaTorre.getHeight()/2 + 100);
         escudoTorreInferiorDerecha = new Shield(vista, batch);
-        escudoTorreInferiorDerecha.posicionarEscudo(340, -220);
+        escudoTorreInferiorDerecha.posicionarEscudo(340, -190);
 
         torreSuperiorIzquierda = new Torre(texturaTorre, 200, ALTO - texturaTorre.getHeight()/2 - 170);
         escudoTorreSuperiorIzquierda = new Shield(vista, batch);
-        escudoTorreSuperiorIzquierda.posicionarEscudo(-420, 190);
+        escudoTorreSuperiorIzquierda.posicionarEscudo(-405, 190);
     }
 
     // Barra Vida
@@ -294,23 +295,23 @@ class PantallaPrimerNivel extends Pantalla {
 
             if (torreSuperiorDerecha.vida >= 0.0f) {
                 torreSuperiorDerecha.render(batch);
-                healthBarTorreSuperiorDerecha.render(batch, torreSuperiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 230, ALTO - texturaTorre.getHeight()/2 - 50);
+                healthBarTorreSuperiorDerecha.render(batch, torreSuperiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 220, ALTO - texturaTorre.getHeight()/2 - 20);
             }
 
             if (torreInferiorDerecha.vida >= 0.0f) {
                 torreInferiorDerecha.render(batch);
-                healthBarTorreInferiorDerecha.render(batch, torreInferiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 330, texturaTorre.getHeight()/2 + 145);
+                healthBarTorreInferiorDerecha.render(batch, torreInferiorDerecha, ANCHO - texturaTorre.getWidth()/2 - 320, texturaTorre.getHeight()/2 + 175);
             }
 
             if (torreSuperiorIzquierda.vida >= 0.0f) {
                 torreSuperiorIzquierda.render(batch);
-                healthBarTorreSuperiorIzquierda.render(batch, torreSuperiorIzquierda, 170, ALTO - texturaTorre.getHeight()/2 - 125);
+                healthBarTorreSuperiorIzquierda.render(batch, torreSuperiorIzquierda, 180, ALTO - texturaTorre.getHeight()/2 - 95);
             }
 
             // Marcador: Lo dibuja en la pantalla.
             marcador.render(batch);
             // Health Bar: Torre Central.
-            healthBarTorre.render(batch, torre, ANCHO / 2 - 50, ALTO / 2 + 30);
+            healthBarTorre.render(batch, torre, ANCHO / 2 - 50, ALTO / 2 + 40);
             batch.setColor(Color.WHITE);
 
             // Balas: Mover al ser creadas.
@@ -629,6 +630,7 @@ class PantallaPrimerNivel extends Pantalla {
                     bala.sprite.getY() < 0 || bala.sprite.getX() < 0) {
                 // Fuera de la pantalla.
                 bala = null;
+
             }
         }
     }

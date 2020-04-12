@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -20,7 +21,7 @@ public class Shield extends Stage {
 
         Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO * 0.8f), Pixmap.Format.RGBA8888);
         pixmap.setColor(0,0,0.7f,0.5f);
-        pixmap.fillCircle((int)(ANCHO * 0.5),(int)(ALTO * 0.3),35);
+        pixmap.fillCircle((int)(ANCHO * 0.5),(int)(ALTO * 0.3),70);
         Texture texturaEscudo = new Texture(pixmap);
 
         imgEscudo = new Image(texturaEscudo);
@@ -35,6 +36,11 @@ public class Shield extends Stage {
     public Rectangle getBoundaries(float x, float y) {
         float size = 100;
         return new Rectangle(x, y, size, size);
+    }
+
+    public Circle getCircumference(float x, float y) {
+        float radius = 30;
+        return new Circle(x, y, radius);
     }
 
 }
