@@ -3,6 +3,8 @@ package mx.equipotres.thedunes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -77,6 +79,9 @@ class PantallaPrimerNivel extends Pantalla {
     // Estado
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
 
+    // Música
+    private Music musicaFondo;
+
     //ENEMIGOS: En movimiento.
     private LinkedList<EnemigoBasico> arrEnemigos;
     private Texture texturaEnemigos;
@@ -105,7 +110,17 @@ class PantallaPrimerNivel extends Pantalla {
         Gdx.gl.glClearColor(0,0,0,1);
         cargarTexturas();
         crearObjetos();
+        cargarMusica();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+    }
+
+    public void cargarMusica() {
+        AssetManager manager = new AssetManager();
+        manager.load("Musica/musicaFondo.mp3", Music.class);
+        manager.finishLoading();  // carga sincrona
+        musicaFondo = manager.get("Musica/musicaFondo.mp3");
+        musicaFondo.setLooping(true);  // Infinito
+        musicaFondo.play();
     }
 
     // CREACIÓN: Crea todos los objetos.
@@ -311,7 +326,7 @@ class PantallaPrimerNivel extends Pantalla {
             // Marcador: Lo dibuja en la pantalla.
             marcador.render(batch);
             // Health Bar: Torre Central.
-            healthBarTorre.render(batch, torre, ANCHO / 2 - 50, ALTO / 2 + 40);
+            healthBarTorre.render(batch, torre, ANCHO / 2 - 50 + 30, ALTO / 2 + 40 + 30);
             batch.setColor(Color.WHITE);
 
             // Balas: Mover al ser creadas.
