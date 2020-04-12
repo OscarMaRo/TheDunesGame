@@ -10,7 +10,7 @@ public class HealthBar {
     Texture textura;
 
     public HealthBar() {
-        textura = new Texture("Sprites/blank.png");
+        textura = new Texture("Sprites/blank.jpeg");
     }
 
     public void render(SpriteBatch batch, Torre torre, float x, float y) {

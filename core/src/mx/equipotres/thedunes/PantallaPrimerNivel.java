@@ -126,8 +126,8 @@ class PantallaPrimerNivel extends Pantalla {
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
-        texturaBotonPausa = new Texture("Botones/pausa.png");
-        texturaBotonAcelerar = new Texture("Botones/move.jpg");
+        texturaBotonPausa = new Texture("Botones/pausa.jpeg");
+        texturaBotonAcelerar = new Texture("Botones/move.jpeg");
         ganar = new Texto("Fuentes/fuente.fnt");
     }
 
@@ -666,14 +666,14 @@ class PantallaPrimerNivel extends Pantalla {
             Vector3 v = new Vector3(screenX, screenY, 0);
             camara.unproject(v);
 
-            if (v.y >= ALTO - texturaBotonPausa.getHeight()) {
-                if (v.x >= ANCHO - texturaBotonPausa.getWidth()) {
+            if (v.y >= ALTO - texturaBotonPausa.getHeight() &&
+                    v.x >= ANCHO - texturaBotonPausa.getWidth()) {
                     estadoJuego = EstadoJuego.PAUSADO;
                     if (escenaPausa == null) {
                         escenaPausa = new EscenaPausa(vista, batch);
                     }
-                }
             }
+
             return true;
         }
 
@@ -704,16 +704,55 @@ class PantallaPrimerNivel extends Pantalla {
         public EscenaPausa(Viewport vista, SpriteBatch batch) {
             super(vista, batch);
 
-            Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO * 0.8f), Pixmap.Format.RGBA8888);
-            pixmap.setColor(0,0,0,1);
-            //pixmap.fillCircle(300,300,300);
-            pixmap.fillRectangle((int)(ANCHO * 0.03), 50, (int)ANCHO - 450, (int)ALTO - 100);
-            Texture texturaRectangulo = new Texture(pixmap);
-
+            Texture texturaReanudar = new Texture("Botones/botonReanudar.png");
+            Texture texturaReiniciar = new Texture("Botones/botonReiniciar.png");
+            Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
+            Texture texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
             Image imgRectangulo = new Image(texturaRectangulo);
-            imgRectangulo.setPosition(ANCHO/2 - pixmap.getWidth()/2, ALTO/2 - pixmap.getHeight()/2);
+            imgRectangulo.setPosition(ANCHO/2 - texturaRectangulo.getWidth()/2, ALTO/2 - texturaRectangulo.getHeight()/2);
+
+            TextureRegionDrawable trRd = new TextureRegionDrawable(new TextureRegion(texturaReanudar));
+            Image btnReanudar = new Image(trRd);
+            btnReanudar.setPosition(imgRectangulo.getX()+200, imgRectangulo.getY()+392);
+
+            TextureRegionDrawable trRe = new TextureRegionDrawable(new TextureRegion(texturaReiniciar));
+            Image btnReiniciar = new Image(trRe);
+            btnReiniciar.setPosition(imgRectangulo.getX()+200, imgRectangulo.getY()+268);
+
+            TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
+            Image btnVolverMenu = new Image(trVM);
+            btnVolverMenu.setPosition(imgRectangulo.getX()+200, imgRectangulo.getY()+144);
+
+            btnReanudar.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    estadoJuego = EstadoJuego.JUGANDO;
+                }
+            });
+
+            btnReiniciar.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaPrimerNivel(juego));
+                }
+            });
+
+            btnVolverMenu.addListener(new ClickListener(){
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    juego.setScreen(new PantallaMenu(juego));
+                }
+            });
+
+
             this.addActor(imgRectangulo);
+            this.addActor(btnReanudar);
+            this.addActor(btnReiniciar);
+            this.addActor(btnVolverMenu);
+
+            Gdx.input.setInputProcessor(escenaPausa);
         }
+
     }
 
     private enum EstadoJuego {
