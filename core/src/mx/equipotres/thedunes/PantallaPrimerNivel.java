@@ -368,6 +368,13 @@ class PantallaPrimerNivel extends Pantalla {
             estadoJuego = EstadoJuego.GANO;
         }
 
+        // Indicador de derrota
+        if (boogie.vidas <= 0.0f) {
+            String mensaje = "Has sido derrotado";
+            ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
+            estadoJuego = EstadoJuego.PERDIO;
+        }
+
         // Finaliza el batch.
         batch.end();
 
@@ -562,11 +569,31 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Colisiones Torres
     private void probarColisionesTorres() {
+        Rectangle rectTorre = torre.sprite.getBoundingRectangle();
+        Rectangle rectTorreSuperiorDerecha = torreSuperiorDerecha.sprite.getBoundingRectangle();
+        Rectangle rectTorreInferiorDerecha = torreInferiorDerecha.sprite.getBoundingRectangle();
+        Rectangle rectTorreSuperiorIzquierda = torreSuperiorIzquierda.sprite.getBoundingRectangle();
+        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+
+        if (rectBoogie.overlaps(rectTorreSuperiorDerecha)) {
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            boogie.sprite.setPosition(10, 10);
+        } else if (rectBoogie.overlaps(rectTorreInferiorDerecha)) {
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            boogie.sprite.setPosition(10, 10);
+        } else if (rectBoogie.overlaps(rectTorreSuperiorIzquierda)) {
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            boogie.sprite.setPosition(10, 10);
+        } else if (rectBoogie.overlaps(rectTorre)) {
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            boogie.sprite.setPosition(10, 10);
+        }
+
         for (int j = 0; j < b.size(); j++) {
-            Rectangle rectTorre = torre.sprite.getBoundingRectangle();
-            Rectangle rectTorreSuperiorDerecha = torreSuperiorDerecha.sprite.getBoundingRectangle();
-            Rectangle rectTorreInferiorDerecha = torreInferiorDerecha.sprite.getBoundingRectangle();
-            Rectangle rectTorreSuperiorIzquierda = torreSuperiorIzquierda.sprite.getBoundingRectangle();
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectTorre.overlaps(rectBala)) {
                 torre.restarVida();
@@ -613,12 +640,28 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Colisiones Escudos
     private void probarColisionesEscudos() {
+        Rectangle rectEscudoTorre = escudoTorre.getBoundaries(ANCHO/2 - 30, ALTO/2 - 30);
+        Rectangle rectEscudoTorreInferiorDerecha = escudoTorreInferiorDerecha.getBoundaries(
+                ANCHO - texturaTorre.getWidth()/2 - 330 - 15, texturaTorre.getHeight()/2 + 145 - 60);
+        Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(
+                170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60);
+        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+
+        if (rectBoogie.overlaps(rectEscudoTorreInferiorDerecha)) {
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            boogie.sprite.setPosition(10, 10);
+        } else if (rectBoogie.overlaps(rectEscudoTorreSuperiorIzquierda)) {
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            boogie.sprite.setPosition(10, 10);
+        } else if (rectBoogie.overlaps(rectEscudoTorre)) {
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            boogie.sprite.setPosition(10, 10);
+        }
+
         for (int j = 0; j < b.size(); j++) {
-            Rectangle rectEscudoTorre = escudoTorre.getBoundaries(ANCHO/2 - 30, ALTO/2 - 30);
-            Rectangle rectEscudoTorreInferiorDerecha = escudoTorreInferiorDerecha.getBoundaries(
-                    ANCHO - texturaTorre.getWidth()/2 - 330 - 15, texturaTorre.getHeight()/2 + 145 - 60);
-            Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(
-                    170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60);
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectEscudoTorre.overlaps(rectBala)) {
                 if (torreSuperiorIzquierda.vida >= 0.0f) {
