@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 public class Enemigo extends Objeto {
 
     public Estado estado;
+    private int vida = 2;
 
     public Enemigo(Texture textura, float x, float y) {
         super(textura, x, y);
@@ -43,6 +44,14 @@ public class Enemigo extends Objeto {
             sprite.setX(posX + PASO);
         }
     }*/
+
+    public boolean recibirDaño(){
+        vida--;
+        if (vida<=0){
+            return true;
+        }
+        return false;
+    }
     
     //Estado del sprite 
     public enum Estado{

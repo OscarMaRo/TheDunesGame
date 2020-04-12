@@ -524,9 +524,11 @@ class PantallaPrimerNivel extends Pantalla {
             Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
             Rectangle rectBala = bala.sprite.getBoundingRectangle();
             if (rectEnemigoBasico.overlaps(rectBala)) {
-                enemigos.remove(i);
                 b.remove(bala);
-                marcador.agregarPuntos(5);
+                if (enemigoBasico.recibirDaño()){
+                    enemigos.remove(i);
+                    marcador.agregarPuntos(5);
+                }
                 break;
             }
         }
@@ -570,8 +572,10 @@ class PantallaPrimerNivel extends Pantalla {
     private void probarColisionesEscudos() {
         for (int j = 0; j < b.size(); j++) {
             Rectangle rectEscudoTorre = escudoTorre.getBoundaries(ANCHO/2 - 30, ALTO/2 - 30);
-            Rectangle rectEscudoTorreInferiorDerecha = escudoTorreInferiorDerecha.getBoundaries(ANCHO - texturaTorre.getWidth()/2 - 330 - 15, texturaTorre.getHeight()/2 + 145 - 60);
-            Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60);
+            Rectangle rectEscudoTorreInferiorDerecha = escudoTorreInferiorDerecha.getBoundaries(
+                    ANCHO - texturaTorre.getWidth()/2 - 330 - 15, texturaTorre.getHeight()/2 + 145 - 60);
+            Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(
+                    170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60);
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectEscudoTorre.overlaps(rectBala)) {
                 if (torreSuperiorIzquierda.vida >= 0.0f) {
