@@ -78,7 +78,7 @@ class PantallaPrimerNivel extends Pantalla {
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
 
     //ENEMIGOS: En movimiento.
-    private Array<EnemigoBasico> arrEnemigos;
+    private LinkedList<EnemigoBasico> arrEnemigos;
     private Texture texturaEnemigos;
     private int MAX_PASOS = 1100;
     private  int numeroPasos = 0;
@@ -214,7 +214,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Enemigos: Patrones
     private void crearEnemigos() {
-        arrEnemigos = new Array<>(cantidadEnemigos);
+        arrEnemigos = new LinkedList<>();
         float dy = ALTO * 0.8f / cantidadEnemigos;
         //Para primera horda
         for (int y = 0; y < 10; y++) {
@@ -492,37 +492,21 @@ class PantallaPrimerNivel extends Pantalla {
     // Colisiones Enemigos.
     private void probarColisionesEnemigos() {
         if (b.size() > 0) {
-            for (int i = arrEnemigos.size - 1; i >= 0; i--) {
-                for (int j = 0; j < b.size(); j++) {
-                    EnemigoBasico enemigoBasico = arrEnemigos.get(i);
-                    Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
-                    Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
-                    if (rectEnemigoBasico.overlaps(rectBala)) {
-                        arrEnemigos.removeIndex(i);
-                        b.remove(j);
-                        marcador.agregarPuntos(5);
-                        break;
-                    }
-                }
+            for (int j = 0; j <= b.size()-1; j++) {
+                probarColisionesEnemigos(arrEnemigos, b.get(j));
             }
-
-            for (int i = arrEnemigosCirculo.size() - 1; i >= 0; i--) {
-                for (int j = 0; j < b.size(); j++) {
-                    EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
-                    Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
-                    Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
-                    if (rectEnemigoBasico.overlaps(rectBala)) {
-                        arrEnemigosCirculo.remove(i);
-                        b.remove(j);
-                        marcador.agregarPuntos(5);
-                        break;
-                    }
-                }
+            for (int j = 0; j <= b.size()-1; j++) {
+                probarColisionesEnemigos(arrEnemigosCirculo, b.get(j));
             }
         }
+        probarColisionesBoogie(arrEnemigosCirculo);
+        probarColisionesBoogie(arrEnemigos);
 
-        for (int i = arrEnemigos.size - 1; i >= 0; i--) {
-            EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+    }
+
+    private void probarColisionesBoogie(LinkedList<EnemigoBasico> enemigos){
+        for (int i = enemigos.size() - 1; i >= 0; i--) {
+            EnemigoBasico enemigoBasico = enemigos.get(i);
             Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
             Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
             if (rectEnemigoBasico.overlaps(rectBoogie)) {
@@ -531,15 +515,18 @@ class PantallaPrimerNivel extends Pantalla {
                 boogie.sprite.setPosition(10, 10);
             }
         }
+    }
 
-        for (int i = arrEnemigosCirculo.size() - 1; i >= 0; i--) {
-            EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
+    private void probarColisionesEnemigos(LinkedList<EnemigoBasico> enemigos, Bala bala){
+        for (int i = enemigos.size() - 1; i >= 0; i--){
+            EnemigoBasico enemigoBasico = enemigos.get(i);
             Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
-            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
-            if (rectEnemigoBasico.overlaps(rectBoogie)) {
-                boogie.restarVida(1);
-                marcador.restarVidas(1);
-                boogie.sprite.setPosition(10, 10);
+            Rectangle rectBala = bala.sprite.getBoundingRectangle();
+            if (rectEnemigoBasico.overlaps(rectBala)) {
+                enemigos.remove(i);
+                b.remove(bala);
+                marcador.agregarPuntos(5);
+                break;
             }
         }
     }
