@@ -7,11 +7,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
@@ -87,7 +84,8 @@ class PantallaPrimerNivel extends Pantalla {
     private int hit = 0;
 
     //ENEMIGOS: En movimiento.
-    private LinkedList<EnemigoBasico> arrEnemigos;
+    private LinkedList<EnemigoBasico> arrEnemigos1;
+    private LinkedList<EnemigoBasico> arrEnemigos2;
     private Texture texturaEnemigos;
     private int MAX_PASOS = 1100;
     private  int numeroPasos = 0;
@@ -242,17 +240,16 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Enemigos: Patrones
     private void crearEnemigos() {
-        arrEnemigos = new LinkedList<>();
-        float dy = ALTO * 0.8f / cantidadEnemigos;
+        arrEnemigos1 = new LinkedList<>();
+        arrEnemigos2 = new LinkedList<>();
         //Para primera horda
         for (int y = 0; y < 10; y++) {
-            EnemigoBasico enemigo = new EnemigoBasico(texturaEnemigos, ANCHO-texturaEnemigos.getWidth(), y*dy + ALTO * 0.45f);
-            arrEnemigos.add(enemigo);
-        }
-        //Para horda = 2
-        for (int y = 0; y < cantidadEnemigos-1; y++) {
-            EnemigoBasico enemigo = new EnemigoBasico(texturaEnemigos, ANCHO-texturaEnemigos.getWidth(), y*dy + ALTO * 0.35f);
-            arrEnemigos.add(enemigo);
+            EnemigoBasico enemigo = new EnemigoBasico(texturaEnemigos, 400-texturaEnemigos.getWidth(),
+                    ALTO + texturaEnemigos.getHeight()*y + 20*y);
+            arrEnemigos1.add(enemigo);
+            EnemigoBasico enemigo2 = new EnemigoBasico(texturaEnemigos, ANCHO + texturaEnemigos.getWidth()*y + 20*y,
+                    350 - texturaEnemigos.getHeight() - 50);
+            arrEnemigos2.add(enemigo2);
         }
     }
 
@@ -350,9 +347,15 @@ class PantallaPrimerNivel extends Pantalla {
             }
 
             // Enemigos
-            for (EnemigoBasico enemigo : arrEnemigos) {
+            for (EnemigoBasico enemigo : arrEnemigos1) {
                 if (enemigo.estado == Enemigo.Estado.ACTIVADO) {
                     enemigo.render(batch);
+                }
+            }
+
+            for (EnemigoBasico enemigo2 : arrEnemigos2) {
+                if (enemigo2.estado == Enemigo.Estado.ACTIVADO) {
+                    enemigo2.render(batch);
                 }
             }
 
@@ -363,7 +366,7 @@ class PantallaPrimerNivel extends Pantalla {
 
         // Indicador de Victoria
         if (torre.vida <= 0.0f && torreSuperiorDerecha.vida <= 0.0f &&
-            torreInferiorDerecha.vida <= 0.0f && torreSuperiorIzquierda.vida <= 0.0f) {
+                torreInferiorDerecha.vida <= 0.0f && torreSuperiorIzquierda.vida <= 0.0f) {
             String mensaje = "Enhorabuena, has ganado!";
             ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
             estadoJuego = EstadoJuego.GANO;
@@ -523,57 +526,57 @@ class PantallaPrimerNivel extends Pantalla {
     /* Cambia el número de horda de acuerdo al número de pasos que los enemigos han dado y activa los enemigos correspondientes
     a la horda */
     private void llamarHorda() {
-        if(horda == 1){
-            for(int i = 0; i < 10; i++ ){
-                EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+        if (numeroPasos==1){
+            for(int i = 0; i < arrEnemigos1.size()-1; i++ ){
+                EnemigoBasico enemigoBasico = arrEnemigos1.get(i);
                 enemigoBasico.estado = Enemigo.Estado.ACTIVADO;
             }
         }
-        if (numeroPasos == 500){
-            horda = 2;
-            for(int i = 10; i < cantidadEnemigos-1; i++ ){
-                EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+        if (numeroPasos == 300){
+            for(int i = 0; i < arrEnemigos2.size()-1; i++ ){
+                EnemigoBasico enemigoBasico = arrEnemigos2.get(i);
                 enemigoBasico.estado = Enemigo.Estado.ACTIVADO;
             }
+        }
+        numeroPasos++;
+        if (numeroPasos==980){
+            crearEnemigos();
+            numeroPasos = 0;
         }
     }
-    
+
     //TO-DO: falta poner los límites de la pantalla para que los enemigos no se salgan
     private void moverEnemigos(float delta) {
-        float posYBoogie = boogie.sprite.getY();
-
-        if(numeroPasos < MAX_PASOS) {
-            for (EnemigoBasico enemigoBasico : arrEnemigos) {
-                if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO)
-                    enemigoBasico.mover(-1);
-            }
-            numeroPasos ++;
-            if(numeroPasos % 5 == 0){  //A partir de aquí la posición en Y cambia de acuerdo a la posY del Boogie
-                for (EnemigoBasico enemigoBasico:arrEnemigos) {
-                    if(posYBoogie > 0 && posYBoogie <= ALTO * 0.33){
-                        enemigoBasico.seguirBoggie(5,1);
-                    }else if(posYBoogie < ALTO * 0.33 && posYBoogie <= ALTO * 0.66){
-                        enemigoBasico.seguirBoggie(5,2);
-                    }else{
-                        enemigoBasico.seguirBoggie(5,3);
-                    }
-                }
+        for (EnemigoBasico enemigoBasico : arrEnemigos1) {
+            if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO){
+                enemigoBasico.moverH1Nvl1(5, -4);
             }
         }
+        for (EnemigoBasico enemigoBasico2:arrEnemigos2) {
+            if (enemigoBasico2.estado == Enemigo.Estado.ACTIVADO){
+                enemigoBasico2.moverH2Nvl1(2, 2);
+            }
+        }
+
+
     }
 
     // Colisiones Enemigos.
     private void probarColisionesEnemigos() {
         if (b.size() > 0) {
             for (int j = 0; j <= b.size()-1; j++) {
-                probarColisionesEnemigos(arrEnemigos, b.get(j));
+                probarColisionesEnemigos(arrEnemigos1, b.get(j));
+            }
+            for (int j = 0; j <= b.size()-1; j++) {
+                probarColisionesEnemigos(arrEnemigos2, b.get(j));
             }
             for (int j = 0; j <= b.size()-1; j++) {
                 probarColisionesEnemigos(arrEnemigosCirculo, b.get(j));
             }
         }
         probarColisionesBoogie(arrEnemigosCirculo);
-        probarColisionesBoogie(arrEnemigos);
+        probarColisionesBoogie(arrEnemigos1);
+        probarColisionesBoogie(arrEnemigos2);
 
     }
 
@@ -725,7 +728,6 @@ class PantallaPrimerNivel extends Pantalla {
     /*private void moverEnemigosSeguidor() {
         float posYBoogie = boogie.sprite.getY();
         float posXBoogie = boogie.sprite.getX();
-
         for (EnemigoBasico enemigoBasico : arrEnemigos) {
             if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO)
                 enemigoBasico.perseguirBoggie(0.2f, posYBoogie, posXBoogie);
@@ -826,10 +828,10 @@ class PantallaPrimerNivel extends Pantalla {
 
             if (v.y >= ALTO - texturaBotonPausa.getHeight() &&
                     v.x >= ANCHO - texturaBotonPausa.getWidth()) {
-                    estadoJuego = EstadoJuego.PAUSADO;
-                    if (escenaPausa == null) {
-                        escenaPausa = new EscenaPausa(vista, batch);
-                    }
+                estadoJuego = EstadoJuego.PAUSADO;
+                if (escenaPausa == null) {
+                    escenaPausa = new EscenaPausa(vista, batch);
+                }
             }
 
             return true;

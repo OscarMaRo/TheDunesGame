@@ -12,12 +12,29 @@ public class Enemigo extends Objeto {
         estado = Estado.DESACTIVADO;
     }
 
-    public void mover(float dx) {
-        sprite.setX(sprite.getX()+ dx);
+    public void moverH1Nvl1(float dx, float dy) {
+        if (sprite.getY() >= 400){
+            sprite.setY(sprite.getY() + dy);
+        } else if (sprite.getY() < 400 && sprite.getX() > 160){
+            sprite.setX(sprite.getX() - dx);
+        } else if (sprite.getY() > 120){
+            sprite.setY(sprite.getY() + dy);
+        } else {
+            sprite.setX(sprite.getX() - dx);
+        }
+    }
+
+    public void moverH2Nvl1(float dx, float dy) {
+        if (sprite.getX() >= 850) {
+            sprite.setX(sprite.getX() - dx);
+        } else {
+            sprite.setX(sprite.getX() - dx);
+            sprite.setY(sprite.getY() - dy);
+        }
     }
     
     //Dependiendo del bloque en que está el boggie, ajusta la posición del sprite para estár más cerca del boogie 
-    public void seguirBoggie(float dy, int bloque) {
+    /*public void seguirBoggie(float dy, int bloque) {
         float posY = sprite.getY();
         if (bloque == 1) {
             sprite.setY(posY - dy);
@@ -26,7 +43,7 @@ public class Enemigo extends Objeto {
         }else{
             sprite.setY(posY);
         }
-    }
+    }*/
 
     //Perseguir al Boogie por toda la pantalla
     /*public void perseguirBoggie(float PASO, float boogieY, float boogieX) {
