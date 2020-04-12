@@ -270,7 +270,9 @@ class PantallaPrimerNivel extends Pantalla {
             llamarHorda();
             moverEnemigosCirculo(delta);
             // Colisones
-            probarColisiones();
+            probarColisionesEnemigos();
+            probarColisionesTorres();
+            probarColisionesEscudos();
         }
 
         // Init: Default initializers.
@@ -479,8 +481,8 @@ class PantallaPrimerNivel extends Pantalla {
         }
     }
 
-    // Colisiones: Probar las colisisones.
-    private void probarColisiones() {
+    // Colisiones Enemigos.
+    private void probarColisionesEnemigos() {
         if (b.size() > 0) {
             for (int i = arrEnemigos.size - 1; i >= 0; i--) {
                 for (int j = 0; j < b.size(); j++) {
@@ -511,14 +513,36 @@ class PantallaPrimerNivel extends Pantalla {
             }
         }
 
+        for (int i = arrEnemigos.size - 1; i >= 0; i--) {
+            EnemigoBasico enemigoBasico = arrEnemigos.get(i);
+            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+            if (rectEnemigoBasico.overlaps(rectBoogie)) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
+            }
+        }
+
+        for (int i = arrEnemigosCirculo.size() - 1; i >= 0; i--) {
+            EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
+            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+            if (rectEnemigoBasico.overlaps(rectBoogie)) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
+            }
+        }
+    }
+
+    // Colisiones Torres
+    private void probarColisionesTorres() {
         for (int j = 0; j < b.size(); j++) {
             Rectangle rectTorre = torre.sprite.getBoundingRectangle();
             Rectangle rectTorreSuperiorDerecha = torreSuperiorDerecha.sprite.getBoundingRectangle();
             Rectangle rectTorreInferiorDerecha = torreInferiorDerecha.sprite.getBoundingRectangle();
             Rectangle rectTorreSuperiorIzquierda = torreSuperiorIzquierda.sprite.getBoundingRectangle();
-            Rectangle rectEscudoTorre = escudoTorre.getBoundaries(ANCHO/2 - 30, ALTO/2 - 30);
-            Rectangle rectEscudoTorreInferiorDerecha = escudoTorreInferiorDerecha.getBoundaries(ANCHO - texturaTorre.getWidth()/2 - 330 - 30, texturaTorre.getHeight()/2 + 145 - 30);
-            Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60);
             Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
             if (rectTorre.overlaps(rectBala)) {
                 torre.restarVida();
@@ -542,34 +566,26 @@ class PantallaPrimerNivel extends Pantalla {
                     b.remove(j);
                 }
                 break;
-            } else if (rectEscudoTorre.overlaps(rectBala)) {
+            }
+        }
+    }
+
+    // Colisiones Escudos
+    private void probarColisionesEscudos() {
+        for (int j = 0; j < b.size(); j++) {
+            Rectangle rectEscudoTorre = escudoTorre.getBoundaries(ANCHO/2 - 30, ALTO/2 - 30);
+            Rectangle rectEscudoTorreInferiorDerecha = escudoTorreInferiorDerecha.getBoundaries(ANCHO - texturaTorre.getWidth()/2 - 330 - 15, texturaTorre.getHeight()/2 + 145 - 60);
+            Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60);
+            Rectangle rectBala = b.get(j).sprite.getBoundingRectangle();
+            if (rectEscudoTorre.overlaps(rectBala)) {
                 b.remove(j);
+                break;
             } else if (rectEscudoTorreInferiorDerecha.overlaps(rectBala)) {
                 b.remove(j);
+                break;
             } else if (rectEscudoTorreSuperiorIzquierda.overlaps(rectBala)) {
                 b.remove(j);
-            }
-        }
-
-        for (int i = arrEnemigos.size - 1; i >= 0; i--) {
-            EnemigoBasico enemigoBasico = arrEnemigos.get(i);
-            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
-            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
-            if (rectEnemigoBasico.overlaps(rectBoogie)) {
-                boogie.restarVida(1);
-                marcador.restarVidas(1);
-                boogie.sprite.setPosition(10, 10);
-            }
-        }
-
-        for (int i = arrEnemigosCirculo.size() - 1; i >= 0; i--) {
-            EnemigoBasico enemigoBasico = arrEnemigosCirculo.get(i);
-            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
-            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
-            if (rectEnemigoBasico.overlaps(rectBoogie)) {
-                boogie.restarVida(1);
-                marcador.restarVidas(1);
-                boogie.sprite.setPosition(10, 10);
+                break;
             }
         }
     }
