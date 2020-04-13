@@ -163,7 +163,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Marcador
     private void crearMarcador() {
-        marcador = new Marcador(0.2f*ANCHO, 0.9f*ALTO, boogie);
+        marcador = new Marcador(0.20f*ANCHO, 0.95f*ALTO, boogie);
     }
 
     // Torre
@@ -369,6 +369,7 @@ class PantallaPrimerNivel extends Pantalla {
                 torreInferiorDerecha.vida <= 0.0f && torreSuperiorIzquierda.vida <= 0.0f) {
             String mensaje = "Enhorabuena, has ganado!";
             ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
+            marcador.render(batch, ANCHO/2 - 10, ALTO/2 + 55);
             estadoJuego = EstadoJuego.GANO;
 
             Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
@@ -515,7 +516,7 @@ class PantallaPrimerNivel extends Pantalla {
                     }
                 }
             }
-            if (counter > 100) {
+            if (counter >= 100) {
                 counter = 0;
             }
         }
@@ -618,21 +619,29 @@ class PantallaPrimerNivel extends Pantalla {
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 
         if (rectBoogie.overlaps(rectTorreSuperiorDerecha)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(10, 10);
+            if (torreSuperiorDerecha.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
+            }
         } else if (rectBoogie.overlaps(rectTorreInferiorDerecha)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(10, 10);
+            if (torreInferiorDerecha.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
+            }
         } else if (rectBoogie.overlaps(rectTorreSuperiorIzquierda)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(10, 10);
+            if (torreSuperiorIzquierda.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
+            }
         } else if (rectBoogie.overlaps(rectTorre)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(10, 10);
+            if (torre.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(10, 10);
+            }
         }
 
         for (int j = 0; j < b.size(); j++) {

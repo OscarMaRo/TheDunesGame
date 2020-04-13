@@ -3,7 +3,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 class Marcador {
 
-    private int puntos;
+    protected int puntos;
     private int vidaBoogie;
     private float x;
     private float y;
@@ -30,6 +30,11 @@ class Marcador {
 
     public void render(SpriteBatch batch){
         String mensaje = "Puntos: " + puntos + "  Vidas:" + vidaBoogie;
+        texto.render(batch, mensaje, x, y);
+    }
+
+    public void render(SpriteBatch batch, float x, float y) {
+        String mensaje = "Puntos: " + puntos;
         texto.render(batch, mensaje, x, y);
     }
 }

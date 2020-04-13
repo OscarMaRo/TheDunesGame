@@ -19,4 +19,8 @@ public class Torre extends Objeto {
         vida -= 0.1f;
     }
 
+    public void dispose() {
+        this.dispose();
+    }
+
 }
