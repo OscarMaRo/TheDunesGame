@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -28,6 +29,10 @@ class PantallaMenuSeleccionNivel extends Pantalla {
     private Texture texturaBotonTercerNivelPress;
     // Botón: Regresar
     private Texture texturaBotonRegresar;
+    // Candado
+    private Texture texturaCandado;
+    private Image imgCandadoNivel2;
+    private Image imgCandadoNivel3;
 
     // MENU: The values of the class are generated.
     private Stage escenaMenu;
@@ -42,6 +47,18 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         // Background: Initialize the sprite for the background.
         texturaFondoNiveles = new Texture("Fondos/fondoNiveles.jpg");
         crearMenu();
+        crearCandado();
+    }
+
+    private void crearCandado() {
+        texturaCandado = new Texture("Sprites/locked.png");
+        imgCandadoNivel2 = new Image(texturaCandado);
+        imgCandadoNivel3 = new Image(texturaCandado);
+
+        imgCandadoNivel2.setPosition((float)(ANCHO * 0.33), (float)(ALTO * 0.9));
+        imgCandadoNivel3.setPosition((float)(ANCHO * 0.65), (float)(ALTO * 0.9));
+        escenaMenu.addActor(imgCandadoNivel2);
+        escenaMenu.addActor(imgCandadoNivel3);
     }
 
     private void crearMenu() {
@@ -116,7 +133,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
-                juego.setScreen(new PantallaSegundoNivel(juego));
+                //juego.setScreen(new PantallaSegundoNivel(juego));
             }
         });
 
@@ -126,7 +143,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
-                juego.setScreen(new PantallaTercerNivel(juego));
+                //juego.setScreen(new PantallaTercerNivel(juego));
             }
         });
 
@@ -161,6 +178,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         batch.begin();
         // Background: The image of the background is displayed.
         batch.draw(texturaFondoNiveles,0,0);
+
         batch.end();
 
         // Visibility: When this is activated everything is visible from show().
