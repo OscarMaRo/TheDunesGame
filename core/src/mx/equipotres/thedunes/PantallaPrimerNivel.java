@@ -919,7 +919,7 @@ class PantallaPrimerNivel extends Pantalla {
             this.addActor(btnReiniciar);
             this.addActor(btnVolverMenu);
 
-            Gdx.input.setInputProcessor(escenaPausa);
+            Gdx.input.setInputProcessor(this);
         }
 
     }
