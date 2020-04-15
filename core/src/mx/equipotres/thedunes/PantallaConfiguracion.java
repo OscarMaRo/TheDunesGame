@@ -1,10 +1,16 @@
 package mx.equipotres.thedunes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaConfiguracion extends Pantalla
 {
@@ -69,7 +75,7 @@ public class PantallaConfiguracion extends Pantalla
         Texture texturaBotonAcercaDeP = new Texture("Botones/BotonAcercaDeP.png");
         TextureRegionDrawable trdBotonAcercaDeP = new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDeP));
         ImageButton btnAcercaDe = new ImageButton(trdBotonAcercaDe,trdBotonAcercaDeP);
-        btnAcercaDe.setPosition(2*ANCHO/3 - btnAcercaDe.getWidth()/2-50,ALTO/3-35);
+        btnAcercaDe.setPosition(2*ANCHO/3 - btnAcercaDe.getWidth()/2-75,ALTO/3-35);
         escenaMenuConfig.addActor(btnAcercaDe);
 
         // Boton Contenido
@@ -78,7 +84,7 @@ public class PantallaConfiguracion extends Pantalla
         Texture texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
         TextureRegionDrawable trdBotonContenidoP = new TextureRegionDrawable(new TextureRegion(texturaBotonContenidoP));
         ImageButton btnContenido = new ImageButton(trdBotonContenido,trdBotonContenidoP);
-        btnContenido.setPosition(2*ANCHO/3 - btnContenido.getWidth()/2-50,ALTO*.55f);
+        btnContenido.setPosition(2*ANCHO/3 - btnContenido.getWidth()/2-75,ALTO*.55f);
         escenaMenuConfig.addActor(btnContenido);
 
         // Boton Regresar
@@ -87,6 +93,37 @@ public class PantallaConfiguracion extends Pantalla
         ImageButton btnRegresar = new ImageButton(trdRegresar);
         btnRegresar.setPosition(escenaMenuConfig.getWidth() - 150,escenaMenuConfig.getHeight() - 150);
         escenaMenuConfig.addActor(btnRegresar);
+
+        // Función: Regresar
+        btnRegresar.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
+
+        btnContenido.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
+                juego.setScreen(new PantallaContenido(juego));
+            }
+        });
+
+        btnAcercaDe.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
+                juego.setScreen(new PantallaAcercaDe(juego));
+            }
+        });
+
+
+        Gdx.input.setInputProcessor(escenaMenuConfig);
     }
 
     @Override
