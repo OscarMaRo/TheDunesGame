@@ -76,6 +76,15 @@ class PantallaMenu extends Pantalla {
             }
         });
 
+        btnConfiguracion.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
+                juego.setScreen(new PantallaConfiguracion(juego));
+            }
+        });
+
         // Display images: This attributes draw the images in screen.
         escenaMenu.addActor(btnJugar);
         escenaMenu.addActor(btnConfiguracion);
