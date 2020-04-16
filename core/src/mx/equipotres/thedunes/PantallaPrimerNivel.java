@@ -278,8 +278,11 @@ class PantallaPrimerNivel extends Pantalla {
         });
 
         // Display images: This attributes draw the images in screen.
-        escenaMenu.addActor(btnAcelerar);
-        escenaMenu.addActor(btnPausa);
+        //escenaMenu.addActor(btnAcelerar);
+        if (estadoJuego != EstadoJuego.PERDIO) {
+            escenaMenu.addActor(btnPausa);
+        }
+
         // Action: This attributes allow the buttons to have interaction with the user.
         Gdx.input.setInputProcessor(escenaMenu);
     }
@@ -360,7 +363,7 @@ class PantallaPrimerNivel extends Pantalla {
 
             // Boogie: The image of the boogie is displayed.
             boogie.render(batch);
-            // mx.equipotres.thedunes.Torre: The image of the torre is displayed.
+            // Torre: The image of the torre is displayed.
             torre.render(batch);
 
             if (torreSuperiorDerecha.vida >= 0.0f) {
