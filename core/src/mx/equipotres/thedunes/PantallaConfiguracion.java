@@ -79,7 +79,7 @@ public class PantallaConfiguracion extends Pantalla
                     prefsMusic.putBoolean("musicOn",false);
                     prefsBotonMusic.putBoolean("BotonMusicOn", false);
                     prefsMusic.flush();
-                    prefsBotonMusic.flush();
+
                     juego.setScreen(new PantallaConfiguracion(juego));
                 }
             });
