@@ -11,16 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class PantallaContenido extends Pantalla
 {
-
-    // Juego: allows to create another screen when the listener is activated.
     private final Juego juego;
     private Texto contenido;
 
     // Texturas
     Texture texturaFondo;
     Texture texturaRectangulo;
-    Texture boogie;
-    Texture enemigo;
+    Texture texturaBoogie;
+    Texture texturaEnemigo;
+
+    private Texture texturaBotonCerrar;
 
     private Stage escenaPantallaCont;
 
@@ -32,15 +32,15 @@ public class PantallaContenido extends Pantalla
     public void show() {
         texturaFondo = new Texture("Fondos/fondoMenu.png");
         texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
-        boogie = new Texture("Sprites/boogie1_frente.png");
-        enemigo = new Texture("Sprites/enemigo1.png");
+        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
+        texturaEnemigo = new Texture("Sprites/enemigo1.png");
         contenido = new Texto("Fuentes/fuente.fnt");
         crearPantalla();
     }
 
     private void crearPantalla() {
         escenaPantallaCont = new Stage(vista);
-        Texture texturaBotonCerrar = new Texture("Botones/BotonCerrar.png");
+        texturaBotonCerrar = new Texture("Botones/BotonCerrar.png");
         TextureRegionDrawable trdCerrar = new TextureRegionDrawable(new TextureRegion(texturaBotonCerrar));
         ImageButton btnCerrar = new ImageButton(trdCerrar);
         btnCerrar.setPosition(ANCHO-280, ALTO-100);
@@ -65,8 +65,8 @@ public class PantallaContenido extends Pantalla
         batch.begin();
         batch.draw(texturaFondo,0,0);
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
-        batch.draw(boogie, 100, 100);
-        batch.draw(enemigo,ANCHO-175,ALTO-175);
+        batch.draw(texturaBoogie, 100, 100);
+        batch.draw(texturaEnemigo,ANCHO-175,ALTO-175);
         String contT = "En un mundo post apocaliptico,\n un piloto conduce un boogie\nmodificado, donde para " +
                 "poder\n sobrevivir, debe atravesar el\ndesierto con el objetivo de\ndestruir la " +
                 "fortaleza enemiga,\nPero es obstaculizado por\nun ejercito de esqueletos,\n" +

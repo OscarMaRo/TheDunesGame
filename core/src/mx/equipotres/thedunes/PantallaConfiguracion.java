@@ -3,40 +3,38 @@ package mx.equipotres.thedunes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class PantallaConfiguracion extends Pantalla
 {
-    // Juego: allows to create another screen when the listener is activated.
     private final Juego juego;
     private Texto configuracion;
     private Texto musica;
     private Texto efectosDeSonido;
 
     // Texturas
-    Texture texturaFondo;
-    Texture texturaRectangulo;
+    private Texture texturaFondo;
+    private Texture texturaRectangulo;
 
-    Texture texturaBotonMusicaActivado;
-    Texture texturaBotonMusicaDesactivado;
-    Texture texturaBotonSonidoActivado;
-    Texture texturaBotonSonidoDesactivado;
-    Texture texturaBotonAcercaDe;
-    Texture texturaBotonContenido;
-    Texture texturaBotonRegresar;
+    private Texture texturaBotonMusicaActivado;
+    private Texture texturaBotonMusicaDesactivado;
+    private Texture texturaBotonSonidoActivado;
+    private Texture texturaBotonSonidoDesactivado;
+    private Texture texturaBotonAcercaDe;
+    private Texture texturaBotonAcercaDeP;
+    private Texture texturaBotonContenido;
+    private Texture texturaBotonContenidoP;
+    private Texture texturaBotonRegresar;
 
-    Preferences prefsBotonMusic;
-    Preferences prefsMusic;
-    Preferences prefsBotonSoundFX;
-    Preferences prefsSoundFX;
+    private Preferences prefsBotonMusic;
+    private Preferences prefsMusic;
+    private Preferences prefsBotonSoundFX;
+    private Preferences prefsSoundFX;
 
     /* MENU: The values of the class are generated. */
 
@@ -142,7 +140,7 @@ public class PantallaConfiguracion extends Pantalla
         // Boton Acerca De
         texturaBotonAcercaDe = new Texture("Botones/BotonAcercaDe.png");
         TextureRegionDrawable trdBotonAcercaDe= new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDe));
-        Texture texturaBotonAcercaDeP = new Texture("Botones/BotonAcercaDeP.png");
+        texturaBotonAcercaDeP = new Texture("Botones/BotonAcercaDeP.png");
         TextureRegionDrawable trdBotonAcercaDeP = new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDeP));
         ImageButton btnAcercaDe = new ImageButton(trdBotonAcercaDe,trdBotonAcercaDeP);
         btnAcercaDe.setPosition(2*ANCHO/3 - btnAcercaDe.getWidth()/2-75,ALTO/3-35);
@@ -151,7 +149,6 @@ public class PantallaConfiguracion extends Pantalla
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
                 juego.setScreen(new PantallaAcercaDe(juego));
             }
         });
@@ -159,7 +156,7 @@ public class PantallaConfiguracion extends Pantalla
         // Boton Contenido
         texturaBotonContenido = new Texture("Botones/BotonContenido.png");
         TextureRegionDrawable trdBotonContenido= new TextureRegionDrawable(new TextureRegion(texturaBotonContenido));
-        Texture texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
+        texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
         TextureRegionDrawable trdBotonContenidoP = new TextureRegionDrawable(new TextureRegion(texturaBotonContenidoP));
         ImageButton btnContenido = new ImageButton(trdBotonContenido,trdBotonContenidoP);
         btnContenido.setPosition(2*ANCHO/3 - btnContenido.getWidth()/2-75,ALTO*.55f);
@@ -168,7 +165,6 @@ public class PantallaConfiguracion extends Pantalla
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
                 juego.setScreen(new PantallaContenido(juego));
             }
         });
@@ -183,7 +179,6 @@ public class PantallaConfiguracion extends Pantalla
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
                 juego.setScreen(new PantallaMenu(juego));
             }
         });

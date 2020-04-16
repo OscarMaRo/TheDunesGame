@@ -85,8 +85,8 @@ class PantallaPrimerNivel extends Pantalla {
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
 
     // Música
-    Preferences prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
-    Preferences prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");
+    private Preferences prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
+    private Preferences prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");
     private Music musicaFondo;
     private Sound shoot;
     private Sound shield;

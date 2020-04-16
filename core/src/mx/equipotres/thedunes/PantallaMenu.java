@@ -16,15 +16,15 @@ class PantallaMenu extends Pantalla {
     private final Juego juego;
 
     // Texturas: The sprites initialized.
-    Texture texturaFondo;
-    Texture texturaBotonJugar;
-    Texture texturaBotonJugarPress;
-    Texture texturaBotonConfig;
-    Texture texturaBotonConfigPress;
+    private Texture texturaFondo;
+    private Texture texturaBotonJugar;
+    private Texture texturaBotonJugarPress;
+    private Texture texturaBotonConfig;
+    private Texture texturaBotonConfigPress;
 
     // Preferencias
-    Preferences prefsMusic;
-    Preferences prefsSoundFX;
+    private Preferences prefsMusic;
+    private Preferences prefsSoundFX;
 
     // MENU: The values of the class are generated.
     private Stage escenaMenu;
