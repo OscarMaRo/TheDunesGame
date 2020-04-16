@@ -17,7 +17,7 @@ public class Enemigo extends Objeto {
             sprite.setY(sprite.getY() + dy);
         } else if (sprite.getY() < 400 && sprite.getX() > 160){
             sprite.setX(sprite.getX() - dx);
-        } else if (sprite.getY() > 120){
+        } else if (sprite.getY() > 180){
             sprite.setY(sprite.getY() + dy);
         } else {
             sprite.setX(sprite.getX() - dx);

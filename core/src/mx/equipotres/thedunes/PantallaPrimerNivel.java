@@ -8,17 +8,23 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.LinkedList;
@@ -108,6 +114,11 @@ class PantallaPrimerNivel extends Pantalla {
     private Stage escenaMenu;
     private Stage escenaPausado;
 
+    //Joystick
+    private Stage escenaHUD;
+    private OrthographicCamera cameraHUD;
+    private Viewport vistaHUD;
+
     // CONSTRUCTOR
     public PantallaPrimerNivel(Juego juego) { this.juego = juego; }
 
@@ -117,7 +128,38 @@ class PantallaPrimerNivel extends Pantalla {
         cargarTexturas();
         crearObjetos();
         cargarMusica();
+        crearHUD();
         Gdx.input.setInputProcessor(new ProcesadorEntrada());
+        //Gdx.input.setInputProcessor(escenaHUD);
+    }
+
+    public void crearHUD(){
+        cameraHUD = new OrthographicCamera(ANCHO, ALTO);
+        cameraHUD.position.set(ANCHO/2, ALTO/2, 0);
+        cameraHUD.update();
+        vistaHUD = new StretchViewport(ANCHO, ALTO, cameraHUD);
+
+        Skin skin = new Skin();
+        skin.add("fondo", new Texture("Botones/padBack.png"));
+        skin.add("boton", new Texture("Botones/padKnob.png"));
+        Touchpad.TouchpadStyle estilo = new Touchpad.TouchpadStyle();
+        estilo.background = skin.getDrawable("fondo");
+        estilo.knob = skin.getDrawable("boton");
+
+        Touchpad pad = new Touchpad(64, estilo);
+        pad.setBounds(16, 16, 170, 170);
+        pad.setColor(1, 1, 1, 0.7f);
+        pad.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Touchpad pad = (Touchpad)actor;
+                if (pad.getKnobPercentX() != 0 || pad.getKnobPercentY() != 0){
+                    boogie.rotacion(pad.getKnobPercentX(), pad.getKnobPercentY());
+                }
+            }
+        });
+        escenaHUD = new Stage(vistaHUD);
+        escenaHUD.addActor(pad);
     }
 
     public void cargarMusica() {
@@ -162,7 +204,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Boogie
     private void crearBoogie() {
-        boogie = new Boogie(texturaBoogie, 10, 10);
+        boogie = new Boogie(texturaBoogie, 180, 10);
     }
 
     // Marcador
@@ -419,6 +461,9 @@ class PantallaPrimerNivel extends Pantalla {
         // Finaliza el batch.
         batch.end();
 
+        //batch.setProjectionMatrix(cameraHUD.combined);
+        //escenaHUD.draw();
+
         if ( estadoJuego == EstadoJuego.JUGANDO) {
             // Visibility: When this is activated everything is visible from show().
             escenaMenu.draw();
@@ -595,7 +640,7 @@ class PantallaPrimerNivel extends Pantalla {
             if (rectEnemigoBasico.overlaps(rectBoogie)) {
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
-                boogie.sprite.setPosition(10, 10);
+                boogie.sprite.setPosition(180, 10);
             }
         }
     }
@@ -628,7 +673,7 @@ class PantallaPrimerNivel extends Pantalla {
             if (torreSuperiorDerecha.vida >= 0.0f) {
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
-                boogie.sprite.setPosition(10, 10);
+                boogie.sprite.setPosition(180, 10);
             }
         } else if (rectBoogie.overlaps(rectTorreInferiorDerecha)) {
             if (torreInferiorDerecha.vida >= 0.0f) {

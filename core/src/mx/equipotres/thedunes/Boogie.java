@@ -63,6 +63,26 @@ public class Boogie extends Objeto {
 
     }
 
+    public void rotacion(float x, float y){
+        if (x <= 0.35 && x >= -0.35 && y > 0){
+            sprite.setRotation(0);
+        } else if (x < 0 && y > 0){
+            sprite.setRotation(45);
+        } else if (x  < 0 && y <= 0.35 && y >= -0.35){
+            sprite.setRotation(90);
+        } else if (x < 0 && y < 0){
+            sprite.setRotation(135);
+        } else if (x <= 0.35 && x> -0.35 && y < 0){
+            sprite.setRotation(180);
+        } else if (x > 0 && y < 0){
+            sprite.setRotation(225);
+        } else if (x > 0 && y <= 0.35 && y >= -0.35){
+            sprite.setRotation(270);
+        } else if (x > 0 && y > 0){
+            sprite.setRotation(315);
+        }
+    }
+
     // INFORMATION. (x, y) + vertices + rotación.
     public void info() {
         System.out.println("x: " + sprite.getX() + ", y: " + sprite.getY());
