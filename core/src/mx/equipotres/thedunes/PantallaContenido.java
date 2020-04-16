@@ -22,9 +22,6 @@ public class PantallaContenido extends Pantalla
     Texture boogie;
     Texture enemigo;
 
-    Texture texturaBotonSiguiente;
-    Texture texturaBotonCerrar;
-
     private Stage escenaPantallaCont;
 
     public PantallaContenido(Juego juego) {

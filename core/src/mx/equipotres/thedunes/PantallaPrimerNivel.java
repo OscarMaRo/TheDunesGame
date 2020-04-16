@@ -3,6 +3,7 @@ package mx.equipotres.thedunes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -78,6 +79,8 @@ class PantallaPrimerNivel extends Pantalla {
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
 
     // Música
+    Preferences prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
+    Preferences prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");
     private Music musicaFondo;
     private Sound shoot;
     private Sound shield;
@@ -123,11 +126,12 @@ class PantallaPrimerNivel extends Pantalla {
         manager.load("Musica/shoot.wav", Sound.class);
         manager.load("Musica/shieldDown.mp3", Sound.class);
         manager.finishLoading();  // carga sincrona
-
         musicaFondo = manager.get("Musica/musicaFondo.mp3");
         musicaFondo.setLooping(true);  // Infinito
-        musicaFondo.play();
 
+        if (prefsMusic.getBoolean("musicOn")==true) {
+            musicaFondo.play();
+        }
         // Disparo
         shoot = manager.get("Musica/shoot.wav");
         shield = manager.get("Musica/shieldDown.mp3");
@@ -380,6 +384,7 @@ class PantallaPrimerNivel extends Pantalla {
             btnVolverMenu.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
+                    musicaFondo.stop();
                     juego.setScreen(new PantallaMenu(juego));
                 }
             });
@@ -402,6 +407,7 @@ class PantallaPrimerNivel extends Pantalla {
             btnVolverMenu.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
+                    musicaFondo.stop();
                     juego.setScreen(new PantallaMenu(juego));
                 }
             });
@@ -657,7 +663,9 @@ class PantallaPrimerNivel extends Pantalla {
                     b.remove(j);
                     if (hit == 9) {
                         System.out.println(hit);
-                        shield.play();
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
                         hit = 0;
                     }
                 }
@@ -668,7 +676,9 @@ class PantallaPrimerNivel extends Pantalla {
                     hit++;
                     b.remove(j);
                     if (hit == 9) {
-                        shield.play();
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
                         hit = 0;
                     }
                 }
@@ -680,7 +690,9 @@ class PantallaPrimerNivel extends Pantalla {
                     System.out.println(hit);
                     b.remove(j);
                     if (hit == 9) {
-                        shield.play();
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
                         hit = 0;
                     }
                 }
@@ -805,7 +817,9 @@ class PantallaPrimerNivel extends Pantalla {
                     break;
                 case Input.Keys.SPACE:
                     createBala();
-                    shoot.play();
+                    if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                        shoot.play();
+                    }
                     break;
             }
             return true;
@@ -902,6 +916,7 @@ class PantallaPrimerNivel extends Pantalla {
             btnReiniciar.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
+                    musicaFondo.stop();
                     juego.setScreen(new PantallaPrimerNivel(juego));
                 }
             });
@@ -909,6 +924,7 @@ class PantallaPrimerNivel extends Pantalla {
             btnVolverMenu.addListener(new ClickListener(){
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
+                    musicaFondo.stop();
                     juego.setScreen(new PantallaMenu(juego));
                 }
             });

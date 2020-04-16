@@ -1,6 +1,7 @@
 package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -24,12 +25,20 @@ public class PantallaConfiguracion extends Pantalla
     Texture texturaFondo;
     Texture texturaRectangulo;
 
-    Texture texturaBotonActivado;
-    Texture texturaBotonDesactivado;
+    Texture texturaBotonMusicaActivado;
+    Texture texturaBotonMusicaDesactivado;
+    Texture texturaBotonSonidoActivado;
+    Texture texturaBotonSonidoDesactivado;
     Texture texturaBotonAcercaDe;
     Texture texturaBotonContenido;
+    Texture texturaBotonRegresar;
 
-    // MENU: The values of the class are generated.
+    Preferences prefsBotonMusic;
+    Preferences prefsMusic;
+    Preferences prefsBotonSoundFX;
+    Preferences prefsSoundFX;
+
+    /* MENU: The values of the class are generated. */
 
     private Stage escenaMenuConfig;
 
@@ -47,72 +56,97 @@ public class PantallaConfiguracion extends Pantalla
         crearMenu();
     }
 
-
     private void crearMenu() {
         escenaMenuConfig = new Stage(vista);
+        prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
+        prefsBotonMusic = Gdx.app.getPreferences("TheDunes.settings.BotonMusic");
+        prefsBotonMusic.getBoolean("BotonMusicOn", true);
+        prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");
+        prefsBotonSoundFX = Gdx.app.getPreferences("TheDunes.settings.BotonSoundFX");
+        prefsBotonSoundFX.getBoolean("BotonSoundFXOn", true);
 
         // Boton Musica
-        Texture texturaBotonMusicaActivado = new Texture("Botones/BotonActivado.png");
-        TextureRegionDrawable trdMusicaActivado = new TextureRegionDrawable(new TextureRegion(texturaBotonMusicaActivado));
-        Texture texturaBotonMusicaDesactivado = new Texture("Botones/BotonDesactivado.png");
-        TextureRegionDrawable trdMusicaDesactivado = new TextureRegionDrawable(new TextureRegion(texturaBotonMusicaDesactivado));
-        ImageButton btnMusica = new ImageButton(trdMusicaActivado,trdMusicaDesactivado);
-        btnMusica.setPosition(ANCHO*.4f - btnMusica.getWidth()/2,ALTO*.55f);
-        escenaMenuConfig.addActor(btnMusica);
+        if (prefsBotonMusic.getBoolean("BotonMusicOn")==true) {
+            texturaBotonMusicaActivado = new Texture("Botones/BotonActivado.png");
+            TextureRegionDrawable trdMusicaActivado = new TextureRegionDrawable(new TextureRegion(texturaBotonMusicaActivado));
+            ImageButton btnMusicaActivado = new ImageButton(trdMusicaActivado);
+            btnMusicaActivado.setPosition(ANCHO * .4f - btnMusicaActivado.getWidth() / 2, ALTO * .55f);
+            escenaMenuConfig.addActor(btnMusicaActivado);
+            btnMusicaActivado.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    prefsMusic.putBoolean("musicOn",false);
+                    prefsBotonMusic.putBoolean("BotonMusicOn", false);
+                    prefsMusic.flush();
+                    prefsBotonMusic.flush();
+                    juego.setScreen(new PantallaConfiguracion(juego));
+                }
+            });
+        } else if (prefsBotonMusic.getBoolean("BotonMusicOn")==false) {
+            texturaBotonMusicaDesactivado = new Texture("Botones/BotonDesactivado.png");
+            TextureRegionDrawable trdMusicaDesactivado = new TextureRegionDrawable(new TextureRegion(texturaBotonMusicaDesactivado));
+            ImageButton btnMusicaDesactivado = new ImageButton(trdMusicaDesactivado);
+            btnMusicaDesactivado.setPosition(ANCHO * .4f - btnMusicaDesactivado.getWidth() / 2, ALTO * .55f);
+            escenaMenuConfig.addActor(btnMusicaDesactivado);
+            btnMusicaDesactivado.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    prefsMusic.putBoolean("musicOn",true);
+                    prefsBotonMusic.putBoolean("BotonMusicOn", true);
+                    prefsMusic.flush();
+                    prefsBotonMusic.flush();
+                    juego.setScreen(new PantallaConfiguracion(juego));
+                }
+            });
+        }
 
         // Boton Efectos de Sonido
-        Texture texturaBotonSonidoActivado = new Texture("Botones/BotonActivado.png");
-        TextureRegionDrawable trdSonidoActivado = new TextureRegionDrawable(new TextureRegion(texturaBotonSonidoActivado));
-        Texture texturaBotonSonidoDesactivado = new Texture("Botones/BotonDesactivado.png");
-        TextureRegionDrawable trdSonidoDesactivado = new TextureRegionDrawable(new TextureRegion(texturaBotonSonidoDesactivado));
-        ImageButton btnSonido = new ImageButton(trdSonidoActivado,trdSonidoDesactivado);
-        btnSonido.setPosition(ANCHO*.4f - btnSonido.getWidth()/2,ALTO/3-35);
-        escenaMenuConfig.addActor(btnSonido);
+        if (prefsBotonSoundFX.getBoolean("BotonSoundFXOn")==true) {
+            texturaBotonSonidoActivado = new Texture("Botones/BotonActivado.png");
+            TextureRegionDrawable trdSonidoActivado = new TextureRegionDrawable(new TextureRegion(texturaBotonSonidoActivado));
+            ImageButton btnSonidoActivado = new ImageButton(trdSonidoActivado);
+            btnSonidoActivado.setPosition(ANCHO * .4f - btnSonidoActivado.getWidth() / 2, ALTO / 3 - 35);
+            escenaMenuConfig.addActor(btnSonidoActivado);
+            btnSonidoActivado.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    prefsSoundFX.putBoolean("soundFXOn", false);
+                    prefsBotonSoundFX.putBoolean("BotonSoundFXOn", false);
+                    prefsSoundFX.flush();
+                    prefsBotonSoundFX.flush();
+                    juego.setScreen(new PantallaConfiguracion(juego));
+                }
+            });
+        } else if (prefsBotonSoundFX.getBoolean("BotonSoundFXOn")==false) {
+            texturaBotonSonidoDesactivado = new Texture("Botones/BotonDesactivado.png");
+            TextureRegionDrawable trdSonidoDesactivado = new TextureRegionDrawable(new TextureRegion(texturaBotonSonidoDesactivado));
+            ImageButton btnSonidoDesactivado = new ImageButton(trdSonidoDesactivado);
+            btnSonidoDesactivado.setPosition(ANCHO * .4f - btnSonidoDesactivado.getWidth() / 2, ALTO / 3 - 35);
+            escenaMenuConfig.addActor(btnSonidoDesactivado);
+            btnSonidoDesactivado.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    super.clicked(event, x, y);
+                    prefsSoundFX.putBoolean("soundFXOn", true);
+                    prefsBotonSoundFX.putBoolean("BotonSoundFXOn", true);
+                    prefsSoundFX.flush();
+                    prefsBotonSoundFX.flush();
+                    juego.setScreen(new PantallaConfiguracion(juego));
+                }
+            });
+        }
 
         // Boton Acerca De
-        Texture texturaBotonAcercaDe = new Texture("Botones/BotonAcercaDe.png");
+        texturaBotonAcercaDe = new Texture("Botones/BotonAcercaDe.png");
         TextureRegionDrawable trdBotonAcercaDe= new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDe));
         Texture texturaBotonAcercaDeP = new Texture("Botones/BotonAcercaDeP.png");
         TextureRegionDrawable trdBotonAcercaDeP = new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDeP));
         ImageButton btnAcercaDe = new ImageButton(trdBotonAcercaDe,trdBotonAcercaDeP);
         btnAcercaDe.setPosition(2*ANCHO/3 - btnAcercaDe.getWidth()/2-75,ALTO/3-35);
         escenaMenuConfig.addActor(btnAcercaDe);
-
-        // Boton Contenido
-        Texture texturaBotonContenido = new Texture("Botones/BotonContenido.png");
-        TextureRegionDrawable trdBotonContenido= new TextureRegionDrawable(new TextureRegion(texturaBotonContenido));
-        Texture texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
-        TextureRegionDrawable trdBotonContenidoP = new TextureRegionDrawable(new TextureRegion(texturaBotonContenidoP));
-        ImageButton btnContenido = new ImageButton(trdBotonContenido,trdBotonContenidoP);
-        btnContenido.setPosition(2*ANCHO/3 - btnContenido.getWidth()/2-75,ALTO*.55f);
-        escenaMenuConfig.addActor(btnContenido);
-
-        // Boton Regresar
-        Texture texturaBotonRegresar = new Texture("Botones/botonRegresar.png");
-        TextureRegionDrawable trdRegresar = new TextureRegionDrawable(new TextureRegion(texturaBotonRegresar));
-        ImageButton btnRegresar = new ImageButton(trdRegresar);
-        btnRegresar.setPosition(escenaMenuConfig.getWidth() - 150,escenaMenuConfig.getHeight() - 150);
-        escenaMenuConfig.addActor(btnRegresar);
-
-        // Función: Regresar
-        btnRegresar.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
-
-        btnContenido.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
-                juego.setScreen(new PantallaContenido(juego));
-            }
-        });
-
         btnAcercaDe.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -122,6 +156,37 @@ public class PantallaConfiguracion extends Pantalla
             }
         });
 
+        // Boton Contenido
+        texturaBotonContenido = new Texture("Botones/BotonContenido.png");
+        TextureRegionDrawable trdBotonContenido= new TextureRegionDrawable(new TextureRegion(texturaBotonContenido));
+        Texture texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
+        TextureRegionDrawable trdBotonContenidoP = new TextureRegionDrawable(new TextureRegion(texturaBotonContenidoP));
+        ImageButton btnContenido = new ImageButton(trdBotonContenido,trdBotonContenidoP);
+        btnContenido.setPosition(2*ANCHO/3 - btnContenido.getWidth()/2-75,ALTO*.55f);
+        escenaMenuConfig.addActor(btnContenido);
+        btnContenido.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
+                juego.setScreen(new PantallaContenido(juego));
+            }
+        });
+
+        // Boton Regresar
+        texturaBotonRegresar = new Texture("Botones/botonRegresar.png");
+        TextureRegionDrawable trdRegresar = new TextureRegionDrawable(new TextureRegion(texturaBotonRegresar));
+        ImageButton btnRegresar = new ImageButton(trdRegresar);
+        btnRegresar.setPosition(escenaMenuConfig.getWidth() - 150,escenaMenuConfig.getHeight() - 150);
+        escenaMenuConfig.addActor(btnRegresar);
+        btnRegresar.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
 
         Gdx.input.setInputProcessor(escenaMenuConfig);
     }

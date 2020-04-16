@@ -1,6 +1,7 @@
 package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,6 +22,10 @@ class PantallaMenu extends Pantalla {
     Texture texturaBotonConfig;
     Texture texturaBotonConfigPress;
 
+    // Preferencias
+    Preferences prefsMusic;
+    Preferences prefsSoundFX;
+
     // MENU: The values of the class are generated.
     private Stage escenaMenu;
 
@@ -38,7 +43,10 @@ class PantallaMenu extends Pantalla {
 
     private void crearMenu() {
         escenaMenu = new Stage(vista);
-
+        prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
+        prefsMusic.getBoolean("musicOn", true);
+        prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");
+        prefsSoundFX.getBoolean("soundFXOn",true);
         // Botón: jugar.
         // Steps to create a fully functional button.
         // 1.1 Texturize: Creates the image in the game. Idle.
