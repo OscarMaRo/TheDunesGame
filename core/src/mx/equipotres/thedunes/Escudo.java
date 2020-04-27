@@ -10,13 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class Shield extends Stage {
+public class Escudo extends Stage {
     protected Sprite sprite;
     private int ANCHO = 1280;
     private int ALTO = 720;
     protected Image imgEscudo;
 
-    public Shield(Viewport vista, SpriteBatch batch) {
+    public Escudo(Viewport vista, SpriteBatch batch) {
         super(vista, batch);
 
         Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO * 0.8f), Pixmap.Format.RGBA8888);

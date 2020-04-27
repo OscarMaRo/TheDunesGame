@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class HealthBar {
+public class BarraVida {
 
     Texture textura;
 
-    public HealthBar() {
+    public BarraVida() {
         textura = new Texture("Sprites/blank.jpeg");
     }
 
