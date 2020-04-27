@@ -7,7 +7,7 @@ public class Boogie extends Objeto {
 
     // Variables.
     private final int ROTACION = 360 / 8;
-    private final int PASO = 20;
+    private final int PASO = 1;
     public int vidas;
 
     // Constructor principal.
@@ -65,20 +65,28 @@ public class Boogie extends Objeto {
     public void rotacion(float x, float y){
         if (x <= 0.35 && x >= -0.35 && y > 0){
             sprite.setRotation(0);
+            this.mover();
         } else if (x < 0 && y > 0){
             sprite.setRotation(45);
+            this.mover();
         } else if (x  < 0 && y <= 0.35 && y >= -0.35){
             sprite.setRotation(90);
+            this.mover();
         } else if (x < 0 && y < 0){
             sprite.setRotation(135);
+            this.mover();
         } else if (x <= 0.35 && x> -0.35 && y < 0){
             sprite.setRotation(180);
+            this.mover();
         } else if (x > 0 && y < 0){
             sprite.setRotation(225);
+            this.mover();
         } else if (x > 0 && y <= 0.35 && y >= -0.35){
             sprite.setRotation(270);
+            this.mover();
         } else if (x > 0 && y > 0){
             sprite.setRotation(315);
+            this.mover();
         }
     }
 
