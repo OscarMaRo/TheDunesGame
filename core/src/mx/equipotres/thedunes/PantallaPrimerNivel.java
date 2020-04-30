@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -57,6 +58,7 @@ class PantallaPrimerNivel extends Pantalla {
     private Stage escenaHUD;
     private OrthographicCamera cameraHUD;
     private Viewport vistaHUD;
+    private boolean joystickPresionado;
 
     // Torres
     private Texture texturaTorre;
@@ -131,6 +133,15 @@ class PantallaPrimerNivel extends Pantalla {
         Touchpad pad = new Touchpad(64, estilo);
         pad.setBounds(16, 16, 170, 170);
         pad.setColor(1, 1, 1, 0.7f);
+        pad.addListener(new ActorGestureListener() {
+            public void touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                joystickPresionado = true;
+            }
+
+            public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                joystickPresionado = false;
+            }
+        });
         pad.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -499,6 +510,9 @@ class PantallaPrimerNivel extends Pantalla {
         moverEnemigos(delta);
         llamarHorda();
         moverEnemigosCirculo(delta);
+        if(joystickPresionado){
+            boogie.mover();
+        }
     }
 
 
