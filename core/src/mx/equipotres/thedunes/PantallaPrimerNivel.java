@@ -167,7 +167,10 @@ class PantallaPrimerNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                boogie.mover();
+                createBala();
+                if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                    shoot.play();
+                }
             }
         });
 
@@ -216,6 +219,15 @@ class PantallaPrimerNivel extends Pantalla {
         crearEnemigos();
         crearEnemigosAlrededorTorre();
     }
+
+    private void createBala() {
+        float xBala = boogie.sprite.getX() + boogie.sprite.getWidth()/2;
+        float yBala = boogie.sprite.getY() + boogie.sprite.getHeight();
+        listaBalas.add(new Bala(texturaBala, xBala, yBala));
+        direccionBala = listaBalas.size() - 1;
+        listaBalas.get((int) direccionBala).sprite.setRotation(boogie.sprite.getRotation());
+    }
+
 
     private void cargarTexturas() {
         texturaEnemigos = new Texture("Sprites/enemigo1.png");
