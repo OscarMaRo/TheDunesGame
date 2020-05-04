@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -167,7 +168,7 @@ class PantallaPrimerNivel extends Pantalla {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                createBala();
+                crearBala();
                 if (prefsSoundFX.getBoolean("soundFXOn")==true) {
                     shoot.play();
                 }
@@ -184,6 +185,21 @@ class PantallaPrimerNivel extends Pantalla {
                 escenaPausa = new EscenaPausa(vista, batch);
             }
         });
+
+        escenaHUD.addListener(new InputListener(){
+            @Override
+            public boolean keyUp(InputEvent event, int keycode) {
+                if(keycode == Input.Keys.SPACE){
+                    crearBala();
+                    if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                        shoot.play();
+                    }
+                }
+
+                return super.keyUp(event, keycode) ;
+            }
+        });
+
 
         escenaHUD.addActor(pad);
         escenaHUD.addActor(btnAcelerar);
