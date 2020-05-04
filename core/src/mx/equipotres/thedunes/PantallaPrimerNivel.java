@@ -220,9 +220,9 @@ class PantallaPrimerNivel extends Pantalla {
         crearEnemigosAlrededorTorre();
     }
 
-    private void createBala() {
+    private void crearBala() {
         float xBala = boogie.sprite.getX() + boogie.sprite.getWidth()/2;
-        float yBala = boogie.sprite.getY() + boogie.sprite.getHeight();
+        float yBala = boogie.sprite.getY() + boogie.sprite.getHeight()/2;
         listaBalas.add(new Bala(texturaBala, xBala, yBala));
         direccionBala = listaBalas.size() - 1;
         listaBalas.get((int) direccionBala).sprite.setRotation(boogie.sprite.getRotation());
@@ -834,6 +834,7 @@ class PantallaPrimerNivel extends Pantalla {
     // Bala: Mueve la bala cuando no es null.
     private void moverBala(Bala bala, float delta) {
         if (bala != null) {
+            //bala.sprite.setPosition(boogie.sprite.getX() + boogie.sprite.getWidth()/2, boogie.sprite.getY() + boogie.sprite.getHeight()/2);
             if (bala.sprite.getRotation() == -90 || bala.sprite.getRotation() == 270) { // works
                 bala.moverRight(delta);
             } else if (bala.sprite.getRotation() == 0) {   // works
@@ -891,22 +892,13 @@ class PantallaPrimerNivel extends Pantalla {
                     boogie.mover();
                     break;
                 case Input.Keys.SPACE:
-                    createBala();
+                    crearBala();
                     if (prefsSoundFX.getBoolean("soundFXOn")==true) {
                         shoot.play();
                     }
                     break;
             }
             return true;
-        }
-
-        // Balas: Genera una nueva bala.
-        private void createBala() {
-            float xBala = boogie.sprite.getX() + boogie.sprite.getWidth()/2;
-            float yBala = boogie.sprite.getY() + boogie.sprite.getHeight();
-            listaBalas.add(new Bala(texturaBala, xBala, yBala));
-            direccionBala = listaBalas.size() - 1;
-            listaBalas.get((int) direccionBala).sprite.setRotation(boogie.sprite.getRotation());
         }
 
         @Override
@@ -955,7 +947,6 @@ class PantallaPrimerNivel extends Pantalla {
             return false;
         }
     }
-
 
     // Clase Pausa (ventana que se muestra cuando el usuario pausa la aplicación).
     class EscenaPausa extends Stage {
