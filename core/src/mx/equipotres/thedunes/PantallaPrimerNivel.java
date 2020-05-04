@@ -247,7 +247,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     private void cargarTexturas() {
         texturaEnemigos = new Texture("Sprites/enemigo1.png");
-        texturaFondo = new Texture(("Fondos/fondoNivel1.jpeg"));
+        texturaFondo = new Texture(("Fondos/FondoNivel1.jpeg"));
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
