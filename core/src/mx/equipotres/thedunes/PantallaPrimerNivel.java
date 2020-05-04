@@ -161,7 +161,7 @@ class PantallaPrimerNivel extends Pantalla {
         // Botón pausa
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
         ImageButton btnPausa = new ImageButton(trdPausa);
-        btnPausa.setPosition(ANCHO - btnPausa.getWidth() + 20,ALTO - btnPausa.getHeight() + 10);
+        btnPausa.setPosition(ANCHO - btnPausa.getWidth() - 5 ,ALTO - btnPausa.getHeight() - 5);
 
         //Acción de acelerar
         btnAcelerar.addListener(new ClickListener(){
@@ -251,8 +251,8 @@ class PantallaPrimerNivel extends Pantalla {
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
-        texturaBotonPausa = new Texture("Botones/pausa.jpeg");
-        texturaBotonAcelerar = new Texture("Botones/move.jpeg");
+        texturaBotonPausa = new Texture("Botones/pausa.png");
+        texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
     }
 
