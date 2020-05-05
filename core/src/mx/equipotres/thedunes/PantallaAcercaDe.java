@@ -20,6 +20,8 @@ public class PantallaAcercaDe extends Pantalla
     private Texture texturaBoogie;
 
     private Texture texturaBotonCerrar;
+    private Texture texturaBotonContenido;
+    private Texture texturaBotonContenidoP;
 
     private Stage escenaPantallaAcercaDe;
 
@@ -48,7 +50,23 @@ public class PantallaAcercaDe extends Pantalla
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                juego.setScreen(new PantallaConfiguracion(juego));
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
+
+        // Boton Contenido
+        texturaBotonContenido = new Texture("Botones/BotonContenido.png");
+        TextureRegionDrawable trdBotonContenido= new TextureRegionDrawable(new TextureRegion(texturaBotonContenido));
+        texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
+        TextureRegionDrawable trdBotonContenidoP = new TextureRegionDrawable(new TextureRegion(texturaBotonContenidoP));
+        ImageButton btnContenido = new ImageButton(trdBotonContenido,trdBotonContenidoP);
+        btnContenido.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2);
+        escenaPantallaAcercaDe.addActor(btnContenido);
+        btnContenido.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaContenido(juego));
             }
         });
 
@@ -63,9 +81,8 @@ public class PantallaAcercaDe extends Pantalla
         batch.draw(texturaFondo,0,0);
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
         batch.draw(texturaBoogie,ANCHO-175,100);
-        String acercaDeT = "              Desarrollado  por:\n\n   Zoe  Caballero  Dominguez\n      Oscar  Macias  Rodriguez\n"+
-                "              Alan  Diaz  Carrera\nRodrigo  Cravioto  Caballero";
-        acercaDe.render(batch, acercaDeT, ANCHO/2, ALTO-180);
+        String acercaDeT = "Acerca De";
+        acercaDe.render(batch, acercaDeT, ANCHO/2, ALTO-100);
         batch.end();
 
         escenaPantallaAcercaDe.draw();

@@ -51,7 +51,7 @@ public class PantallaContenido extends Pantalla
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
-                juego.setScreen(new PantallaConfiguracion(juego));
+                juego.setScreen(new PantallaAcercaDe(juego));
             }
         });
 

@@ -73,6 +73,13 @@ class PantallaMenu extends Pantalla {
         // 3. Position: Sets the position of the button.
         btnConfiguracion.setPosition(ANCHO/2 - btnConfiguracion.getWidth()/2, (ALTO/2)-100);
 
+        // Boton Acerca De
+        Texture texturaBotonAcercaDe = new Texture("Botones/BotonAcercaDe.png");
+        TextureRegionDrawable trdBotonAcercaDe= new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDe));
+        Texture texturaBotonAcercaDeP = new Texture("Botones/BotonAcercaDeP.png");
+        TextureRegionDrawable trdBotonAcercaDeP = new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDeP));
+        ImageButton btnAcercaDe = new ImageButton(trdBotonAcercaDe,trdBotonAcercaDeP);
+        btnAcercaDe.setPosition(ANCHO/2 - btnAcercaDe.getWidth()/2, (ALTO/2)-200);
 
         // Listener: This calls the functionality of the buttons.
         btnJugar.addListener(new ClickListener() {
@@ -93,9 +100,18 @@ class PantallaMenu extends Pantalla {
             }
         });
 
+        btnAcercaDe.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaAcercaDe(juego));
+            }
+        });
+
         // Display images: This attributes draw the images in screen.
         escenaMenu.addActor(btnJugar);
         escenaMenu.addActor(btnConfiguracion);
+        escenaMenu.addActor(btnAcercaDe);
 
         // Action: This attributes allow the buttons to have interaction with the user.
         Gdx.input.setInputProcessor(escenaMenu);
