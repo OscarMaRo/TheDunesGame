@@ -52,7 +52,7 @@ public class PantallaAcercaDe extends Pantalla
         texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
         TextureRegionDrawable trdBotonContenidoP = new TextureRegionDrawable(new TextureRegion(texturaBotonContenidoP));
         ImageButton btnContenido = new ImageButton(trdBotonContenido,trdBotonContenidoP);
-        btnContenido.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2);
+        btnContenido.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-25);
         escenaPantallaAcercaDe.addActor(btnContenido);
         btnContenido.addListener(new ClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class PantallaAcercaDe extends Pantalla
         texturaBotonDesarrolladoresP = new Texture("Botones/BotonDesarrolladoresP.png");
         TextureRegionDrawable trdBotonDesarrolladoresP = new TextureRegionDrawable(new TextureRegion(texturaBotonDesarrolladoresP));
         ImageButton btnDesarrolladores = new ImageButton(trdBotonDesarrolladores,trdBotonDesarrolladoresP);
-        btnDesarrolladores.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-100);
+        btnDesarrolladores.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-125);
         escenaPantallaAcercaDe.addActor(btnDesarrolladores);
         btnDesarrolladores.addListener(new ClickListener() {
             @Override
@@ -84,7 +84,7 @@ public class PantallaAcercaDe extends Pantalla
         texturaBotonInstruccionesP = new Texture("Botones/BotonInstruccionesP.png");
         TextureRegionDrawable trdBotonInstruccionesP = new TextureRegionDrawable(new TextureRegion(texturaBotonInstruccionesP));
         ImageButton btnInstrucciones = new ImageButton(trdBotonInstrucciones,trdBotonInstruccionesP);
-        btnInstrucciones.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2+100);
+        btnInstrucciones.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2+75);
         escenaPantallaAcercaDe.addActor(btnInstrucciones);
         btnInstrucciones.addListener(new ClickListener() {
             @Override
