@@ -19,9 +19,13 @@ public class PantallaAcercaDe extends Pantalla
     private Texture texturaRectangulo;
     private Texture texturaBoogie;
 
-    private Texture texturaBotonCerrar;
+    private Texture texturaBotonRegresar;
     private Texture texturaBotonContenido;
     private Texture texturaBotonContenidoP;
+    private Texture texturaBotonDesarrolladores;
+    private Texture texturaBotonDesarrolladoresP;
+    private Texture texturaBotonInstrucciones;
+    private Texture texturaBotonInstruccionesP;
 
     private Stage escenaPantallaAcercaDe;
 
@@ -40,19 +44,7 @@ public class PantallaAcercaDe extends Pantalla
 
     private void crearPantalla() {
         escenaPantallaAcercaDe = new Stage(vista);
-        texturaBotonCerrar = new Texture("Botones/BotonCerrar.png");
-        TextureRegionDrawable trdCerrar = new TextureRegionDrawable(new TextureRegion(texturaBotonCerrar));
-        ImageButton btnCerrar = new ImageButton(trdCerrar);
-        btnCerrar.setPosition(ANCHO-280, ALTO-100);
-        escenaPantallaAcercaDe.addActor(btnCerrar);
 
-        btnCerrar.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
 
         // Boton Contenido
         texturaBotonContenido = new Texture("Botones/BotonContenido.png");
@@ -67,6 +59,52 @@ public class PantallaAcercaDe extends Pantalla
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 juego.setScreen(new PantallaContenido(juego));
+            }
+        });
+
+        // Boton Desarrolladores
+        texturaBotonDesarrolladores = new Texture("Botones/BotonDesarrolladores.png");
+        TextureRegionDrawable trdBotonDesarrolladores= new TextureRegionDrawable(new TextureRegion(texturaBotonDesarrolladores));
+        texturaBotonDesarrolladoresP = new Texture("Botones/BotonDesarrolladoresP.png");
+        TextureRegionDrawable trdBotonDesarrolladoresP = new TextureRegionDrawable(new TextureRegion(texturaBotonDesarrolladoresP));
+        ImageButton btnDesarrolladores = new ImageButton(trdBotonDesarrolladores,trdBotonDesarrolladoresP);
+        btnDesarrolladores.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-100);
+        escenaPantallaAcercaDe.addActor(btnDesarrolladores);
+        btnDesarrolladores.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaDesarrolladores(juego));
+            }
+        });
+
+        // Boton Instrucciones
+        texturaBotonInstrucciones = new Texture("Botones/BotonInstrucciones.png");
+        TextureRegionDrawable trdBotonInstrucciones= new TextureRegionDrawable(new TextureRegion(texturaBotonInstrucciones));
+        texturaBotonInstruccionesP = new Texture("Botones/BotonInstruccionesP.png");
+        TextureRegionDrawable trdBotonInstruccionesP = new TextureRegionDrawable(new TextureRegion(texturaBotonInstruccionesP));
+        ImageButton btnInstrucciones = new ImageButton(trdBotonInstrucciones,trdBotonInstruccionesP);
+        btnInstrucciones.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2+100);
+        escenaPantallaAcercaDe.addActor(btnInstrucciones);
+        btnInstrucciones.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaInstrucciones(juego));
+            }
+        });
+
+        // Boton Regresar
+        texturaBotonRegresar = new Texture("Botones/botonRegresar.png");
+        TextureRegionDrawable trdRegresar = new TextureRegionDrawable(new TextureRegion(texturaBotonRegresar));
+        ImageButton btnRegresar = new ImageButton(trdRegresar);
+        btnRegresar.setPosition(escenaPantallaAcercaDe.getWidth() - 150,escenaPantallaAcercaDe.getHeight() - 150);
+        escenaPantallaAcercaDe.addActor(btnRegresar);
+        btnRegresar.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaMenu(juego));
             }
         });
 
