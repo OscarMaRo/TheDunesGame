@@ -418,12 +418,12 @@ class PantallaPrimerNivel extends Pantalla {
 
         if (estadoJuego == EstadoJuego.PERDIO) {
             escenaFinal.draw();
-            escenaHUD.draw();
+
         }
 
         if (estadoJuego == EstadoJuego.GANO) {
             escenaFinal.draw();
-            escenaHUD.draw();
+
         }
 
     }
