@@ -460,25 +460,10 @@ class PantallaPrimerNivel extends Pantalla {
     }
 
     private void dibujarDerrota(SpriteBatch batch) {
-        escenaFinal = new Stage(vista);
         String mensaje = "Has sido derrotado";
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
         estadoJuego = EstadoJuego.PERDIO;
 
-        Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
-        TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
-        Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-250, ALTO/2-144);
-
-        btnVolverMenu.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                musicaFondo.stop();
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
-
-        escenaFinal.addActor(btnVolverMenu);
         Gdx.input.setInputProcessor(escenaFinal);
     }
 
