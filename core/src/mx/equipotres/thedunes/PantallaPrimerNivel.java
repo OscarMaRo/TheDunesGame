@@ -42,6 +42,7 @@ class PantallaPrimerNivel extends Pantalla {
     private Marcador marcador;
     private Texto ganar;
     private EstadoJuego estadoJuego = EstadoJuego.JUGANDO;
+    private Stage escenaFinal;
 
     // Pausa
     private EscenaPausa escenaPausa;
@@ -402,22 +403,26 @@ class PantallaPrimerNivel extends Pantalla {
         batch.end();
 
         batch.setProjectionMatrix(cameraHUD.combined);
-        dibujarEscudos();
+
 
 
         if ( estadoJuego == EstadoJuego.JUGANDO) {
+            dibujarEscudos();
             escenaHUD.draw();
         }
 
         if (estadoJuego == EstadoJuego.PAUSADO) {
+            dibujarEscudos();
             escenaPausa.draw();
         }
 
         if (estadoJuego == EstadoJuego.PERDIO) {
+            escenaFinal.draw();
             escenaHUD.draw();
         }
 
         if (estadoJuego == EstadoJuego.GANO) {
+            escenaFinal.draw();
             escenaHUD.draw();
         }
 
@@ -436,6 +441,7 @@ class PantallaPrimerNivel extends Pantalla {
     }
 
     private void dibujarDerrota(SpriteBatch batch) {
+        escenaFinal = new Stage(vista);
         String mensaje = "Has sido derrotado";
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
         estadoJuego = EstadoJuego.PERDIO;
@@ -453,11 +459,12 @@ class PantallaPrimerNivel extends Pantalla {
             }
         });
 
-        escenaHUD.addActor(btnVolverMenu);
-        Gdx.input.setInputProcessor(escenaHUD);
+        escenaFinal.addActor(btnVolverMenu);
+        Gdx.input.setInputProcessor(escenaFinal);
     }
 
     private void dibujarVictoria(SpriteBatch batch) {
+        escenaFinal = new Stage(vista);
         String mensaje = "Enhorabuena, has ganado!";
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
         marcador.render(batch, ANCHO/2 - 10, ALTO/2 + 55);
@@ -476,8 +483,8 @@ class PantallaPrimerNivel extends Pantalla {
             }
         });
 
-        escenaHUD.addActor(btnVolverMenu);
-        Gdx.input.setInputProcessor(escenaHUD);
+        escenaFinal.addActor(btnVolverMenu);
+        Gdx.input.setInputProcessor(escenaFinal);
     }
 
     public void dibujarJuego(SpriteBatch batch, float delta){
