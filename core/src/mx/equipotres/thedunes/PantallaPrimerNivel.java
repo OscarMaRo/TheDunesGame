@@ -235,6 +235,7 @@ class PantallaPrimerNivel extends Pantalla {
         crearBarraVidaTorre();
         crearEnemigos();
         crearEnemigosAlrededorTorre();
+        crearEscenaFinal();
     }
 
     private void crearBala() {
@@ -363,6 +364,24 @@ class PantallaPrimerNivel extends Pantalla {
         enemigoBasico = new EnemigoBasico(texturaEnemigos, x + paso/2, y - paso/2);
         arrEnemigosCirculo.add(enemigoBasico);
     }
+    public void crearEscenaFinal(){
+        escenaFinal = new Stage(vista);
+
+        Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
+        TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
+        Image btnVolverMenu = new Image(trVM);
+        btnVolverMenu.setPosition(ANCHO/2-250, ALTO/2-144);
+
+        btnVolverMenu.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                musicaFondo.stop();
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
+
+        escenaFinal.addActor(btnVolverMenu);
+    }
 
     // Dibuja el juego
     @Override
@@ -464,26 +483,12 @@ class PantallaPrimerNivel extends Pantalla {
     }
 
     private void dibujarVictoria(SpriteBatch batch) {
-        escenaFinal = new Stage(vista);
+
         String mensaje = "Enhorabuena, has ganado!";
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
         marcador.render(batch, ANCHO/2 - 10, ALTO/2 + 55);
         estadoJuego = EstadoJuego.GANO;
 
-        Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
-        TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
-        Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-250, ALTO/2-144);
-
-        btnVolverMenu.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                musicaFondo.stop();
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
-
-        escenaFinal.addActor(btnVolverMenu);
         Gdx.input.setInputProcessor(escenaFinal);
     }
 
