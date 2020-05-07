@@ -82,7 +82,7 @@ class PantallaPrimerNivel extends Pantalla {
     private Boogie boogie;
     private Texture texturaBoogie;
     // Mover
-    private Texture texturaBotonAcelerar;
+    private Texture texturaBotonDisparar;
 
     // Balas: Las que sean.
     private Texture texturaBala;
@@ -155,9 +155,9 @@ class PantallaPrimerNivel extends Pantalla {
         });
         escenaHUD = new Stage(vistaHUD);
         // Botón: Acelerar.
-        TextureRegionDrawable trdAcelerar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
-        ImageButton btnAcelerar = new ImageButton(trdAcelerar);
-        btnAcelerar.setPosition(ANCHO - btnAcelerar.getWidth(),0);
+        TextureRegionDrawable trdDisparar = new TextureRegionDrawable(new TextureRegion(texturaBotonDisparar));
+        ImageButton btnDisparar = new ImageButton(trdDisparar);
+        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth(),0);
 
         // Botón pausa
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
@@ -165,7 +165,7 @@ class PantallaPrimerNivel extends Pantalla {
         btnPausa.setPosition(ANCHO - btnPausa.getWidth() - 5 ,ALTO - btnPausa.getHeight() - 5);
 
         //Acción de acelerar
-        btnAcelerar.addListener(new ClickListener(){
+        btnDisparar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -203,7 +203,7 @@ class PantallaPrimerNivel extends Pantalla {
 
 
         escenaHUD.addActor(pad);
-        escenaHUD.addActor(btnAcelerar);
+        escenaHUD.addActor(btnDisparar);
         escenaHUD.addActor(btnPausa);
 
         Gdx.input.setInputProcessor(escenaHUD);
@@ -254,7 +254,7 @@ class PantallaPrimerNivel extends Pantalla {
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
-        texturaBotonAcelerar = new Texture("Botones/disparar.png");
+        texturaBotonDisparar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
     }
 
