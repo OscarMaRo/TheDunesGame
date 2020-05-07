@@ -252,7 +252,7 @@ class PantallaPrimerNivel extends Pantalla {
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
-        texturaBotonPausa = new Texture("Botones/pausa.png");
+        texturaBotonPausa = new Texture("Botones/pausa.jpg");
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
     }
