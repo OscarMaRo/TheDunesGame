@@ -49,7 +49,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Música
     private Preferences prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
-    private Preferences prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");
+    private Preferences prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");;
     private Music musicaFondo;
     private Sound shoot;
     private Sound shield;
@@ -261,6 +261,7 @@ class PantallaPrimerNivel extends Pantalla {
     }
 
     private void crearMarcador() {
+
         marcador = new Marcador(0.20f*ANCHO, 0.95f*ALTO, boogie);
     }
 

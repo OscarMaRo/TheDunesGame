@@ -19,7 +19,13 @@ public class PantallaAcercaDe extends Pantalla
     private Texture texturaRectangulo;
     private Texture texturaBoogie;
 
-    private Texture texturaBotonCerrar;
+    private Texture texturaBotonRegresar;
+    private Texture texturaBotonContenido;
+    private Texture texturaBotonContenidoP;
+    private Texture texturaBotonDesarrolladores;
+    private Texture texturaBotonDesarrolladoresP;
+    private Texture texturaBotonInstrucciones;
+    private Texture texturaBotonInstruccionesP;
 
     private Stage escenaPantallaAcercaDe;
 
@@ -38,17 +44,67 @@ public class PantallaAcercaDe extends Pantalla
 
     private void crearPantalla() {
         escenaPantallaAcercaDe = new Stage(vista);
-        texturaBotonCerrar = new Texture("Botones/BotonCerrar.png");
-        TextureRegionDrawable trdCerrar = new TextureRegionDrawable(new TextureRegion(texturaBotonCerrar));
-        ImageButton btnCerrar = new ImageButton(trdCerrar);
-        btnCerrar.setPosition(ANCHO-280, ALTO-100);
-        escenaPantallaAcercaDe.addActor(btnCerrar);
 
-        btnCerrar.addListener(new ClickListener() {
+
+        // Boton Contenido
+        texturaBotonContenido = new Texture("Botones/BotonContenido.png");
+        TextureRegionDrawable trdBotonContenido= new TextureRegionDrawable(new TextureRegion(texturaBotonContenido));
+        texturaBotonContenidoP = new Texture("Botones/BotonContenidoP.png");
+        TextureRegionDrawable trdBotonContenidoP = new TextureRegionDrawable(new TextureRegion(texturaBotonContenidoP));
+        ImageButton btnContenido = new ImageButton(trdBotonContenido,trdBotonContenidoP);
+        btnContenido.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-25);
+        escenaPantallaAcercaDe.addActor(btnContenido);
+        btnContenido.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                juego.setScreen(new PantallaConfiguracion(juego));
+                juego.setScreen(new PantallaContenido(juego));
+            }
+        });
+
+        // Boton Desarrolladores
+        texturaBotonDesarrolladores = new Texture("Botones/BotonDesarrolladores.png");
+        TextureRegionDrawable trdBotonDesarrolladores= new TextureRegionDrawable(new TextureRegion(texturaBotonDesarrolladores));
+        texturaBotonDesarrolladoresP = new Texture("Botones/BotonDesarrolladoresP.png");
+        TextureRegionDrawable trdBotonDesarrolladoresP = new TextureRegionDrawable(new TextureRegion(texturaBotonDesarrolladoresP));
+        ImageButton btnDesarrolladores = new ImageButton(trdBotonDesarrolladores,trdBotonDesarrolladoresP);
+        btnDesarrolladores.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-125);
+        escenaPantallaAcercaDe.addActor(btnDesarrolladores);
+        btnDesarrolladores.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaDesarrolladores(juego));
+            }
+        });
+
+        // Boton Instrucciones
+        texturaBotonInstrucciones = new Texture("Botones/BotonInstrucciones.png");
+        TextureRegionDrawable trdBotonInstrucciones= new TextureRegionDrawable(new TextureRegion(texturaBotonInstrucciones));
+        texturaBotonInstruccionesP = new Texture("Botones/BotonInstruccionesP.png");
+        TextureRegionDrawable trdBotonInstruccionesP = new TextureRegionDrawable(new TextureRegion(texturaBotonInstruccionesP));
+        ImageButton btnInstrucciones = new ImageButton(trdBotonInstrucciones,trdBotonInstruccionesP);
+        btnInstrucciones.setPosition(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2+75);
+        escenaPantallaAcercaDe.addActor(btnInstrucciones);
+        btnInstrucciones.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaInstrucciones(juego));
+            }
+        });
+
+        // Boton Regresar
+        texturaBotonRegresar = new Texture("Botones/botonRegresar.png");
+        TextureRegionDrawable trdRegresar = new TextureRegionDrawable(new TextureRegion(texturaBotonRegresar));
+        ImageButton btnRegresar = new ImageButton(trdRegresar);
+        btnRegresar.setPosition(escenaPantallaAcercaDe.getWidth() - 150,escenaPantallaAcercaDe.getHeight() - 150);
+        escenaPantallaAcercaDe.addActor(btnRegresar);
+        btnRegresar.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                juego.setScreen(new PantallaMenu(juego));
             }
         });
 
@@ -63,9 +119,8 @@ public class PantallaAcercaDe extends Pantalla
         batch.draw(texturaFondo,0,0);
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
         batch.draw(texturaBoogie,ANCHO-175,100);
-        String acercaDeT = "              Desarrollado  por:\n\n   Zoe  Caballero  Dominguez\n      Oscar  Macias  Rodriguez\n"+
-                "              Alan  Diaz  Carrera\nRodrigo  Cravioto  Caballero";
-        acercaDe.render(batch, acercaDeT, ANCHO/2, ALTO-180);
+        String acercaDeT = "Acerca De";
+        acercaDe.render(batch, acercaDeT, ANCHO/2, ALTO-100);
         batch.end();
 
         escenaPantallaAcercaDe.draw();

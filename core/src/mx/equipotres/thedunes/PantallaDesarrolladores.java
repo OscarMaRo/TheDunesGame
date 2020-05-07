@@ -9,22 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-public class PantallaContenido extends Pantalla
+public class PantallaDesarrolladores extends Pantalla
 {
     private final Juego juego;
-    private Texto contenido;
+    private Texto desarrolladores;
 
     // Texturas
-    Texture texturaFondo;
-    Texture texturaRectangulo;
-    Texture texturaBoogie;
-    Texture texturaEnemigo;
+    private Texture texturaFondo;
+    private Texture texturaRectangulo;
 
     private Texture texturaBotonCerrar;
 
-    private Stage escenaPantallaCont;
+    private Stage escenaPantallaDesarrolladores;
 
-    public PantallaContenido(Juego juego) {
+    public PantallaDesarrolladores(Juego juego) {
         this.juego = juego;
     }
 
@@ -32,30 +30,27 @@ public class PantallaContenido extends Pantalla
     public void show() {
         texturaFondo = new Texture("Fondos/fondoMenu.png");
         texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
-        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
-        texturaEnemigo = new Texture("Sprites/enemigo1.png");
-        contenido = new Texto("Fuentes/fuente.fnt");
+        desarrolladores= new Texto("Fuentes/fuente.fnt");
         crearPantalla();
     }
 
     private void crearPantalla() {
-        escenaPantallaCont = new Stage(vista);
+        escenaPantallaDesarrolladores = new Stage(vista);
         texturaBotonCerrar = new Texture("Botones/BotonCerrar.png");
         TextureRegionDrawable trdCerrar = new TextureRegionDrawable(new TextureRegion(texturaBotonCerrar));
         ImageButton btnCerrar = new ImageButton(trdCerrar);
         btnCerrar.setPosition(ANCHO-280, ALTO-100);
-        escenaPantallaCont.addActor(btnCerrar);
+        escenaPantallaDesarrolladores.addActor(btnCerrar);
 
         btnCerrar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                // TO OTHER SCREEN: when clicked it displays the Menu Level Screen.
                 juego.setScreen(new PantallaAcercaDe(juego));
             }
         });
 
-        Gdx.input.setInputProcessor(escenaPantallaCont);
+        Gdx.input.setInputProcessor(escenaPantallaDesarrolladores);
     }
 
     @Override
@@ -65,16 +60,19 @@ public class PantallaContenido extends Pantalla
         batch.begin();
         batch.draw(texturaFondo,0,0);
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
-        batch.draw(texturaBoogie, 100, 100);
-        batch.draw(texturaEnemigo,ANCHO-175,ALTO-175);
-        String contT = "En un mundo post apocaliptico,\n un piloto conduce un boogie\nmodificado, donde para " +
-                "poder\n sobrevivir, debe atravesar el\ndesierto con el objetivo de\ndestruir la " +
-                "fortaleza enemiga,\nPero es obstaculizado por\nun ejercito de esqueletos,\n" +
-                "comandado por el rey Skull.";
-        contenido.render(batch, contT, ANCHO/2+20, ALTO-120);
+        String desarrolladoPor = "Desarrollado\n               por:";
+        desarrolladores.render(batch, desarrolladoPor, ANCHO/2, ALTO-60);
+        String zoe = "Zoe  Caballero  Dominguez";
+        desarrolladores.render(batch, zoe, ANCHO/2, ALTO-225);
+        String rodrigo = "Rodrigo  Cravioto  Caballero";
+        desarrolladores.render(batch, rodrigo, ANCHO/2, ALTO-300);
+        String oscar = "Oscar  Macias  Rodriguez";
+        desarrolladores.render(batch, oscar, ANCHO/2, ALTO-375);
+        String alan = "Alan  Diaz  Carrera";
+        desarrolladores.render(batch, alan, ANCHO/2, ALTO-450);
         batch.end();
 
-        escenaPantallaCont.draw();
+        escenaPantallaDesarrolladores.draw();
     }
 
     @Override

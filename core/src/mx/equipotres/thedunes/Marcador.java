@@ -3,7 +3,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 class Marcador {
 
-    protected int puntos;
+    public int puntos;
     private int vidaBoogie;
     private float x;
     private float y;
