@@ -39,7 +39,7 @@ public class PantallaInstrucciones extends Pantalla
         texturaPadKnob = new Texture("Botones/padKnob.png");
         texturaPadBack = new Texture("Botones/padBack.png");
         texturaBotonSiguiente = new Texture("Botones/BotonSiguiente.png");
-        texturaBotonDisparar = new Texture("Botones/move.jpg");
+        texturaBotonDisparar = new Texture("Botones/disparar.png");
         instrucciones = new Texto("Fuentes/fuente.fnt");
         crearPantalla();
     }
