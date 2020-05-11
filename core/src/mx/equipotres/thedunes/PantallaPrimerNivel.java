@@ -314,31 +314,6 @@ class PantallaPrimerNivel extends Pantalla {
         float dx = 0, dy = 0;
         float paso = 100;
         arrEnemigosCirculo = new LinkedList<>();
-        /*DECIDÍ COMENTARLO PORQUE NO ESTOY SEGURA. SEGÚN YO ES MEJOR PARA EL PROCESADOR SIMPLEMENTE CREARLOS TODOS Y AGREGARLOS A
-        ESTAR RECORRIENDO EL FOR Y CREANDOLOS
-        for (int i = 0; i < 8; i++) {
-            if (i == 0) {
-                dx = x + paso; dy = y;
-            } else if(i == 1) {
-                dx = x + paso/2; dy = y + paso/2;
-            } else if (i == 2) {
-                dx = x; dy = y + paso;
-            } else if (i == 3) {
-                dx = x - paso/2; dy = y + paso/2;
-            } else if (i == 4) {
-                dx = x - paso; dy = y;
-            } else if (i == 5) {
-                dx = x - paso/2; dy = y - paso/2;
-            } else if (i == 6) {
-                dx = x; dy = y - paso;
-            } else if (i == 7) {
-                dx = x + paso/2; dy = y - paso/2;
-            }
-
-            EnemigoBasico enemigoBasico = new EnemigoBasico(texturaEnemigos, dx, dy);
-            arrEnemigosCirculo.add(enemigoBasico);
-
-        }*/
 
         EnemigoBasico enemigoBasico = new EnemigoBasico(texturaEnemigos, x + paso, y);
         arrEnemigosCirculo.add(enemigoBasico);
@@ -834,17 +809,6 @@ class PantallaPrimerNivel extends Pantalla {
         }
     }
 
-    //Metodo para los enemigos que sigan al boogie
-    /*private void moverEnemigosSeguidor() {
-        float posYBoogie = boogie.sprite.getY();
-        float posXBoogie = boogie.sprite.getX();
-        for (EnemigoBasico enemigoBasico : arrEnemigos) {
-            if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO)
-                enemigoBasico.perseguirBoggie(0.2f, posYBoogie, posXBoogie);
-        }
-        numeroPasos ++;
-    }*/
-
     // Bala: Mueve la bala cuando no es null.
     private void moverBala(Bala bala, float delta) {
         if (bala != null) {
@@ -890,76 +854,6 @@ class PantallaPrimerNivel extends Pantalla {
     @Override
     public void dispose() {
 
-    }
-
-    private class ProcesadorEntrada implements InputProcessor {
-        @Override
-        public boolean keyDown(int keycode) {
-            switch (keycode) {
-                case Input.Keys.RIGHT:
-                    boogie.rotar(-1);
-                    break;
-                case Input.Keys.LEFT:
-                    boogie.rotar(1);
-                    break;
-                case Input.Keys.UP:
-                    boogie.mover();
-                    break;
-                case Input.Keys.SPACE:
-                    crearBala();
-                    if (prefsSoundFX.getBoolean("soundFXOn")==true) {
-                        shoot.play();
-                    }
-                    break;
-            }
-            return true;
-        }
-
-        @Override
-        public boolean keyUp(int keycode) {
-            return false;
-        }
-
-        @Override
-        public boolean keyTyped(char character) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-            Vector3 v = new Vector3(screenX, screenY, 0);
-            camara.unproject(v);
-
-            if (v.y >= ALTO - texturaBotonPausa.getHeight() &&
-                    v.x >= ANCHO - texturaBotonPausa.getWidth()) {
-                estadoJuego = EstadoJuego.PAUSADO;
-                if (escenaPausa == null) {
-                    escenaPausa = new EscenaPausa(vista, batch);
-                }
-            }
-
-            return true;
-        }
-
-        @Override
-        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-            return false;
-        }
-
-        @Override
-        public boolean touchDragged(int screenX, int screenY, int pointer) {
-            return false;
-        }
-
-        @Override
-        public boolean mouseMoved(int screenX, int screenY) {
-            return false;
-        }
-
-        @Override
-        public boolean scrolled(int amount) {
-            return false;
-        }
     }
 
     // Clase Pausa (ventana que se muestra cuando el usuario pausa la aplicación).
