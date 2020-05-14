@@ -80,6 +80,7 @@ class PantallaSegundoNivel extends Pantalla {
         crearEscenaFinal();
     }
     private void cargarTexturas() {
+        texturaFondo = new Texture(("Fondos/FondoNivel2.png"));
         //texturaEnemigos = new Texture("Sprites/enemigo1.png");
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
@@ -254,8 +255,8 @@ class PantallaSegundoNivel extends Pantalla {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        //Cambiar por fondo
-        Gdx.gl.glClearColor(0,0,0,1);
+
+        batch.draw(texturaFondo, 0, 0);
 
         //Dibujar elementos del juego
         if (estadoJuego == EstadoJuego.JUGANDO || estadoJuego == EstadoJuego.PAUSADO) {
