@@ -15,13 +15,13 @@ public class PantallaInstrucciones extends Pantalla
     private Texto instrucciones;
 
     // Texturas
-    Texture texturaFondo;
-    Texture texturaRectangulo;
-    Texture texturaBoogie;
-    Texture texturaPadKnob;
-    Texture texturaPadBack;
-    Texture texturaBotonDisparar;
-    Texture texturaBotonSiguiente;
+    private Texture texturaFondo;
+    private Texture texturaRectangulo;
+    private Texture texturaBoogie;
+    private Texture texturaPadKnob;
+    private Texture texturaPadBack;
+    private Texture texturaBotonDisparar;
+    private Texture texturaBotonSiguiente;
 
     private Texture texturaBotonCerrar;
 

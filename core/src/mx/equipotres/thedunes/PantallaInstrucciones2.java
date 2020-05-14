@@ -15,11 +15,11 @@ public class PantallaInstrucciones2 extends Pantalla
     private Texto instrucciones;
 
     // Texturas
-    Texture texturaFondo;
-    Texture texturaRectangulo;
-    Texture texturaEnemigo1;
-    Texture texturaTorre;
-    Texture texturaBotonRegresar;
+    private Texture texturaFondo;
+    private Texture texturaRectangulo;
+    private Texture texturaEnemigo1;
+    private Texture texturaTorre;
+    private Texture texturaBotonRegresar;
 
     private Texture texturaBotonCerrar;
 
