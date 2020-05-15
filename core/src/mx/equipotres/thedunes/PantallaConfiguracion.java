@@ -25,9 +25,6 @@ public class PantallaConfiguracion extends Pantalla
     private Texture texturaBotonMusicaDesactivado;
     private Texture texturaBotonSonidoActivado;
     private Texture texturaBotonSonidoDesactivado;
-    private Texture texturaBotonContenido;
-    private Texture texturaBotonContenidoP;
-    private Texture texturaBotonRegresar;
 
     private Preferences prefsBotonMusic;
     private Preferences prefsMusic;
@@ -35,7 +32,10 @@ public class PantallaConfiguracion extends Pantalla
     private Preferences prefsSoundFX;
 
     /* MENU: The values of the class are generated. */
+    // Botones
+    private Boton btnRegresar;
 
+    // Escena
     private Stage escenaMenuConfig;
 
     public PantallaConfiguracion(Juego juego) {
@@ -54,6 +54,7 @@ public class PantallaConfiguracion extends Pantalla
 
     private void crearMenu() {
         escenaMenuConfig = new Stage(vista);
+
         prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
         prefsBotonMusic = Gdx.app.getPreferences("TheDunes.settings.BotonMusic");
         prefsBotonMusic.getBoolean("BotonMusicOn", true);
@@ -72,10 +73,7 @@ public class PantallaConfiguracion extends Pantalla
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    prefsMusic.putBoolean("musicOn",false);
-                    prefsBotonMusic.putBoolean("BotonMusicOn", false);
-                    prefsMusic.flush();
-                    prefsBotonMusic.flush();
+                    activarMusica(false);
                     juego.setScreen(new PantallaConfiguracion(juego));
                 }
             });
@@ -89,10 +87,7 @@ public class PantallaConfiguracion extends Pantalla
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    prefsMusic.putBoolean("musicOn",true);
-                    prefsBotonMusic.putBoolean("BotonMusicOn", true);
-                    prefsMusic.flush();
-                    prefsBotonMusic.flush();
+                    activarMusica(true);
                     juego.setScreen(new PantallaConfiguracion(juego));
                 }
             });
@@ -109,10 +104,7 @@ public class PantallaConfiguracion extends Pantalla
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    prefsSoundFX.putBoolean("soundFXOn", false);
-                    prefsBotonSoundFX.putBoolean("BotonSoundFXOn", false);
-                    prefsSoundFX.flush();
-                    prefsBotonSoundFX.flush();
+                    activarSonido(false);
                     juego.setScreen(new PantallaConfiguracion(juego));
                 }
             });
@@ -126,30 +118,34 @@ public class PantallaConfiguracion extends Pantalla
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
-                    prefsSoundFX.putBoolean("soundFXOn", true);
-                    prefsBotonSoundFX.putBoolean("BotonSoundFXOn", true);
-                    prefsSoundFX.flush();
-                    prefsBotonSoundFX.flush();
+                    activarSonido(true);
                     juego.setScreen(new PantallaConfiguracion(juego));
                 }
             });
         }
 
         // Boton Regresar
-        texturaBotonRegresar = new Texture("Botones/botonRegresar.png");
-        TextureRegionDrawable trdRegresar = new TextureRegionDrawable(new TextureRegion(texturaBotonRegresar));
-        ImageButton btnRegresar = new ImageButton(trdRegresar);
-        btnRegresar.setPosition(escenaMenuConfig.getWidth() - 150,escenaMenuConfig.getHeight() - 150);
-        escenaMenuConfig.addActor(btnRegresar);
-        btnRegresar.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
+        btnRegresar = new Boton("Botones/botonRegresar.png");
+        btnRegresar.posicionarBoton(escenaMenuConfig.getWidth() - 150,escenaMenuConfig.getHeight() - 150);
+        btnRegresar.presionar(juego, 7);
+
+        btnRegresar.agregar(escenaMenuConfig);
 
         Gdx.input.setInputProcessor(escenaMenuConfig);
+    }
+
+    private void activarMusica(boolean activado) {
+        prefsMusic.putBoolean("musicOn",activado);
+        prefsBotonMusic.putBoolean("BotonMusicOn", activado);
+        prefsMusic.flush();
+        prefsBotonMusic.flush();
+    }
+
+    private void activarSonido(boolean activado) {
+        prefsSoundFX.putBoolean("soundFXOn", activado);
+        prefsBotonSoundFX.putBoolean("BotonSoundFXOn", activado);
+        prefsSoundFX.flush();
+        prefsBotonSoundFX.flush();
     }
 
     @Override

@@ -20,6 +20,10 @@ public class PantallaDesarrolladores extends Pantalla
 
     private Texture texturaBotonCerrar;
 
+    // Botones
+    private Boton btnRegresar;
+
+    // Escena
     private Stage escenaPantallaDesarrolladores;
 
     public PantallaDesarrolladores(Juego juego) {
@@ -36,19 +40,12 @@ public class PantallaDesarrolladores extends Pantalla
 
     private void crearPantalla() {
         escenaPantallaDesarrolladores = new Stage(vista);
-        texturaBotonCerrar = new Texture("Botones/BotonCerrar.png");
-        TextureRegionDrawable trdCerrar = new TextureRegionDrawable(new TextureRegion(texturaBotonCerrar));
-        ImageButton btnCerrar = new ImageButton(trdCerrar);
-        btnCerrar.setPosition(ANCHO-280, ALTO-100);
-        escenaPantallaDesarrolladores.addActor(btnCerrar);
 
-        btnCerrar.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaAcercaDe(juego));
-            }
-        });
+        btnRegresar = new Boton("Botones/botonRegresar.png");
+        btnRegresar.posicionarBoton(escenaPantallaDesarrolladores.getWidth() - 150,escenaPantallaDesarrolladores.getHeight() - 150);
+        btnRegresar.presionar(juego, 1);
+
+        btnRegresar.agregar(escenaPantallaDesarrolladores);
 
         Gdx.input.setInputProcessor(escenaPantallaDesarrolladores);
     }

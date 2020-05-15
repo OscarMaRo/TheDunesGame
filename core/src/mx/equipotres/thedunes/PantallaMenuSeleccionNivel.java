@@ -9,9 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -36,10 +38,13 @@ class PantallaMenuSeleccionNivel extends Pantalla {
     private Texture texturaCandado;
     private Image imgCandadoNivel2;
     private Image imgCandadoNivel3;
+
     // Scroll Pane... pending checar
     private ScrollPane scrollPane;
     private List list;
     //private Skin skin;
+    private Table table;
+    private Table container;
 
     // Botones
     private BotonNiveles btnPrimerNivel;
@@ -60,6 +65,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         // Background: Initialize the sprite for the background.
         texturaFondoNiveles = new Texture("Fondos/fondoNiveles.jpg");
         crearMenu();
+
     }
 
     private void crearCandado() {

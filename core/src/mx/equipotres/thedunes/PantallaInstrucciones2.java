@@ -19,10 +19,12 @@ public class PantallaInstrucciones2 extends Pantalla
     private Texture texturaRectangulo;
     private Texture texturaEnemigo1;
     private Texture texturaTorre;
-    private Texture texturaBotonRegresar;
 
-    private Texture texturaBotonCerrar;
+    // Botones
+    private Boton btnInstrucciones;
+    private Boton btnRegresar;
 
+    // Escena
     private Stage escenaPantallaInstrucciones2;
 
     public PantallaInstrucciones2(Juego juego) {
@@ -34,7 +36,6 @@ public class PantallaInstrucciones2 extends Pantalla
         texturaFondo = new Texture("Fondos/fondoMenu.png");
         texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
         texturaEnemigo1 = new Texture("Sprites/enemigo1.png");
-        texturaBotonRegresar = new Texture("Botones/BotonRegresar2.png");
         texturaTorre = new Texture("Sprites/torre.png");
         instrucciones = new Texto("Fuentes/fuente.fnt");
         crearPantalla();
@@ -42,30 +43,17 @@ public class PantallaInstrucciones2 extends Pantalla
 
     private void crearPantalla() {
         escenaPantallaInstrucciones2 = new Stage(vista);
-        texturaBotonCerrar = new Texture("Botones/BotonCerrar.png");
-        TextureRegionDrawable trdCerrar = new TextureRegionDrawable(new TextureRegion(texturaBotonCerrar));
-        ImageButton btnCerrar = new ImageButton(trdCerrar);
-        btnCerrar.setPosition(ANCHO-280, ALTO-100);
-        escenaPantallaInstrucciones2.addActor(btnCerrar);
-        btnCerrar.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaAcercaDe(juego));
-            }
-        });
 
-        TextureRegionDrawable trdRegresar = new TextureRegionDrawable(new TextureRegion(texturaBotonRegresar));
-        ImageButton btnRegresar = new ImageButton(trdRegresar);
-        btnRegresar.setPosition(ANCHO/3-185, texturaRectangulo.getHeight()*.1f);
-        escenaPantallaInstrucciones2.addActor(btnRegresar);
-        btnRegresar.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                juego.setScreen(new PantallaInstrucciones(juego));
-            }
-        });
+        btnRegresar = new Boton("Botones/botonRegresar.png");
+        btnRegresar.posicionarBoton(escenaPantallaInstrucciones2.getWidth() - 150,escenaPantallaInstrucciones2.getHeight() - 150);
+        btnRegresar.presionar(juego, 1);
+
+        btnInstrucciones = new Boton("Botones/BotonRegresar2.png");
+        btnInstrucciones.posicionarBoton(ANCHO/3-185, texturaRectangulo.getHeight()*.1f);
+        btnInstrucciones.presionar(juego, 5);
+
+        btnRegresar.agregar(escenaPantallaInstrucciones2);
+        btnInstrucciones.agregar(escenaPantallaInstrucciones2);
 
         Gdx.input.setInputProcessor(escenaPantallaInstrucciones2);
     }
@@ -74,6 +62,7 @@ public class PantallaInstrucciones2 extends Pantalla
     public void render(float delta) {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
+
         batch.begin();
         batch.draw(texturaFondo,0,0);
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
