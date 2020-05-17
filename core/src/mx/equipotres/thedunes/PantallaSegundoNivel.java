@@ -67,6 +67,24 @@ class PantallaSegundoNivel extends Pantalla {
     private LinkedList<Bala> listaBalas = new LinkedList<>();
     private float direccionBala;
 
+    //Torres
+    private Texture texturaTorreNivel1;
+    private Texture texturaTorreNivel2;
+    private Torre torre1;
+    private Torre torre2;
+    private Torre torre3;
+    private Torre torre4;
+    private Torre torre5;
+    private Escudo escudoTorre2;
+    private Escudo escudoTorre3;
+    private Escudo escudoTorre4;
+    private Escudo escudoTorre5;
+    private BarraVida barraVidaTorre1;
+    private BarraVida barraVidaTorre2;
+    private BarraVida barraVidaTorre3;
+    private BarraVida barraVidaTorre4;
+    private BarraVida barraVidaTorre5;
+
 
     public PantallaSegundoNivel(Juego juego) { this.juego = juego; }
 
@@ -87,10 +105,13 @@ class PantallaSegundoNivel extends Pantalla {
         //texturaEnemigos = new Texture("Sprites/enemigo1.png");
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
-        //texturaTorre = new Texture("Sprites/torre.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
+
+        texturaTorreNivel1 = new Texture("Sprites/torre.png");
+        texturaTorreNivel2 = new Texture("Sprites/torreNivel2.png");
+
     }
     public void cargarMusica() {
         AssetManager manager = new AssetManager();
@@ -238,11 +259,42 @@ class PantallaSegundoNivel extends Pantalla {
     private void crearObjetos() {
         crearBoogie();
         crearMarcador();
-        //crearTorres();
-        //crearEscudos();
-        //crearBarraVidaTorre();
+        crearTorres();
+        crearEscudos();
+        crearBarraVidaTorre();
         //crearEnemigos();
         //crearEnemigosAlrededorTorre();
+    }
+    private void crearTorres() {
+        torre1 = new Torre(texturaTorreNivel1, ANCHO - texturaTorreNivel1.getWidth()-100, ALTO - texturaTorreNivel1.getHeight() - 100);
+        torre2 = new Torre(texturaTorreNivel1, ANCHO/2 - texturaTorreNivel1.getWidth()/2, ALTO - texturaTorreNivel1.getHeight() - 100);
+        torre3 = new Torre(texturaTorreNivel2, ANCHO/2 - texturaTorreNivel2.getWidth()/2, 100);
+        torre4 = new Torre(texturaTorreNivel1, ANCHO/4, ALTO/2);
+        torre5 = new Torre(texturaTorreNivel2, 100, ALTO - texturaTorreNivel2.getHeight() - 100);
+    }
+
+    private void crearEscudos(){
+
+        escudoTorre2 = new Escudo(vista, batch);
+        escudoTorre2.posicionarEscudo(0,225);
+
+        escudoTorre3 = new Escudo(vista, batch);
+        escudoTorre3.posicionarEscudo(0,-200);
+
+        escudoTorre4 = new Escudo(vista, batch);
+        escudoTorre4.posicionarEscudo(-285,35);
+
+        escudoTorre5 = new Escudo(vista, batch);
+        escudoTorre5.posicionarEscudo(-480, 200);
+
+    }
+
+    private void crearBarraVidaTorre() {
+        barraVidaTorre1 = new BarraVida();
+        barraVidaTorre2 = new BarraVida();
+        barraVidaTorre3 = new BarraVida();
+        barraVidaTorre4 = new BarraVida();
+        barraVidaTorre5 = new BarraVida();
     }
 
     @Override
@@ -281,7 +333,7 @@ class PantallaSegundoNivel extends Pantalla {
 
         batch.setProjectionMatrix(cameraHUD.combined);
         if ( estadoJuego == EstadoJuego.JUGANDO) {
-
+            dibujarEscudos();
             escenaHUD.draw();
         }
 
@@ -290,6 +342,7 @@ class PantallaSegundoNivel extends Pantalla {
                 estadoJuego = EstadoJuego.JUGANDO;
                 Gdx.input.setInputProcessor(escenaHUD);
             }
+            dibujarEscudos();
             escenaPausa.draw();
         }
 
@@ -321,6 +374,13 @@ class PantallaSegundoNivel extends Pantalla {
         Gdx.input.setInputProcessor(escenaFinal);
     }
 
+    private void dibujarEscudos(){
+        escudoTorre2.draw();
+        escudoTorre3.draw();
+        escudoTorre4.draw();
+        escudoTorre5.draw();
+    }
+
     public void dibujarJuego(SpriteBatch batch, float delta){
         boogie.render(batch);
 
@@ -335,6 +395,18 @@ class PantallaSegundoNivel extends Pantalla {
         }
 
         //torres
+        //torres
+        torre1.render(batch);
+        barraVidaTorre1.render(batch,torre1,torre1.sprite.getX()-barraVidaTorre1.textura.getWidth()/2-10,torre1.sprite.getY());
+        torre2.render(batch);
+        barraVidaTorre2.render(batch,torre2,torre2.sprite.getX()-barraVidaTorre2.textura.getWidth()/2-10,torre2.sprite.getY());
+        torre3.render(batch);
+        barraVidaTorre3.render(batch,torre3,torre3.sprite.getX()+barraVidaTorre3.textura.getWidth()/2+5,torre3.sprite.getY());
+        torre4.render(batch);
+        barraVidaTorre4.render(batch,torre4,torre4.sprite.getX()-barraVidaTorre4.textura.getWidth()/2-10,torre4.sprite.getY());
+        torre5.render(batch);
+        barraVidaTorre5.render(batch,torre5,torre5.sprite.getX()+barraVidaTorre5.textura.getWidth()/2+5,torre5.sprite.getY());
+
 
         // Enemigos
 
@@ -429,7 +501,7 @@ class PantallaSegundoNivel extends Pantalla {
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
                     musicaFondo.stop();
-                    juego.setScreen(new PantallaPrimerNivel(juego));
+                    juego.setScreen(new PantallaSegundoNivel(juego));
                 }
             });
 

@@ -89,7 +89,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         btnPrimerNivel = new BotonNiveles("Botones/botonPrimerNivel.png", "Botones/botonPrimerNivelPress.png", false);
         btnPrimerNivel.posicionarBoton(0,0);
         // Segundo Nivel
-        btnSegundoNivel = new BotonNiveles("Botones/botonSegundoNivel.png", "Botones/botonSegundoNivelPress.png", true);
+        btnSegundoNivel = new BotonNiveles("Botones/botonSegundoNivel.png", "Botones/botonSegundoNivelPress.png", false);
         btnSegundoNivel.posicionarBoton(btnPrimerNivel.getWidth(),0);
         // Tercer Nivel
         btnTercerNivel = new BotonNiveles("Botones/botonTercerNivel.png", "Botones/botonTercerNivelPress.png", true);
