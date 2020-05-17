@@ -1,6 +1,7 @@
 package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -39,6 +40,9 @@ public class PantallaAcercaDe extends Pantalla
         texturaBoogie = new Texture("Sprites/boogie3_frente.png");
         acercaDe = new Texto("Fuentes/fuente.fnt");
         crearPantalla();
+
+        Gdx.input.setCatchKey(Input.Keys.BACK,true);
+
     }
 
     private void crearPantalla() {
@@ -70,6 +74,11 @@ public class PantallaAcercaDe extends Pantalla
 
     @Override
     public void render(float delta) {
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new PantallaMenu(juego));
+        }
+
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
 

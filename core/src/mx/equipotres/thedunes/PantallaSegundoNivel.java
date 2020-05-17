@@ -78,6 +78,9 @@ class PantallaSegundoNivel extends Pantalla {
         cargarMusica();
         crearHUD();
         crearEscenaFinal();
+
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
+
     }
     private void cargarTexturas() {
         texturaFondo = new Texture(("Fondos/FondoNivel2.png"));
@@ -250,6 +253,11 @@ class PantallaSegundoNivel extends Pantalla {
 
             // Colisones
 
+            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+                estadoJuego = EstadoJuego.PAUSADO;
+                escenaPausa = new EscenaPausa(vista, batch);
+            }
+
         }
 
         borrarPantalla();
@@ -278,7 +286,10 @@ class PantallaSegundoNivel extends Pantalla {
         }
 
         if (estadoJuego == EstadoJuego.PAUSADO) {
-
+            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+                estadoJuego = EstadoJuego.JUGANDO;
+                Gdx.input.setInputProcessor(escenaHUD);
+            }
             escenaPausa.draw();
         }
 

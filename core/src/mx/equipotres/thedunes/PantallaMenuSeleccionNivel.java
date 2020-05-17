@@ -1,6 +1,7 @@
 package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -66,6 +67,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         texturaFondoNiveles = new Texture("Fondos/fondoNiveles.jpg");
         crearMenu();
 
+        Gdx.input.setCatchKey(Input.Keys.BACK,true);
     }
 
     private void crearCandado() {
@@ -116,6 +118,10 @@ class PantallaMenuSeleccionNivel extends Pantalla {
 
     @Override
     public void render(float delta) {
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new PantallaMenu(juego));
+        }
+
         // Init: Default initializers.
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);

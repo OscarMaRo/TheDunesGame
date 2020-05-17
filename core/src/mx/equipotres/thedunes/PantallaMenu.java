@@ -1,6 +1,7 @@
 package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,6 +40,8 @@ class PantallaMenu extends Pantalla {
         // Background: Initialize the sprite for the background.
         texturaFondo = new Texture("Fondos/fondoMenu.png");
         crearMenu();
+        Gdx.input.setCatchKey(Input.Keys.BACK,false);
+
     }
 
     private void crearMenu() {

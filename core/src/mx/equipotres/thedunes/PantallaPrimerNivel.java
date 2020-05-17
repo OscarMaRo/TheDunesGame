@@ -117,6 +117,8 @@ class PantallaPrimerNivel extends Pantalla {
         crearObjetos();
         cargarMusica();
         crearHUD();
+
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
 
     public void crearHUD(){
@@ -349,7 +351,14 @@ class PantallaPrimerNivel extends Pantalla {
 
             // Colisones
             verificarColisiones();
+
+            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+                estadoJuego = EstadoJuego.PAUSADO;
+                escenaPausa = new EscenaPausa(vista, batch);
+            }
         }
+
+
 
         // Iniciar por Default
         borrarPantalla();
@@ -386,6 +395,10 @@ class PantallaPrimerNivel extends Pantalla {
         }
 
         if (estadoJuego == EstadoJuego.PAUSADO) {
+            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+                estadoJuego = EstadoJuego.JUGANDO;
+                Gdx.input.setInputProcessor(escenaHUD);
+            }
             dibujarEscudos();
             escenaPausa.draw();
         }

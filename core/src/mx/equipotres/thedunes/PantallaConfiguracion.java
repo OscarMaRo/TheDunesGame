@@ -1,6 +1,7 @@
 package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -50,6 +51,9 @@ public class PantallaConfiguracion extends Pantalla
         musica = new Texto("Fuentes/fuente.fnt");
         efectosDeSonido = new Texto("Fuentes/fuente.fnt");
         crearMenu();
+
+        Gdx.input.setCatchKey(Input.Keys.BACK,true);
+
     }
 
     private void crearMenu() {
@@ -150,6 +154,11 @@ public class PantallaConfiguracion extends Pantalla
 
     @Override
     public void render(float delta) {
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            juego.setScreen(new PantallaMenu(juego));
+        }
+
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
