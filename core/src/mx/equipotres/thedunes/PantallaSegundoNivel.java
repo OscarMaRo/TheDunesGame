@@ -286,6 +286,7 @@ class PantallaSegundoNivel extends Pantalla {
         escudoTorre2 = new Escudo(vista, batch, 70);
         escudoTorre2.posicionarEscudo(0,225); //coordenadas 0,0 en el centro de la pantalla
 
+        //
         escudoTorre3 = new Escudo(vista, batch, 85);
         escudoTorre3.posicionarEscudo(0,-200);
 
