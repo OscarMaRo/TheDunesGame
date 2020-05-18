@@ -86,6 +86,11 @@ class PantallaSegundoNivel extends Pantalla {
     private BarraVida barraVidaTorre4;
     private BarraVida barraVidaTorre5;
 
+    // Balas: torres
+    private Bala balaTorre3;
+    private Bala balaTorre5;
+    private int timerBalasTorre = 0;
+
 
     public PantallaSegundoNivel(Juego juego) { this.juego = juego; }
 
@@ -261,6 +266,7 @@ class PantallaSegundoNivel extends Pantalla {
         crearBoogie();
         crearMarcador();
         crearTorres();
+        crearBalaTorres();
         crearEscudos();
         crearBarraVidaTorre();
         //crearEnemigos();
@@ -296,6 +302,12 @@ class PantallaSegundoNivel extends Pantalla {
         barraVidaTorre3 = new BarraVida();
         barraVidaTorre4 = new BarraVida();
         barraVidaTorre5 = new BarraVida();
+    }
+
+    private void crearBalaTorres() {
+        balaTorre3 =  new Bala(texturaBala, torre3.sprite.getX()+torre3.sprite.getWidth()/2, torre3.sprite.getY()+torre3.sprite.getHeight()/2);
+        balaTorre5 = new Bala(texturaBala, torre5.sprite.getX()+torre5.sprite.getWidth()/2, torre5.sprite.getY()+torre5.sprite.getHeight()/2);
+
     }
 
     @Override
@@ -412,6 +424,10 @@ class PantallaSegundoNivel extends Pantalla {
         if(torre3.vida>=0.0f) {
             torre3.render(batch);
             barraVidaTorre3.render(batch, torre3, torre3.sprite.getX() + barraVidaTorre3.textura.getWidth() / 2 + 5, torre3.sprite.getY());
+            if(timerBalasTorre>=20){
+                balaTorre3.render(batch);
+                moverBalaTorre(balaTorre3, delta,3);
+            }
         }
         if(torre4.vida>=0.0f) {
             torre4.render(batch);
@@ -420,6 +436,10 @@ class PantallaSegundoNivel extends Pantalla {
         if(torre5.vida>=0.0f) {
             torre5.render(batch);
             barraVidaTorre5.render(batch, torre5, torre5.sprite.getX() + barraVidaTorre5.textura.getWidth() / 2 + 5, torre5.sprite.getY());
+            if(timerBalasTorre>=20){
+                balaTorre5.render(batch);
+                moverBalaTorre(balaTorre5,delta,5);
+            }
         }
         batch.setColor(Color.WHITE);
 
@@ -430,8 +450,36 @@ class PantallaSegundoNivel extends Pantalla {
 
     // Actualiza: el movimiento de los enemigos y las hordas
     private void actualizar(float delta) {
+        timerBalasTorre += 1;
         if(joystickPresionado){
             boogie.mover();
+        }
+    }
+
+    private void moverBalaTorre(Bala balita, float delta, int torre) {
+
+        if(torre == 3) {
+            float y = torre3.sprite.getY() + torre3.sprite.getHeight() / 2;
+            float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - balita.sprite.getWidth() / 2;
+
+            if (balita != null) {
+                balita.moverUp(delta);
+                if (balita.sprite.getY() > ALTO) {
+                    balita.sprite.setPosition(x, y);
+                    timerBalasTorre = 0;
+                }
+            }
+        }else if (torre == 5){
+            float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
+            float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - balita.sprite.getWidth() / 2;
+
+            if (balita != null) {
+                balita.moverDown(delta);
+                if (balita.sprite.getY() < 0) {
+                    balita.sprite.setPosition(x, y);
+                    timerBalasTorre = 0;
+                }
+            }
         }
     }
 
