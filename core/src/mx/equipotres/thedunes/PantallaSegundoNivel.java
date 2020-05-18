@@ -89,7 +89,8 @@ class PantallaSegundoNivel extends Pantalla {
     // Balas: torres
     private Bala balaTorre3;
     private Bala balaTorre5;
-    private int timerBalasTorre = 0;
+    private int timerBalasTorre3 = 0;
+    private  int timerBalasTorre5 = 0;
 
 
     public PantallaSegundoNivel(Juego juego) { this.juego = juego; }
@@ -424,7 +425,7 @@ class PantallaSegundoNivel extends Pantalla {
         if(torre3.vida>=0.0f) {
             torre3.render(batch);
             barraVidaTorre3.render(batch, torre3, torre3.sprite.getX() + barraVidaTorre3.textura.getWidth() / 2 + 5, torre3.sprite.getY());
-            if(timerBalasTorre>=20){
+            if(timerBalasTorre3>=20){
                 balaTorre3.render(batch);
                 moverBalaTorre(balaTorre3, delta,3);
             }
@@ -436,7 +437,7 @@ class PantallaSegundoNivel extends Pantalla {
         if(torre5.vida>=0.0f) {
             torre5.render(batch);
             barraVidaTorre5.render(batch, torre5, torre5.sprite.getX() + barraVidaTorre5.textura.getWidth() / 2 + 5, torre5.sprite.getY());
-            if(timerBalasTorre>=20){
+            if(timerBalasTorre5>=20){
                 balaTorre5.render(batch);
                 moverBalaTorre(balaTorre5,delta,5);
             }
@@ -450,7 +451,8 @@ class PantallaSegundoNivel extends Pantalla {
 
     // Actualiza: el movimiento de los enemigos y las hordas
     private void actualizar(float delta) {
-        timerBalasTorre += 1;
+        timerBalasTorre3 += 1;
+        timerBalasTorre5 += 1;
         if(joystickPresionado){
             boogie.mover();
         }
@@ -466,7 +468,7 @@ class PantallaSegundoNivel extends Pantalla {
                 bala.moverUp(delta);
                 if (bala.sprite.getY() > ALTO) {
                     bala.sprite.setPosition(x, y);
-                    timerBalasTorre = 0;
+                    timerBalasTorre3 = 0;
                 }
             }
         }else if (torre == 5){
@@ -477,7 +479,7 @@ class PantallaSegundoNivel extends Pantalla {
                 bala.moverDown(delta);
                 if (bala.sprite.getY() < 0) {
                     bala.sprite.setPosition(x, y);
-                    timerBalasTorre = 0;
+                    timerBalasTorre5 = 0;
                 }
             }
         }
@@ -504,7 +506,7 @@ class PantallaSegundoNivel extends Pantalla {
             boogie.restarVida(1);
             marcador.restarVidas(1);
             balaTorre3.sprite.setPosition(x,y);
-            timerBalasTorre = 0;
+            timerBalasTorre3 = 0;
 
         }else if(rectBala5.overlaps(rectBoogie)){
             float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
@@ -512,7 +514,7 @@ class PantallaSegundoNivel extends Pantalla {
             boogie.restarVida(1);
             marcador.restarVidas(1);
             balaTorre5.sprite.setPosition(x,y);
-            timerBalasTorre = 0;
+            timerBalasTorre5 = 0;
 
         }
 
