@@ -275,13 +275,13 @@ class PantallaPrimerNivel extends Pantalla {
         torreSuperiorIzquierda = new Torre(texturaTorre, 200, ALTO - texturaTorre.getHeight()/2 - 170);
     }
     private void crearEscudos(){
-        escudoTorre = new Escudo(vista, batch);
+        escudoTorre = new Escudo(vista, batch, 70);
         escudoTorre.posicionarEscudo(30, 30);
 
-        escudoTorreInferiorDerecha = new Escudo(vista, batch);
+        escudoTorreInferiorDerecha = new Escudo(vista, batch, 70);
         escudoTorreInferiorDerecha.posicionarEscudo(340, -190);
 
-        escudoTorreSuperiorIzquierda = new Escudo(vista, batch);
+        escudoTorreSuperiorIzquierda = new Escudo(vista, batch, 70);
         escudoTorreSuperiorIzquierda.posicionarEscudo(-405, 190);
 
     }

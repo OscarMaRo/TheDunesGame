@@ -283,16 +283,16 @@ class PantallaSegundoNivel extends Pantalla {
 
     private void crearEscudos(){
 
-        escudoTorre2 = new Escudo(vista, batch);
+        escudoTorre2 = new Escudo(vista, batch, 70);
         escudoTorre2.posicionarEscudo(0,225); //coordenadas 0,0 en el centro de la pantalla
 
-        escudoTorre3 = new Escudo(vista, batch);
+        escudoTorre3 = new Escudo(vista, batch, 85);
         escudoTorre3.posicionarEscudo(0,-200);
 
-        escudoTorre4 = new Escudo(vista, batch);
+        escudoTorre4 = new Escudo(vista, batch, 70);
         escudoTorre4.posicionarEscudo(-285,35);
 
-        escudoTorre5 = new Escudo(vista, batch);
+        escudoTorre5 = new Escudo(vista, batch, 85);
         escudoTorre5.posicionarEscudo(-480, 200);
 
     }
@@ -439,7 +439,7 @@ class PantallaSegundoNivel extends Pantalla {
             barraVidaTorre5.render(batch, torre5, torre5.sprite.getX() + barraVidaTorre5.textura.getWidth() / 2 + 5, torre5.sprite.getY());
             if(timerBalasTorre5>=20){
                 balaTorre5.render(batch);
-                moverBalaTorre(balaTorre5,delta,5);
+                moverBalaTorre(balaTorre5,delta,5); // checar
             }
         }
         batch.setColor(Color.WHITE);
@@ -459,7 +459,6 @@ class PantallaSegundoNivel extends Pantalla {
     }
 
     private void moverBalaTorre(Bala bala, float delta, int torre) {
-
         if(torre == 3) {
             float y = torre3.sprite.getY() + torre3.sprite.getHeight() / 2;
             float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
@@ -508,7 +507,7 @@ class PantallaSegundoNivel extends Pantalla {
             balaTorre3.sprite.setPosition(x,y);
             timerBalasTorre3 = 0;
 
-        }else if(rectBala5.overlaps(rectBoogie)){
+        } else if(rectBala5.overlaps(rectBoogie)){
             float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
             float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - balaTorre5.sprite.getWidth() / 2;
             boogie.restarVida(1);
@@ -546,7 +545,7 @@ class PantallaSegundoNivel extends Pantalla {
                 boogie.sprite.setPosition(10, 10);
             }
         } else if (rectBoogie.overlaps(rectTorre4)) {
-            if (torre4.vida >= 0.0f) {
+            if (torre4.vida > 0.0f) {
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
                 boogie.sprite.setPosition(10, 10);
@@ -632,9 +631,9 @@ class PantallaSegundoNivel extends Pantalla {
 
     // Colisiones Escudos
     private void probarColisionesEscudos() {
-        Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX(),torre2.sprite.getY());  //coordenadas 0,0 en la esquina infereior izquierda
+        Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX()-20,torre2.sprite.getY()-20);  //coordenadas 0,0 en la esquina infereior izquierda
         Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX(),torre3.sprite.getY());
-        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX(),torre4.sprite.getY());
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-20,torre4.sprite.getY()-20);
         Rectangle rectEscudoTorre5 = escudoTorre5.getBoundaries(torre5.sprite.getX(),torre5.sprite.getY());
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 

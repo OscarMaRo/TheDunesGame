@@ -16,12 +16,12 @@ public class Escudo extends Stage {
     private int ALTO = 720;
     protected Image imgEscudo;
 
-    public Escudo(Viewport vista, SpriteBatch batch) {
+    public Escudo(Viewport vista, SpriteBatch batch, int radius) {
         super(vista, batch);
 
         Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO * 0.8f), Pixmap.Format.RGBA8888);
         pixmap.setColor(0,0,0.7f,0.5f);
-        pixmap.fillCircle((int)(ANCHO * 0.5),(int)(ALTO * 0.3),70);
+        pixmap.fillCircle((int)(ANCHO * 0.5),(int)(ALTO * 0.3), radius);
         Texture texturaEscudo = new Texture(pixmap);
 
         imgEscudo = new Image(texturaEscudo);
