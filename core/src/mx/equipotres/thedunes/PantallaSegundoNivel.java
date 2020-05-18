@@ -456,27 +456,27 @@ class PantallaSegundoNivel extends Pantalla {
         }
     }
 
-    private void moverBalaTorre(Bala balita, float delta, int torre) {
+    private void moverBalaTorre(Bala bala, float delta, int torre) {
 
         if(torre == 3) {
             float y = torre3.sprite.getY() + torre3.sprite.getHeight() / 2;
-            float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - balita.sprite.getWidth() / 2;
+            float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
 
-            if (balita != null) {
-                balita.moverUp(delta);
-                if (balita.sprite.getY() > ALTO) {
-                    balita.sprite.setPosition(x, y);
+            if (bala != null) {
+                bala.moverUp(delta);
+                if (bala.sprite.getY() > ALTO) {
+                    bala.sprite.setPosition(x, y);
                     timerBalasTorre = 0;
                 }
             }
         }else if (torre == 5){
             float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
-            float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - balita.sprite.getWidth() / 2;
+            float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
 
-            if (balita != null) {
-                balita.moverDown(delta);
-                if (balita.sprite.getY() < 0) {
-                    balita.sprite.setPosition(x, y);
+            if (bala != null) {
+                bala.moverDown(delta);
+                if (bala.sprite.getY() < 0) {
+                    bala.sprite.setPosition(x, y);
                     timerBalasTorre = 0;
                 }
             }
@@ -486,9 +486,40 @@ class PantallaSegundoNivel extends Pantalla {
     //Enemigos, torres y escudos
     private void verificarColisiones() {
         //probarColisionesEnemigos();
+        probarColisionesBalaTorre();
         probarColisionesTorres();
         probarColisionesEscudos();
     }
+
+    //colisiones bala torre
+    private void probarColisionesBalaTorre(){
+        Rectangle rectBala3 = balaTorre3.sprite.getBoundingRectangle();
+        Rectangle rectBala5 = balaTorre5.sprite.getBoundingRectangle();
+        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+
+
+        if (rectBala3.overlaps(rectBoogie)) {
+            float y = torre3.sprite.getY() + torre3.sprite.getHeight() / 2;
+            float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - balaTorre3.sprite.getWidth() / 2;
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            balaTorre3.sprite.setPosition(x,y);
+            timerBalasTorre = 0;
+
+        }else if(rectBala5.overlaps(rectBoogie)){
+            float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
+            float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - balaTorre5.sprite.getWidth() / 2;
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            balaTorre5.sprite.setPosition(x,y);
+            timerBalasTorre = 0;
+
+        }
+
+    }
+
+
+
 
     //ColisionesTorres
     private void probarColisionesTorres() {
