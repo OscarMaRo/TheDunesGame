@@ -166,7 +166,7 @@ class PantallaPrimerNivel extends Pantalla {
         ImageButton btnPausa = new ImageButton(trdPausa);
         btnPausa.setPosition(ANCHO - btnPausa.getWidth() - 5 ,ALTO - btnPausa.getHeight() - 5);
 
-        //Acción de acelerar
+        //Acción de disparar
         btnDisparar.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -297,7 +297,6 @@ class PantallaPrimerNivel extends Pantalla {
     private void crearEnemigos() {
         arrEnemigos1 = new LinkedList<>();
         arrEnemigos2 = new LinkedList<>();
-        //Para primera horda
         for (int y = 0; y < 10; y++) {
             EnemigoBasico enemigo = new EnemigoBasico(texturaEnemigos, 400-texturaEnemigos.getWidth(),
                     ALTO + texturaEnemigos.getHeight()*y + 20*y);

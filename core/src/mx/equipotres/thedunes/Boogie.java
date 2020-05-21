@@ -7,7 +7,7 @@ public class Boogie extends Objeto {
 
     // Variables.
     private final int ROTACION = 360 / 8;
-    private final int PASO = 1;
+    private final int PASO = 2;
     public int vidas;
 
     // Constructor principal.
