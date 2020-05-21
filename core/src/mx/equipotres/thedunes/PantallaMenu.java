@@ -53,10 +53,10 @@ class PantallaMenu extends Pantalla {
         // Botón: jugar.
         // Steps to create a fully functional button.
         // 1.1 Texturize: Creates the image in the game. Idle.
-        Texture texturaBotonJugar = new Texture("Botones/button_jugar.png");
+        Texture texturaBotonJugar = new Texture("Botones/botonJugar.png");
         TextureRegionDrawable trdJugar = new TextureRegionDrawable(new TextureRegion(texturaBotonJugar));
         // 1.2 Texturize: Creates the image in the game. Clicked.
-        Texture texturaBotonJugarPress = new Texture("Botones/button_jugarP.png");
+        Texture texturaBotonJugarPress = new Texture("Botones/botonJugarPres.png");
         TextureRegionDrawable trdJugarP = new TextureRegionDrawable(new TextureRegion(texturaBotonJugarPress));
         // 2. Creation: Creates the button to be used.
         ImageButton btnJugar = new ImageButton(trdJugar,trdJugarP);
@@ -66,10 +66,10 @@ class PantallaMenu extends Pantalla {
         // Botón: Configuración.
         // Steps to create a fully functional button.
         // 1.1 Texturize: Creates the image in the game. Idle.
-        Texture texturaBotonConfig = new Texture("Botones/button_configuracion.png");
+        Texture texturaBotonConfig = new Texture("Botones/botonConfiguracion.png");
         TextureRegionDrawable trdConfig = new TextureRegionDrawable(new TextureRegion(texturaBotonConfig));
         // 1.2 Texturize: Creates the image in the game. Clicked.
-        Texture texturaBotonConfigPress = new Texture("Botones/button_configuracionP.png");
+        Texture texturaBotonConfigPress = new Texture("Botones/botonConfiguracionPres.png");
         TextureRegionDrawable trdConfigP = new TextureRegionDrawable(new TextureRegion(texturaBotonConfigPress));
         // 2. Creation: Creates the button to be used.
         ImageButton btnConfiguracion = new ImageButton(trdConfig,trdConfigP);
@@ -77,9 +77,9 @@ class PantallaMenu extends Pantalla {
         btnConfiguracion.setPosition(ANCHO/2 - btnConfiguracion.getWidth()/2, (ALTO/2)-100);
 
         // Boton Acerca De
-        Texture texturaBotonAcercaDe = new Texture("Botones/BotonAcercaDe.png");
+        Texture texturaBotonAcercaDe = new Texture("Botones/botonAcercade.png");
         TextureRegionDrawable trdBotonAcercaDe= new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDe));
-        Texture texturaBotonAcercaDeP = new Texture("Botones/BotonAcercaDeP.png");
+        Texture texturaBotonAcercaDeP = new Texture("Botones/botonAcercadeP.png");
         TextureRegionDrawable trdBotonAcercaDeP = new TextureRegionDrawable(new TextureRegion(texturaBotonAcercaDeP));
         ImageButton btnAcercaDe = new ImageButton(trdBotonAcercaDe,trdBotonAcercaDeP);
         btnAcercaDe.setPosition(ANCHO/2 - btnAcercaDe.getWidth()/2, (ALTO/2)-200);
