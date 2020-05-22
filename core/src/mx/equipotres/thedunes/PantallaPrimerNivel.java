@@ -107,7 +107,6 @@ class PantallaPrimerNivel extends Pantalla {
     private int contador = 0;
     private boolean trigger = false;
 
-
     public PantallaPrimerNivel(Juego juego) { this.juego = juego; }
 
     @Override
