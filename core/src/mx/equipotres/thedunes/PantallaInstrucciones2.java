@@ -51,8 +51,9 @@ public class PantallaInstrucciones2 extends Pantalla
         btnRegresar.posicionarBoton(escenaPantallaInstrucciones2.getWidth() - 150,escenaPantallaInstrucciones2.getHeight() - 150);
         btnRegresar.presionar(juego, 1);
 
-        btnInstrucciones = new Boton("Botones/BotonRegresar2.png");
-        btnInstrucciones.posicionarBoton(ANCHO/3-185, texturaRectangulo.getHeight()*.1f);
+        btnInstrucciones = new Boton("Botones/BotonRegresar.png");
+        btnInstrucciones.setColor();
+        btnInstrucciones.posicionarBoton(ANCHO*0.05f, texturaRectangulo.getHeight()*.1f);
         btnInstrucciones.presionar(juego, 5);
 
         btnRegresar.agregar(escenaPantallaInstrucciones2);

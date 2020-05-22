@@ -1,5 +1,6 @@
 package mx.equipotres.thedunes;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -33,6 +34,10 @@ public class Boton {
         TextureRegionDrawable trdPresionado = new TextureRegionDrawable(new TextureRegion(texturaBtnPress));
         // Creación del Botón
         boton = new ImageButton(trd, trdPresionado);
+    }
+
+    public void setColor() {
+        boton.getImage().setColor(Color.SALMON);
     }
 
     public void posicionarBoton(float x, float y) {
