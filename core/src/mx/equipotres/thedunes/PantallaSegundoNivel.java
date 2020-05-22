@@ -100,6 +100,20 @@ class PantallaSegundoNivel extends Pantalla {
     private Texture texturaEnemigos2;
     private  int numeroPasos = 0;
 
+    // Time
+    private Texto time;
+    private long startTime = System.currentTimeMillis();
+    private long elapsedTime;
+
+    // Estrellas
+    private Texture estrella;
+    private Image imgEstrella1;
+    private Image imgEstrella2;
+    private Image imgEstrella3;
+
+    // Fondo metálico
+    private Texture texturaRectangulo;
+
 
     public PantallaSegundoNivel(Juego juego) {
         this.juego = juego;
@@ -129,9 +143,29 @@ class PantallaSegundoNivel extends Pantalla {
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
 
+        // Cambiar textura por estrellas
+        estrella = new Texture("Botones/disparar.png");
+        texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
+        time = new Texto("Fuentes/fuente.fnt");
+
         texturaTorreNivel1 = new Texture("Sprites/torre.png");
         texturaTorreNivel2 = new Texture("Sprites/torreNivel2.png");
 
+    }
+
+    private void crearEstrella1() {
+        imgEstrella1 = new Image(estrella);
+        imgEstrella1.setPosition(ANCHO*0.3f,ALTO*0.55f);
+    }
+
+    private void crearEstrella2() {
+        imgEstrella2 = new Image(estrella);
+        imgEstrella2.setPosition(ANCHO*0.5f-estrella.getWidth()/2,ALTO*0.6f);
+    }
+
+    private void crearEstrella3() {
+        imgEstrella3 = new Image(estrella);
+        imgEstrella3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
     }
 
     public void cargarMusica() {
@@ -279,7 +313,7 @@ class PantallaSegundoNivel extends Pantalla {
         Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
         TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
         Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO / 2 - 250, ALTO / 2 - 144);
+        btnVolverMenu.setPosition(ANCHO/2-220, ALTO/2-144-50);
 
         btnVolverMenu.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -307,19 +341,17 @@ class PantallaSegundoNivel extends Pantalla {
     private void crearTorres() {
         torre1 = new Torre(texturaTorreNivel1, ANCHO - texturaTorreNivel1.getWidth() - 100, ALTO - texturaTorreNivel1.getHeight() - 100);
         torre2 = new Torre(texturaTorreNivel1, ANCHO / 2 - texturaTorreNivel1.getWidth() / 2, ALTO - texturaTorreNivel1.getHeight() - 100);
-        torre3 = new Torre(texturaTorreNivel2, ANCHO / 2 - texturaTorreNivel2.getWidth() / 2, 100);
+        torre3 = new Torre(texturaTorreNivel2, ANCHO / 2 - texturaTorreNivel2.getWidth() / 2, 70);
         torre4 = new Torre(texturaTorreNivel1, ANCHO / 4, ALTO / 2);
         torre5 = new Torre(texturaTorreNivel2, 100, ALTO - texturaTorreNivel2.getHeight() - 100);
     }
 
     private void crearEscudos() {
-
         escudoTorre2 = new Escudo(vista, batch, 70);
         escudoTorre2.posicionarEscudo(0, 225); //coordenadas 0,0 en el centro de la pantalla
 
-        //
         escudoTorre3 = new Escudo(vista, batch, 85);
-        escudoTorre3.posicionarEscudo(0, -200);
+        escudoTorre3.posicionarEscudo(0, -230);
 
         escudoTorre4 = new Escudo(vista, batch, 70);
         escudoTorre4.posicionarEscudo(-285, 35);
@@ -340,7 +372,6 @@ class PantallaSegundoNivel extends Pantalla {
     private void crearBalaTorres() {
         balaTorre3 = new Bala(texturaBala, torre3.sprite.getX() + torre3.sprite.getWidth() / 2, torre3.sprite.getY() + torre3.sprite.getHeight() / 2);
         balaTorre5 = new Bala(texturaBala, torre5.sprite.getX() + torre5.sprite.getWidth() / 2, torre5.sprite.getY() + torre5.sprite.getHeight() / 2);
-
     }
 
     @Override
@@ -364,6 +395,12 @@ class PantallaSegundoNivel extends Pantalla {
         batch.begin();
 
         batch.draw(texturaFondo, 0, 0);
+
+        // Tiempo
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            elapsedTime = (System.currentTimeMillis() - startTime)/1000;
+            time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO-20f);
+        }
 
         //Dibujar elementos del juego
         if (estadoJuego == EstadoJuego.JUGANDO || estadoJuego == EstadoJuego.PAUSADO) {
@@ -405,12 +442,13 @@ class PantallaSegundoNivel extends Pantalla {
             escenaFinal.draw();
 
         }
-
     }
 
     private void dibujarDerrota(SpriteBatch batch) {
         String mensaje = "Has sido derrotado";
+        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
         ganar.render(batch, mensaje, ANCHO / 2 - 20, ALTO / 2 + 10);
+        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO*0.5f+50f);
         estadoJuego = EstadoJuego.PERDIO;
 
         Gdx.input.setInputProcessor(escenaFinal);
@@ -418,9 +456,29 @@ class PantallaSegundoNivel extends Pantalla {
 
     private void dibujarVictoria(SpriteBatch batch) {
         String mensaje = "Enhorabuena, has ganado!";
-        ganar.render(batch, mensaje, ANCHO / 2 - 20, ALTO / 2 + 10);
-        marcador.render(batch, ANCHO / 2 - 10, ALTO / 2 + 55);
+        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
+        ganar.render(batch, mensaje, ANCHO/2 - 5, ALTO/2 + 10 - 50);
+        marcador.render(batch, ANCHO/2 + 5, ALTO/2 + 55 - 50);
+        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
         estadoJuego = EstadoJuego.GANO;
+
+        if (marcador.puntos >= 40 && elapsedTime < 60) {
+            crearEstrella1();
+            crearEstrella2();
+            crearEstrella3();
+            escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrella2);
+            escenaFinal.addActor(imgEstrella3);
+        } else if (marcador.puntos >= 30 && marcador.puntos < 40 && elapsedTime < 90) {
+            crearEstrella1();
+            crearEstrella3();
+            escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrella3);
+        } else {
+            crearEstrella2();
+            escenaFinal.addActor(imgEstrella2);
+        }
+
         Gdx.input.setInputProcessor(escenaFinal);
     }
 
@@ -524,7 +582,7 @@ class PantallaSegundoNivel extends Pantalla {
                     timerBalasTorre3 = 0;
                 }
             }
-        }else if (torre == 5){
+        } else if (torre == 5){
             float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
             float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
 
@@ -624,7 +682,6 @@ class PantallaSegundoNivel extends Pantalla {
         Rectangle rectBala5 = balaTorre5.sprite.getBoundingRectangle();
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 
-
         if (rectBala3.overlaps(rectBoogie)) {
             float y = torre3.sprite.getY() + torre3.sprite.getHeight() / 2;
             float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - balaTorre3.sprite.getWidth() / 2;
@@ -644,9 +701,6 @@ class PantallaSegundoNivel extends Pantalla {
         }
 
     }
-
-
-
 
     //ColisionesTorres
     private void probarColisionesTorres() {
@@ -682,7 +736,7 @@ class PantallaSegundoNivel extends Pantalla {
                 marcador.restarVidas(1);
                 boogie.sprite.setPosition(10, 10);
             }
-        }else if (rectBoogie.overlaps(rectTorre1)) {
+        } else if (rectBoogie.overlaps(rectTorre1)) {
             if (torre1.vida >= 0.0f) {
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
@@ -694,7 +748,17 @@ class PantallaSegundoNivel extends Pantalla {
             Rectangle rectBala = listaBalas.get(j).sprite.getBoundingRectangle();
             if (rectTorre1.overlaps(rectBala)) {
                 torre1.restarVida();
-                listaBalas.remove(j);
+                if (torre1.vida >= 0.0f) {
+                    hit++;
+                    listaBalas.remove(j);
+                    if (hit == 9) {
+                        System.out.println(hit);
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
+                        hit = 0;
+                    }
+                }
                 break;
             } else if (rectTorre2.overlaps(rectBala)) {
                 torre2.restarVida();
@@ -757,28 +821,36 @@ class PantallaSegundoNivel extends Pantalla {
 
     // Colisiones Escudos
     private void probarColisionesEscudos() {
-        Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX()-20,torre2.sprite.getY()-20);  //coordenadas 0,0 en la esquina infereior izquierda
-        Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX(),torre3.sprite.getY());
-        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-20,torre4.sprite.getY()-20);
-        Rectangle rectEscudoTorre5 = escudoTorre5.getBoundaries(torre5.sprite.getX(),torre5.sprite.getY());
+        Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX()-20,torre2.sprite.getY()-20, 100);  //coordenadas 0,0 en la esquina infereior izquierda
+        Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-20,torre3.sprite.getY()-20, 140);
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-10,torre4.sprite.getY()-10, 100);
+        Rectangle rectEscudoTorre5 = escudoTorre5.getBoundaries(torre5.sprite.getX()-20,torre5.sprite.getY()-20, 100);
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 
         if (rectBoogie.overlaps(rectEscudoTorre2)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(180, 10);
+            if (torre2.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
         } else if (rectBoogie.overlaps(rectEscudoTorre3)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(180, 10);
+            if (torre3.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
         } else if (rectBoogie.overlaps(rectEscudoTorre4)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(180, 10);
+            if (torre4.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
         } else if (rectBoogie.overlaps(rectEscudoTorre5)) {
-            boogie.restarVida(1);
-            marcador.restarVidas(1);
-            boogie.sprite.setPosition(180, 10);
+            if (torre5.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
         }
 
         for (int j = 0; j < listaBalas.size(); j++) {

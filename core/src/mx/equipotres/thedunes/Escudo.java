@@ -33,8 +33,8 @@ public class Escudo extends Stage {
         imgEscudo.setPosition(x, y);
     }
 
-    public Rectangle getBoundaries(float x, float y) {
-        float size = 100;
+    public Rectangle getBoundaries(float x, float y, float size) {
+        //float size = 100;
         return new Rectangle(x, y, size, size);
     }
 
