@@ -571,26 +571,28 @@ class PantallaSegundoNivel extends Pantalla {
 
 
     private void moverBalaTorre(Bala bala, float delta, int torre) {
-        if(torre == 3) {
-            float y = torre3.sprite.getY() + torre3.sprite.getHeight() / 2;
-            float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
+        if(estadoJuego==EstadoJuego.JUGANDO) {
+            if (torre == 3) {
+                float y = torre3.sprite.getY() + torre3.sprite.getHeight() / 2;
+                float x = torre3.sprite.getX() + torre3.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
 
-            if (bala != null) {
-                bala.moverUp(delta);
-                if (bala.sprite.getY() > ALTO) {
-                    bala.sprite.setPosition(x, y);
-                    timerBalasTorre3 = 0;
+                if (bala != null) {
+                    bala.moverUp(delta);
+                    if (bala.sprite.getY() > ALTO) {
+                        bala.sprite.setPosition(x, y);
+                        timerBalasTorre3 = 0;
+                    }
                 }
-            }
-        } else if (torre == 5){
-            float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
-            float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
+            } else if (torre == 5) {
+                float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
+                float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - bala.sprite.getWidth() / 2;
 
-            if (bala != null) {
-                bala.moverDown(delta);
-                if (bala.sprite.getY() < 0) {
-                    bala.sprite.setPosition(x, y);
-                    timerBalasTorre5 = 0;
+                if (bala != null) {
+                    bala.moverDown(delta);
+                    if (bala.sprite.getY() < 0) {
+                        bala.sprite.setPosition(x, y);
+                        timerBalasTorre5 = 0;
+                    }
                 }
             }
         }
