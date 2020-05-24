@@ -48,15 +48,15 @@ public class PantallaAcercaDe extends Pantalla
     private void crearPantalla() {
         escenaPantallaAcercaDe = new Stage(vista);
 
-        btnContenido = new Boton("Botones/BotonContenido.png", "Botones/BotonContenidoP.png");
+        btnContenido = new Boton("Botones/botonContenido.png", "Botones/botonContenidoPres.png");
         btnContenido.posicionarBoton(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-25);
         btnContenido.presionar(juego, 3);
 
-        btnDesarrolladores = new Boton("Botones/BotonDesarrolladores.png", "Botones/BotonDesarrolladoresP.png");
+        btnDesarrolladores = new Boton("Botones/botonDesarrolladores.png", "Botones/botonDesarrolladoresPres.png");
         btnDesarrolladores.posicionarBoton(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2-125);
         btnDesarrolladores.presionar(juego, 4);
 
-        btnInstrucciones = new Boton("Botones/BotonInstrucciones.png", "Botones/BotonInstruccionesP.png");
+        btnInstrucciones = new Boton("Botones/botonInstrucciones.png", "Botones/botonInstruccionesPres.png");
         btnInstrucciones.posicionarBoton(ANCHO/2 - btnContenido.getWidth()/2,ALTO/2+75);
         btnInstrucciones.presionar(juego, 5);
 
