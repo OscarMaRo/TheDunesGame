@@ -6,10 +6,12 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -66,6 +68,27 @@ class PantallaTercerNivel extends Pantalla {
     private LinkedList<Bala> listaBalas = new LinkedList<>();
     private float direccionBala;
 
+    //Torres
+    private Texture texturaTorreNivel2;
+    private Texture texturaTorreNivel3;
+    private Torre torre1;
+    private Torre torre2;
+    private Torre torre3;
+    private Torre torre4;
+    private BarraVida barraVidaTorre1;
+    private BarraVida barraVidaTorre2;
+    private BarraVida barraVidaTorre3;
+    private BarraVida barraVidaTorre4;
+
+
+    // Balas: torres
+    private Bala bala1Torre4;
+    private Bala bala2Torre4;
+    private Bala bala3Torre4;
+    private int timerBalas1 = 0;
+    private int timerBalas2 = 0;
+    private int timerBalas3 = 0;
+
 
     public PantallaTercerNivel(Juego juego) { this.juego = juego; }
 
@@ -86,10 +109,12 @@ class PantallaTercerNivel extends Pantalla {
         //texturaEnemigos = new Texture("Sprites/enemigo1.png");
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
-        //texturaTorre = new Texture("Sprites/torre.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
+
+        texturaTorreNivel3 = new Texture("Sprites/torreNivel3.png");
+        texturaTorreNivel2 = new Texture("Sprites/torreNivel2.png");
     }
     public void cargarMusica() {
         AssetManager manager = new AssetManager();
@@ -233,13 +258,37 @@ class PantallaTercerNivel extends Pantalla {
         escenaFinal.addActor(btnVolverMenu);
     }
 
+    private void crearTorres() {
+        torre1 = new Torre(texturaTorreNivel2, ANCHO/2 - texturaTorreNivel2.getWidth()/2, ALTO - texturaTorreNivel2.getHeight() - 100);
+        torre2 = new Torre(texturaTorreNivel2, ANCHO/2  + texturaTorreNivel2.getWidth() / 2, ALTO/2- texturaTorreNivel2.getHeight()/2);
+        torre3 = new Torre(texturaTorreNivel2, ANCHO/2  - texturaTorreNivel2.getWidth() / 2, 100);
+        torre4 = new Torre(texturaTorreNivel3, ANCHO -300, ALTO / 2 - texturaTorreNivel3.getHeight()/2,2.0f);
+
+    }
+
+
+    private void crearBarraVidaTorre() {
+        barraVidaTorre1 = new BarraVida();
+        barraVidaTorre2 = new BarraVida();
+        barraVidaTorre3 = new BarraVida();
+        barraVidaTorre4 = new BarraVida();
+
+    }
+
+    private void crearBalasTorres() {
+        bala1Torre4 = new Bala(texturaBala, torre4.sprite.getX() + torre4.sprite.getWidth() / 2, torre4.sprite.getY() + torre4.sprite.getHeight() - 70);
+        bala2Torre4 = new Bala(texturaBala, torre4.sprite.getX() + torre4.sprite.getWidth() / 2, torre4.sprite.getY() + torre4.sprite.getHeight()/2 - 7);
+        bala3Torre4 = new Bala(texturaBala, torre4.sprite.getX() + torre4.sprite.getWidth() / 2, torre4.sprite.getY() + 50);
+    }
+
     // CREACIÓN: Boodie, Marcador
     private void crearObjetos() {
         crearBoogie();
         crearMarcador();
-        //crearTorres();
+        crearTorres();
         //crearEscudos();
-        //crearBarraVidaTorre();
+        crearBarraVidaTorre();
+        crearBalasTorres();
         //crearEnemigos();
         //crearEnemigosAlrededorTorre();
     }
@@ -251,6 +300,7 @@ class PantallaTercerNivel extends Pantalla {
             actualizar(delta);
 
             // Colisones
+            verificarColisiones();
 
             if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
                 estadoJuego = EstadoJuego.PAUSADO;
@@ -270,6 +320,9 @@ class PantallaTercerNivel extends Pantalla {
         }
 
         // Indicador de Victoria
+        if (torre4.vida <= 0.0f) {
+            dibujarVictoria(batch);
+        }
 
         // Indicador de derrota
         if (boogie.vidas <= 0.0f) {
@@ -333,6 +386,36 @@ class PantallaTercerNivel extends Pantalla {
         }
 
         //torres
+        if (torre1.vida >= 0.0f) {
+            torre1.render(batch);
+            barraVidaTorre1.render(batch, torre1, torre1.sprite.getX()+ 10, torre1.sprite.getY());
+        }
+        if (torre2.vida >= 0.0f) {
+            torre2.render(batch);
+            barraVidaTorre2.render(batch, torre2, torre2.sprite.getX() + 10, torre2.sprite.getY());
+        }
+        if (torre3.vida >= 0.0f) {
+            torre3.render(batch);
+            barraVidaTorre3.render(batch, torre3, torre3.sprite.getX() + 10, torre3.sprite.getY());
+        }
+        if (torre4.vida >= 0.0f) {
+            torre4.render(batch);
+            barraVidaTorre4.render(batch, torre4, torre4.sprite.getX()-30, torre4.sprite.getY());
+            if (timerBalas1 >= 20) {
+                bala1Torre4.render(batch);
+                moverBalaTorre(bala1Torre4, delta,1);
+            }
+            if (timerBalas2 >= 20) {
+                bala2Torre4.render(batch);
+                moverBalaTorre(bala2Torre4, delta,2);
+            }
+            if (timerBalas3 >= 20) {
+                bala3Torre4.render(batch);
+                moverBalaTorre(bala3Torre4, delta,3);
+            }
+
+        }
+        batch.setColor(Color.WHITE);
 
         // Enemigos
 
@@ -340,8 +423,47 @@ class PantallaTercerNivel extends Pantalla {
 
     // Actualiza: el movimiento de los enemigos y las hordas
     private void actualizar(float delta) {
+        timerBalas1 += 1;
+        timerBalas2 += 1;
+        timerBalas3 += 1;
         if(joystickPresionado){
             boogie.mover();
+        }
+    }
+
+    private void moverBalaTorre(Bala bala, float delta, int numBala) {
+        if(estadoJuego == EstadoJuego.JUGANDO) {
+            float x = torre4.sprite.getX() + torre4.sprite.getWidth() / 2;
+            if (numBala == 1) {
+                float y = torre4.sprite.getY() + torre4.sprite.getHeight() - 70;
+                if (bala != null) {
+                    bala.moverLeft(delta);
+                    if (bala.sprite.getX() < 0) {
+                        bala.sprite.setPosition(x, y);
+                        timerBalas1 = 0;
+                    }
+                }
+            } else if (numBala == 2) {
+                float y = torre4.sprite.getY() + torre4.sprite.getHeight() / 2 - bala2Torre4.sprite.getHeight() / 2;
+
+                if (bala != null) {
+                    bala.moverLeft(delta);
+                    if (bala.sprite.getX() < 0) {
+                        bala.sprite.setPosition(x, y);
+                        timerBalas2 = 0;
+                    }
+                }
+            } else if (numBala == 3) {
+                float y = torre4.sprite.getY() + 50;
+
+                if (bala != null) {
+                    bala.moverLeft(delta);
+                    if (bala.sprite.getX() < 0) {
+                        bala.sprite.setPosition(x, y);
+                        timerBalas3 = 0;
+                    }
+                }
+            }
         }
     }
 
@@ -373,6 +495,143 @@ class PantallaTercerNivel extends Pantalla {
                 // Fuera de la pantalla.
                 bala = null;
 
+            }
+        }
+    }
+
+    //Torres
+    private void verificarColisiones() {
+        probarColisionesBalaTorre();
+        probarColisionesTorres();
+    }
+
+    //colisiones bala torre
+    private void probarColisionesBalaTorre(){
+        Rectangle rectBala1 = bala1Torre4.sprite.getBoundingRectangle();
+        Rectangle rectBala2 = bala2Torre4.sprite.getBoundingRectangle();
+        Rectangle rectBala3 = bala3Torre4.sprite.getBoundingRectangle();
+        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+        float x = torre4.sprite.getX() + torre4.sprite.getWidth() / 2;
+
+        if (rectBala1.overlaps(rectBoogie)) {
+            float y = torre4.sprite.getY() + torre4.sprite.getHeight() - 70;
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            bala1Torre4.sprite.setPosition(x,y);
+            timerBalas1 = 0;
+
+        } else if(rectBala2.overlaps(rectBoogie)){
+            float y = torre4.sprite.getY() + torre4.sprite.getHeight()/2 - bala2Torre4.sprite.getHeight()/2;
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            bala2Torre4.sprite.setPosition(x,y);
+            timerBalas2 = 0;
+
+        }
+        else if(rectBala3.overlaps(rectBoogie)){
+            float y = torre4.sprite.getY() + 50;
+            boogie.restarVida(1);
+            marcador.restarVidas(1);
+            bala3Torre4.sprite.setPosition(x,y);
+            timerBalas3 = 0;
+
+        }
+
+    }
+
+    //ColisionesTorres
+    private void probarColisionesTorres() {
+        Rectangle rectTorre1 = torre1.sprite.getBoundingRectangle();
+        Rectangle rectTorre2 = torre2.sprite.getBoundingRectangle();
+        Rectangle rectTorre3 = torre3.sprite.getBoundingRectangle();
+        Rectangle rectTorre4 = torre4.sprite.getBoundingRectangle();
+
+
+        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+
+        if (rectBoogie.overlaps(rectTorre2)) {
+            if (torre2.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        } else if (rectBoogie.overlaps(rectTorre3)) {
+            if (torre3.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        } else if (rectBoogie.overlaps(rectTorre4)) {
+            if (torre4.vida > 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        } else if (rectBoogie.overlaps(rectTorre1)) {
+            if (torre1.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        }
+
+        for (int j = 0; j < listaBalas.size(); j++) {
+            Rectangle rectBala = listaBalas.get(j).sprite.getBoundingRectangle();
+            if (rectTorre1.overlaps(rectBala)) {
+                torre1.restarVida();
+                if (torre1.vida >= 0.0f) {
+                    hit++;
+                    listaBalas.remove(j);
+                    if (hit == 9) {
+                        System.out.println(hit);
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
+                        hit = 0;
+                    }
+                }
+                break;
+            } else if (rectTorre2.overlaps(rectBala)) {
+                torre2.restarVida();
+                if (torre2.vida >= 0.0f) {
+                    hit++;
+                    listaBalas.remove(j);
+                    if (hit == 9) {
+                        System.out.println(hit);
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
+                        hit = 0;
+                    }
+                }
+                break;
+            } else if (rectTorre3.overlaps(rectBala)) {
+                torre3.restarVida();
+                if (torre3.vida >= 0.0f) {
+                    hit++;
+                    listaBalas.remove(j);
+                    if (hit == 9) {
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
+                        hit = 0;
+                    }
+                }
+                break;
+            } else if (rectTorre4.overlaps(rectBala)) {
+                torre4.restarVida();
+                if (torre4.vida >= 0.0f) {
+                    hit++;
+                    System.out.println(hit);
+                    listaBalas.remove(j);
+                    if (hit == 9) {
+                        if (prefsSoundFX.getBoolean("soundFXOn")==true) {
+                            shield.play();
+                        }
+                        hit = 0;
+                    }
+                }
+                break;
             }
         }
     }
@@ -427,7 +686,7 @@ class PantallaTercerNivel extends Pantalla {
                 public void clicked(InputEvent event, float x, float y) {
                     super.clicked(event, x, y);
                     musicaFondo.stop();
-                    juego.setScreen(new PantallaPrimerNivel(juego));
+                    juego.setScreen(new PantallaTercerNivel(juego));
                 }
             });
 

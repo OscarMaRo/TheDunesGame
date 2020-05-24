@@ -14,6 +14,10 @@ public class Torre extends Objeto {
         super(textura, x, y);
         vida = 1.0f;
     }
+    public Torre(Texture textura, float x, float y, float vida) {
+        super(textura, x, y);
+        this.vida = vida;
+    }
 
     public void restarVida() {
         vida -= 0.1f;
