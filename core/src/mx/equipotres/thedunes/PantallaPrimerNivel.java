@@ -131,6 +131,8 @@ class PantallaPrimerNivel extends Pantalla {
         crearObjetos();
         cargarMusica();
         crearHUD();
+        crearEscenaFinal();
+
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
     }
@@ -224,6 +226,27 @@ class PantallaPrimerNivel extends Pantalla {
 
         Gdx.input.setInputProcessor(escenaHUD);
     }
+
+    public void crearEscenaFinal(){
+        escenaFinal = new Stage(vista);
+
+        Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
+        TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
+        Image btnVolverMenu = new Image(trVM);
+        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-144);
+
+        btnVolverMenu.addListener(new ClickListener(){
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                musicaFondo.stop();
+                juego.setScreen(new PantallaMenu(juego));
+            }
+        });
+
+        escenaFinal.addActor(btnVolverMenu);
+    }
+
+
 
     public void cargarMusica() {
         AssetManager manager = new AssetManager();
@@ -462,7 +485,6 @@ class PantallaPrimerNivel extends Pantalla {
 
     private void dibujarDerrota(SpriteBatch batch) {
         estadoJuego = EstadoJuego.PERDIO;
-        escenaFinal = new Stage(vista);
 
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
 
@@ -470,26 +492,12 @@ class PantallaPrimerNivel extends Pantalla {
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
         time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO*0.5f+50f);
 
-        Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
-        TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
-        Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-250, ALTO/2-144);
-
-        btnVolverMenu.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                musicaFondo.stop();
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
-
-        escenaFinal.addActor(btnVolverMenu);
         Gdx.input.setInputProcessor(escenaFinal);
     }
 
     private void dibujarVictoria(SpriteBatch batch) {
         estadoJuego = EstadoJuego.GANO;
-        escenaFinal = new Stage(vista);
+
 
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
 
@@ -515,20 +523,6 @@ class PantallaPrimerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
         }
 
-        Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
-        TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
-        Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-220, ALTO/2-144-50);
-
-        btnVolverMenu.addListener(new ClickListener(){
-            public void clicked(InputEvent event, float x, float y) {
-                super.clicked(event, x, y);
-                musicaFondo.stop();
-                juego.setScreen(new PantallaMenu(juego));
-            }
-        });
-
-        escenaFinal.addActor(btnVolverMenu);
         Gdx.input.setInputProcessor(escenaFinal);
     }
 

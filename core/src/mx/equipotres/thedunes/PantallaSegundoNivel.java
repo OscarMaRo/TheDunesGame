@@ -313,7 +313,7 @@ class PantallaSegundoNivel extends Pantalla {
         Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
         TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
         Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-220, ALTO/2-144-50);
+        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-144);
 
         btnVolverMenu.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
