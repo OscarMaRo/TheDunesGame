@@ -75,6 +75,10 @@ class PantallaTercerNivel extends Pantalla {
     private Torre torre2;
     private Torre torre3;
     private Torre torre4;
+    private Escudo escudoTorre1;
+    private Escudo escudoTorre2;
+    private Escudo escudoTorre3;
+    private Escudo escudoTorre4;
     private BarraVida barraVidaTorre1;
     private BarraVida barraVidaTorre2;
     private BarraVida barraVidaTorre3;
@@ -89,9 +93,21 @@ class PantallaTercerNivel extends Pantalla {
     private int timerBalas2 = 0;
     private int timerBalas3 = 0;
 
+    // Time
+    private Texto time;
+    private long startTime = System.currentTimeMillis();
+    private long elapsedTime;
+
+    // Estrellas
+    private Texture estrella;
+    private Image imgEstrella1;
+    private Image imgEstrella2;
+    private Image imgEstrella3;
+
+    // Fondo metálico
+    private Texture texturaRectangulo;
 
     public PantallaTercerNivel(Juego juego) { this.juego = juego; }
-
 
     @Override
     public void show() {
@@ -113,9 +129,30 @@ class PantallaTercerNivel extends Pantalla {
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
 
+        // Cambiar textura por estrellas
+        estrella = new Texture("Botones/disparar.png");
+        texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
+        time = new Texto("Fuentes/fuente.fnt");
+
         texturaTorreNivel3 = new Texture("Sprites/torreNivel3.png");
         texturaTorreNivel2 = new Texture("Sprites/torreNivel2.png");
     }
+
+    private void crearEstrella1() {
+        imgEstrella1 = new Image(estrella);
+        imgEstrella1.setPosition(ANCHO*0.3f,ALTO*0.55f);
+    }
+
+    private void crearEstrella2() {
+        imgEstrella2 = new Image(estrella);
+        imgEstrella2.setPosition(ANCHO*0.5f-estrella.getWidth()/2,ALTO*0.6f);
+    }
+
+    private void crearEstrella3() {
+        imgEstrella3 = new Image(estrella);
+        imgEstrella3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
+    }
+
     public void cargarMusica() {
         AssetManager manager = new AssetManager();
         manager.load("Musica/musicaFondo.mp3", Music.class);
@@ -266,6 +303,21 @@ class PantallaTercerNivel extends Pantalla {
 
     }
 
+    private void crearEscudos() {
+        // Torre 1
+        escudoTorre1 = new Escudo(vista, batch, 85);
+        escudoTorre1.posicionarEscudo(0, 200);
+
+        // Torre 3
+        escudoTorre3 = new Escudo(vista, batch, 85);
+        escudoTorre3.posicionarEscudo(0, -200);
+
+        // Boss: modificar
+        escudoTorre4 = new Escudo(vista, batch, 200, 800);
+        escudoTorre4.posicionarEscudo(300, 110);
+
+    }
+
 
     private void crearBarraVidaTorre() {
         barraVidaTorre1 = new BarraVida();
@@ -286,7 +338,7 @@ class PantallaTercerNivel extends Pantalla {
         crearBoogie();
         crearMarcador();
         crearTorres();
-        //crearEscudos();
+        crearEscudos();
         crearBarraVidaTorre();
         crearBalasTorres();
         //crearEnemigos();
@@ -302,7 +354,7 @@ class PantallaTercerNivel extends Pantalla {
             // Colisones
             verificarColisiones();
 
-            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
+            if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
                 estadoJuego = EstadoJuego.PAUSADO;
                 escenaPausa = new EscenaPausa(vista, batch);
             }
@@ -313,6 +365,12 @@ class PantallaTercerNivel extends Pantalla {
         batch.begin();
 
         batch.draw(texturaFondo, 0, 0);
+
+        // Tiempo
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            elapsedTime = (System.currentTimeMillis() - startTime)/1000;
+            time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO-20f);
+        }
 
         //Dibujar elementos del juego
         if (estadoJuego == EstadoJuego.JUGANDO || estadoJuego == EstadoJuego.PAUSADO) {
@@ -332,7 +390,7 @@ class PantallaTercerNivel extends Pantalla {
 
         batch.setProjectionMatrix(cameraHUD.combined);
         if ( estadoJuego == EstadoJuego.JUGANDO) {
-
+            dibujarEscudos();
             escenaHUD.draw();
         }
 
@@ -341,6 +399,7 @@ class PantallaTercerNivel extends Pantalla {
                 estadoJuego = EstadoJuego.JUGANDO;
                 Gdx.input.setInputProcessor(escenaHUD);
             }
+            dibujarEscudos();
             escenaPausa.draw();
         }
 
@@ -358,7 +417,9 @@ class PantallaTercerNivel extends Pantalla {
 
     private void dibujarDerrota(SpriteBatch batch) {
         String mensaje = "Has sido derrotado";
+        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
+        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO*0.5f+50f);
         estadoJuego = EstadoJuego.PERDIO;
 
         Gdx.input.setInputProcessor(escenaFinal);
@@ -366,10 +427,42 @@ class PantallaTercerNivel extends Pantalla {
 
     private void dibujarVictoria(SpriteBatch batch) {
         String mensaje = "Enhorabuena, has ganado!";
-        ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
-        marcador.render(batch, ANCHO/2 - 10, ALTO/2 + 55);
+        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
+        ganar.render(batch, mensaje, ANCHO/2 - 5, ALTO/2 + 10 - 50);
+        marcador.render(batch, ANCHO/2 + 5, ALTO/2 + 55 - 50);
+        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
         estadoJuego = EstadoJuego.GANO;
+
+        if (marcador.puntos >= 40 && elapsedTime < 60) {
+            crearEstrella1();
+            crearEstrella2();
+            crearEstrella3();
+            escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrella2);
+            escenaFinal.addActor(imgEstrella3);
+        } else if (marcador.puntos >= 30 && marcador.puntos < 40 && elapsedTime < 90) {
+            crearEstrella1();
+            crearEstrella3();
+            escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrella3);
+        } else {
+            crearEstrella2();
+            escenaFinal.addActor(imgEstrella2);
+        }
+
         Gdx.input.setInputProcessor(escenaFinal);
+    }
+
+    private void dibujarEscudos() {
+        if (torre2.vida >= 0.0f) {
+            escudoTorre1.draw();
+        }
+        if (torre1.vida >= 0.0f) {
+            escudoTorre3.draw();
+        }
+        if (torre3.vida >= 0.0f) {
+            escudoTorre4.draw();
+        }
     }
 
     public void dibujarJuego(SpriteBatch batch, float delta){
@@ -503,6 +596,7 @@ class PantallaTercerNivel extends Pantalla {
     private void verificarColisiones() {
         probarColisionesBalaTorre();
         probarColisionesTorres();
+        probarColisionesEscudos();
     }
 
     //colisiones bala torre
@@ -630,6 +724,55 @@ class PantallaTercerNivel extends Pantalla {
                         }
                         hit = 0;
                     }
+                }
+                break;
+            }
+        }
+    }
+
+    // Colisiones Escudos
+    private void probarColisionesEscudos() {
+        Rectangle rectEscudoTorre1 = escudoTorre1.getBoundaries(torre1.sprite.getX()-20,torre1.sprite.getY()-20, 100);  //coordenadas 0,0 en la esquina infereior izquierda
+        Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-20,torre3.sprite.getY()-20, 140);
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-10,torre4.sprite.getY()-10, 100);
+        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+
+        if (rectBoogie.overlaps(rectEscudoTorre1)) {
+            if (torre1.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        } else if (rectBoogie.overlaps(rectEscudoTorre3)) {
+            if (torre3.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        } else if (rectBoogie.overlaps(rectEscudoTorre4)) {
+            if (torre4.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        }
+
+
+        for (int j = 0; j < listaBalas.size(); j++) {
+            Rectangle rectBala = listaBalas.get(j).sprite.getBoundingRectangle();
+            if (rectEscudoTorre1.overlaps(rectBala)) {
+                if (torre2.vida >= 0.0f) {
+                    listaBalas.remove(j);
+                }
+                break;
+            } else if (rectEscudoTorre3.overlaps(rectBala)) {
+                if (torre1.vida >= 0.0f) {
+                    listaBalas.remove(j);
+                }
+                break;
+            } else if (rectEscudoTorre4.overlaps(rectBala)) {
+                if (torre3.vida >= 0.0f) {
+                    listaBalas.remove(j);
                 }
                 break;
             }

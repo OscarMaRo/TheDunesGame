@@ -585,10 +585,13 @@ class PantallaPrimerNivel extends Pantalla {
         moverEnemigos(delta);
         llamarHorda();
         moverEnemigosCirculo(delta);
+
         if(joystickPresionado){
             boogie.mover();
         }
     }
+
+
 
 
     // Mover Enemigos alrededor del Castillo.

@@ -46,7 +46,6 @@ class PantallaSegundoNivel extends Pantalla {
     // Música
     private Preferences prefsMusic = Gdx.app.getPreferences("TheDunes.settings.music");
     private Preferences prefsSoundFX = Gdx.app.getPreferences("TheDunes.settings.soundFX");
-    ;
     private Music musicaFondo;
     private Sound shoot;
     private Sound shield;
@@ -387,7 +386,6 @@ class PantallaSegundoNivel extends Pantalla {
                 estadoJuego = EstadoJuego.PAUSADO;
                 escenaPausa = new EscenaPausa(vista, batch);
             }
-
         }
 
         borrarPantalla();
@@ -495,7 +493,6 @@ class PantallaSegundoNivel extends Pantalla {
         if (torre4.vida >= 0.0f) {
             escudoTorre5.draw();
         }
-
     }
 
     public void dibujarJuego(SpriteBatch batch, float delta) {

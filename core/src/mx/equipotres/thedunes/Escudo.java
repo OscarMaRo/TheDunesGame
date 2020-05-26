@@ -29,6 +29,18 @@ public class Escudo extends Stage {
         this.addActor(imgEscudo);
     }
 
+    public Escudo(Viewport vista, SpriteBatch batch, int ancho, int alto) {
+        super(vista, batch);
+
+        Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO ), Pixmap.Format.RGBA8888);
+        pixmap.setColor(0,0,0.7f,0.5f);
+        pixmap.fillRectangle((int)(ANCHO * 0.5),(int)(ALTO * 0.3), ancho, alto);
+        Texture texturaEscudo = new Texture(pixmap);
+
+        imgEscudo = new Image(texturaEscudo);
+        this.addActor(imgEscudo);
+    }
+
     public void posicionarEscudo(float x, float y) {
         imgEscudo.setPosition(x, y);
     }
@@ -38,9 +50,6 @@ public class Escudo extends Stage {
         return new Rectangle(x, y, size, size);
     }
 
-    public Circle getCircumference(float x, float y) {
-        float radius = 30;
-        return new Circle(x, y, radius);
-    }
+
 
 }
