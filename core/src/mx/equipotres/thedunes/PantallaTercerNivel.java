@@ -60,6 +60,9 @@ class PantallaTercerNivel extends Pantalla {
     // Boogie
     private Boogie boogie;
     private Texture texturaBoogie;
+    private Texture texturaBoogieIzquierda;
+    private Texture texturaBoogieDerecha;
+    private Texture[] texturas;
     // Mover
     private Texture texturaBotonAcelerar;
 
@@ -734,7 +737,7 @@ class PantallaTercerNivel extends Pantalla {
     private void probarColisionesEscudos() {
         Rectangle rectEscudoTorre1 = escudoTorre1.getBoundaries(torre1.sprite.getX()-20,torre1.sprite.getY()-20, 100);  //coordenadas 0,0 en la esquina infereior izquierda
         Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-20,torre3.sprite.getY()-20, 140);
-        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-10,torre4.sprite.getY()-10, 100);
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-20,torre4.sprite.getY()-10, 210, 400);
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 
         if (rectBoogie.overlaps(rectEscudoTorre1)) {

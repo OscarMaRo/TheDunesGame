@@ -11,11 +11,16 @@ public class Boogie extends Objeto {
     private final int ROTACION = 360 / 16;
     private final int PASO = 2;
     public int vidas;
+    public Texture textura;
 
     // Constructor principal.
     public Boogie(Texture textura, float x, float y) {
         super(textura, x, y);
         vidas = 5;
+    }
+
+    public void setTextura(Texture textura) {
+        this.textura = textura;
     }
 
     public void checarBordes() {

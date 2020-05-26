@@ -50,6 +50,10 @@ public class Escudo extends Stage {
         return new Rectangle(x, y, size, size);
     }
 
+    public Rectangle getBoundaries(float x, float y, float ancho, float alto) {
+        //float size = 100;
+        return new Rectangle(x, y, ancho, alto);
+    }
 
 
 }

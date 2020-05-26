@@ -81,6 +81,9 @@ class PantallaPrimerNivel extends Pantalla {
     // Boogie
     private Boogie boogie;
     private Texture texturaBoogie;
+    private Texture texturaBoogieIzquierda;
+    private Texture texturaBoogieDerecha;
+    private Texture[] texturas = new Texture[3];
     // Mover
     private Texture texturaBotonDisparar;
 
@@ -288,7 +291,16 @@ class PantallaPrimerNivel extends Pantalla {
     private void cargarTexturas() {
         texturaEnemigos = new Texture("Sprites/enemigo1.png");
         texturaFondo = new Texture(("Fondos/FondoNivel1.jpeg"));
+        // Animar
         texturaBoogie = new Texture("Sprites/boogie1_frente.png");
+        // Lados
+        texturaBoogieIzquierda = new Texture("Sprites/boogie1_izquierda.png");
+        texturaBoogieDerecha = new Texture("Sprites/boogie1_derecha.png");
+        // Texturas
+        texturas[0] = texturaBoogie;
+        texturas[1] = texturaBoogieIzquierda;
+        texturas[2] = texturaBoogieDerecha;
+
         texturaBala = new Texture("Sprites/bala1.png");
         texturaTorre = new Texture("Sprites/torre.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");

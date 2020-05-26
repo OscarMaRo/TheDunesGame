@@ -60,6 +60,9 @@ class PantallaSegundoNivel extends Pantalla {
     // Boogie
     private Boogie boogie;
     private Texture texturaBoogie;
+    private Texture texturaBoogieIzquierda;
+    private Texture texturaBoogieDerecha;
+    private Texture[] texturas;
     // Mover
     private Texture texturaBotonAcelerar;
 
