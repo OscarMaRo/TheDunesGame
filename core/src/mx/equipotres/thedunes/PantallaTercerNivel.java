@@ -126,7 +126,7 @@ class PantallaTercerNivel extends Pantalla {
     private void cargarTexturas() {
         texturaFondo = new Texture(("Fondos/FondoNivel2.png"));
         //texturaEnemigos = new Texture("Sprites/enemigo1.png");
-        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
+        texturaBoogie = new Texture("Sprites/boogie3_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonAcelerar = new Texture("Botones/disparar.png");

@@ -139,7 +139,7 @@ class PantallaSegundoNivel extends Pantalla {
         texturaFondo = new Texture(("Fondos/FondoNivel2.png"));
         texturaEnemigos = new Texture("Sprites/enemigo1.png");
         texturaEnemigos2 = new Texture("Sprites/enemigo2.png");
-        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
+        texturaBoogie = new Texture("Sprites/boogie2_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
