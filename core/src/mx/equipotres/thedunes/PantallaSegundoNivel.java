@@ -128,7 +128,6 @@ class PantallaSegundoNivel extends Pantalla {
         crearObjetos();
         cargarMusica();
         crearHUD();
-        crearEnemigos();
         crearEscenaFinal();
 
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
@@ -146,7 +145,7 @@ class PantallaSegundoNivel extends Pantalla {
         ganar = new Texto("Fuentes/fuente.fnt");
 
         // Cambiar textura por estrellas
-        estrella = new Texture("Botones/disparar.png");
+        estrella = new Texture("Sprites/estrella.png");
         texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
         time = new Texto("Fuentes/fuente.fnt");
 
@@ -223,17 +222,17 @@ class PantallaSegundoNivel extends Pantalla {
         });
         escenaHUD = new Stage(vistaHUD);
         // Botón: Acelerar.
-        TextureRegionDrawable trdAcelerar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
-        ImageButton btnAcelerar = new ImageButton(trdAcelerar);
-        btnAcelerar.setPosition(ANCHO - btnAcelerar.getWidth(), 0);
+        TextureRegionDrawable trdDisaparar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
+        ImageButton btnDisparar = new ImageButton(trdDisaparar);
+        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth(), 0);
 
         // Botón pausa
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
         ImageButton btnPausa = new ImageButton(trdPausa);
         btnPausa.setPosition(ANCHO - btnPausa.getWidth() - 5, ALTO - btnPausa.getHeight() - 5);
 
-        //Acción de acelerar
-        btnAcelerar.addListener(new ClickListener() {
+        //Acción de disparar
+        btnDisparar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -271,7 +270,7 @@ class PantallaSegundoNivel extends Pantalla {
 
 
         escenaHUD.addActor(pad);
-        escenaHUD.addActor(btnAcelerar);
+        escenaHUD.addActor(btnDisparar);
         escenaHUD.addActor(btnPausa);
 
         Gdx.input.setInputProcessor(escenaHUD);
@@ -337,7 +336,6 @@ class PantallaSegundoNivel extends Pantalla {
         crearEscudos();
         crearBarraVidaTorre();
         crearEnemigos();
-        //crearEnemigosAlrededorTorre();
     }
 
     private void crearTorres() {
@@ -542,7 +540,6 @@ class PantallaSegundoNivel extends Pantalla {
         }
         batch.setColor(Color.WHITE);
 
-
         // Enemigos
         for (EnemigoBasico enemigo : arrEnemigos1) {
             if (enemigo.estado == Enemigo.Estado.ACTIVADO) {
@@ -691,7 +688,7 @@ class PantallaSegundoNivel extends Pantalla {
             marcador.restarVidas(1);
             balaTorre3.sprite.setPosition(x,y);
             timerBalasTorre3 = 0;
-
+            boogie.sprite.setPosition(180, 10);
         } else if(rectBala5.overlaps(rectBoogie)){
             float y = torre5.sprite.getY() + torre5.sprite.getHeight() / 2;
             float x = torre5.sprite.getX() + torre5.sprite.getWidth() / 2 - balaTorre5.sprite.getWidth() / 2;
@@ -699,7 +696,7 @@ class PantallaSegundoNivel extends Pantalla {
             marcador.restarVidas(1);
             balaTorre5.sprite.setPosition(x,y);
             timerBalasTorre5 = 0;
-
+            boogie.sprite.setPosition(180, 10);
         }
 
     }
@@ -736,7 +733,7 @@ class PantallaSegundoNivel extends Pantalla {
             if (torre5.vida >= 0.0f) {
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
-                boogie.sprite.setPosition(10, 10);
+                boogie.sprite.setPosition(180, 10);
             }
         } else if (rectBoogie.overlaps(rectTorre1)) {
             if (torre1.vida >= 0.0f) {

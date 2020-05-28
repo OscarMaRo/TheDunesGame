@@ -306,7 +306,7 @@ class PantallaPrimerNivel extends Pantalla {
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonDisparar = new Texture("Botones/disparar.png");
         // Cambiar textura por estrellas
-        estrella = new Texture("Botones/disparar.png");
+        estrella = new Texture("Sprites/estrella.png");
         texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
 
         ganar = new Texto("Fuentes/fuente.fnt");

@@ -1,6 +1,7 @@
 package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
 public class Enemigo extends Objeto {
 
@@ -35,9 +36,22 @@ public class Enemigo extends Objeto {
 
     public void moverH1y2Nvl1(float dx, float dy) {
         sprite.setX(sprite.getX() + dx);
-        if (sprite.getX() <= 1000){
+        if (sprite.getX() <= 1000) {
             sprite.setY(sprite.getY() + dy);
         }
+    }
+
+    public void moverH1Nvl3(float dx, float dy){
+        if (sprite.getY() > 40 && sprite.getX() < 1180) {
+            sprite.setY(sprite.getY() + dy);
+        }else if (sprite.getX() > 1180){
+            sprite.setY(sprite.getY() - dy);
+        }else if(sprite.getX() < 1180){
+            sprite.setX(sprite.getX() + dx);
+        }
+    }
+    public void moverH2Nvl3(float dx, float dy){
+        sprite.setY(sprite.getY() + dy);
     }
 
     //Dependiendo del bloque en que está el boggie, ajusta la posición del sprite para estár más cerca del boogie 

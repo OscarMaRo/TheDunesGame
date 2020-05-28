@@ -60,9 +60,6 @@ class PantallaTercerNivel extends Pantalla {
     // Boogie
     private Boogie boogie;
     private Texture texturaBoogie;
-    private Texture texturaBoogieIzquierda;
-    private Texture texturaBoogieDerecha;
-    private Texture[] texturas;
     // Mover
     private Texture texturaBotonAcelerar;
 
@@ -78,15 +75,10 @@ class PantallaTercerNivel extends Pantalla {
     private Torre torre2;
     private Torre torre3;
     private Torre torre4;
-    private Escudo escudoTorre1;
-    private Escudo escudoTorre2;
-    private Escudo escudoTorre3;
-    private Escudo escudoTorre4;
     private BarraVida barraVidaTorre1;
     private BarraVida barraVidaTorre2;
     private BarraVida barraVidaTorre3;
     private BarraVida barraVidaTorre4;
-
 
     // Balas: torres
     private Bala bala1Torre4;
@@ -96,21 +88,17 @@ class PantallaTercerNivel extends Pantalla {
     private int timerBalas2 = 0;
     private int timerBalas3 = 0;
 
-    // Time
-    private Texto time;
-    private long startTime = System.currentTimeMillis();
-    private long elapsedTime;
+    // Enemigos
+    private LinkedList<EnemigoBasico> arrEnemigos1;
+    private LinkedList<EnemigoBasico> arrEnemigos2;
+    private Texture texturaEnemigos;
+    private Texture texturaEnemigos2;
+    private  int numeroPasos = 0;
 
-    // Estrellas
-    private Texture estrella;
-    private Image imgEstrella1;
-    private Image imgEstrella2;
-    private Image imgEstrella3;
 
-    // Fondo metálico
-    private Texture texturaRectangulo;
 
     public PantallaTercerNivel(Juego juego) { this.juego = juego; }
+
 
     @Override
     public void show() {
@@ -124,38 +112,18 @@ class PantallaTercerNivel extends Pantalla {
         Gdx.input.setCatchKey(Input.Keys.BACK,true);
     }
     private void cargarTexturas() {
-        texturaFondo = new Texture(("Fondos/FondoNivel2.png"));
-        //texturaEnemigos = new Texture("Sprites/enemigo1.png");
-        texturaBoogie = new Texture("Sprites/boogie3_frente.png");
+        texturaFondo = new Texture(("Fondos/FondoNivel3.png"));
+        texturaEnemigos = new Texture("Sprites/enemigo2.png");
+        texturaEnemigos2 = new Texture("Sprites/enemigo3.png");
+        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
 
-        // Cambiar textura por estrellas
-        estrella = new Texture("Botones/disparar.png");
-        texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
-        time = new Texto("Fuentes/fuente.fnt");
-
         texturaTorreNivel3 = new Texture("Sprites/torreNivel3.png");
         texturaTorreNivel2 = new Texture("Sprites/torreNivel2.png");
     }
-
-    private void crearEstrella1() {
-        imgEstrella1 = new Image(estrella);
-        imgEstrella1.setPosition(ANCHO*0.3f,ALTO*0.55f);
-    }
-
-    private void crearEstrella2() {
-        imgEstrella2 = new Image(estrella);
-        imgEstrella2.setPosition(ANCHO*0.5f-estrella.getWidth()/2,ALTO*0.6f);
-    }
-
-    private void crearEstrella3() {
-        imgEstrella3 = new Image(estrella);
-        imgEstrella3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
-    }
-
     public void cargarMusica() {
         AssetManager manager = new AssetManager();
         manager.load("Musica/musicaFondo.mp3", Music.class);
@@ -208,10 +176,10 @@ class PantallaTercerNivel extends Pantalla {
             }
         });
         escenaHUD = new Stage(vistaHUD);
-        // Botón: Acelerar.
-        TextureRegionDrawable trdAcelerar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
-        ImageButton btnAcelerar = new ImageButton(trdAcelerar);
-        btnAcelerar.setPosition(ANCHO - btnAcelerar.getWidth(), 0);
+        // Botón: Disparar.
+        TextureRegionDrawable trdDisparar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
+        ImageButton btnDisparar = new ImageButton(trdDisparar);
+        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth(), 0);
 
         // Botón pausa
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
@@ -219,7 +187,7 @@ class PantallaTercerNivel extends Pantalla {
         btnPausa.setPosition(ANCHO - btnPausa.getWidth() - 5, ALTO - btnPausa.getHeight() - 5);
 
         //Acción de acelerar
-        btnAcelerar.addListener(new ClickListener() {
+        btnDisparar.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
@@ -257,10 +225,28 @@ class PantallaTercerNivel extends Pantalla {
 
 
         escenaHUD.addActor(pad);
-        escenaHUD.addActor(btnAcelerar);
+        escenaHUD.addActor(btnDisparar);
         escenaHUD.addActor(btnPausa);
 
         Gdx.input.setInputProcessor(escenaHUD);
+    }
+
+    private void crearEnemigos() {
+        arrEnemigos1 = new LinkedList<>();
+        //Para primera horda
+        for (int y = 0; y < 8; y++){
+            EnemigoBasico enemigo = new EnemigoBasico(texturaEnemigos, ANCHO - ANCHO/4 - texturaEnemigos.getWidth()*2-10,
+                    ALTO + y*texturaEnemigos2.getHeight() + 20*y);
+            arrEnemigos1.add(enemigo);
+        }
+    }
+    private void crearEnemigos2(){
+        arrEnemigos2 = new LinkedList<>();
+        for (int y = 0; y < 8; y++) {
+            EnemigoBasico enemigo2 = new EnemigoBasico(texturaEnemigos2, ANCHO - ANCHO / 4 - texturaEnemigos2.getWidth(),
+                    0 - y*texturaEnemigos.getHeight() - 20*y);
+            arrEnemigos2.add(enemigo2);
+        }
     }
 
     private void crearBala() {
@@ -306,21 +292,6 @@ class PantallaTercerNivel extends Pantalla {
 
     }
 
-    private void crearEscudos() {
-        // Torre 1
-        escudoTorre1 = new Escudo(vista, batch, 85);
-        escudoTorre1.posicionarEscudo(0, 200);
-
-        // Torre 3
-        escudoTorre3 = new Escudo(vista, batch, 85);
-        escudoTorre3.posicionarEscudo(0, -200);
-
-        // Boss: modificar
-        escudoTorre4 = new Escudo(vista, batch, 200, 800);
-        escudoTorre4.posicionarEscudo(300, 110);
-
-    }
-
 
     private void crearBarraVidaTorre() {
         barraVidaTorre1 = new BarraVida();
@@ -341,11 +312,11 @@ class PantallaTercerNivel extends Pantalla {
         crearBoogie();
         crearMarcador();
         crearTorres();
-        crearEscudos();
+        //crearEscudos();
         crearBarraVidaTorre();
         crearBalasTorres();
-        //crearEnemigos();
-        //crearEnemigosAlrededorTorre();
+        crearEnemigos();
+        crearEnemigos2();
     }
 
     @Override
@@ -357,7 +328,7 @@ class PantallaTercerNivel extends Pantalla {
             // Colisones
             verificarColisiones();
 
-            if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            if(Gdx.input.isKeyPressed(Input.Keys.BACK)){
                 estadoJuego = EstadoJuego.PAUSADO;
                 escenaPausa = new EscenaPausa(vista, batch);
             }
@@ -368,12 +339,6 @@ class PantallaTercerNivel extends Pantalla {
         batch.begin();
 
         batch.draw(texturaFondo, 0, 0);
-
-        // Tiempo
-        if (estadoJuego == EstadoJuego.JUGANDO) {
-            elapsedTime = (System.currentTimeMillis() - startTime)/1000;
-            time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO-20f);
-        }
 
         //Dibujar elementos del juego
         if (estadoJuego == EstadoJuego.JUGANDO || estadoJuego == EstadoJuego.PAUSADO) {
@@ -393,7 +358,7 @@ class PantallaTercerNivel extends Pantalla {
 
         batch.setProjectionMatrix(cameraHUD.combined);
         if ( estadoJuego == EstadoJuego.JUGANDO) {
-            dibujarEscudos();
+
             escenaHUD.draw();
         }
 
@@ -402,7 +367,6 @@ class PantallaTercerNivel extends Pantalla {
                 estadoJuego = EstadoJuego.JUGANDO;
                 Gdx.input.setInputProcessor(escenaHUD);
             }
-            dibujarEscudos();
             escenaPausa.draw();
         }
 
@@ -420,9 +384,7 @@ class PantallaTercerNivel extends Pantalla {
 
     private void dibujarDerrota(SpriteBatch batch) {
         String mensaje = "Has sido derrotado";
-        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
-        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO*0.5f+50f);
         estadoJuego = EstadoJuego.PERDIO;
 
         Gdx.input.setInputProcessor(escenaFinal);
@@ -430,42 +392,10 @@ class PantallaTercerNivel extends Pantalla {
 
     private void dibujarVictoria(SpriteBatch batch) {
         String mensaje = "Enhorabuena, has ganado!";
-        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
-        ganar.render(batch, mensaje, ANCHO/2 - 5, ALTO/2 + 10 - 50);
-        marcador.render(batch, ANCHO/2 + 5, ALTO/2 + 55 - 50);
-        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
+        ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
+        marcador.render(batch, ANCHO/2 - 10, ALTO/2 + 55);
         estadoJuego = EstadoJuego.GANO;
-
-        if (marcador.puntos >= 40 && elapsedTime < 60) {
-            crearEstrella1();
-            crearEstrella2();
-            crearEstrella3();
-            escenaFinal.addActor(imgEstrella1);
-            escenaFinal.addActor(imgEstrella2);
-            escenaFinal.addActor(imgEstrella3);
-        } else if (marcador.puntos >= 30 && marcador.puntos < 40 && elapsedTime < 90) {
-            crearEstrella1();
-            crearEstrella3();
-            escenaFinal.addActor(imgEstrella1);
-            escenaFinal.addActor(imgEstrella3);
-        } else {
-            crearEstrella2();
-            escenaFinal.addActor(imgEstrella2);
-        }
-
         Gdx.input.setInputProcessor(escenaFinal);
-    }
-
-    private void dibujarEscudos() {
-        if (torre2.vida >= 0.0f) {
-            escudoTorre1.draw();
-        }
-        if (torre1.vida >= 0.0f) {
-            escudoTorre3.draw();
-        }
-        if (torre3.vida >= 0.0f) {
-            escudoTorre4.draw();
-        }
     }
 
     public void dibujarJuego(SpriteBatch batch, float delta){
@@ -514,6 +444,17 @@ class PantallaTercerNivel extends Pantalla {
         batch.setColor(Color.WHITE);
 
         // Enemigos
+        for (EnemigoBasico enemigo : arrEnemigos1) {
+            if (enemigo.estado == Enemigo.Estado.ACTIVADO) {
+                enemigo.render(batch);
+            }
+        }
+
+        for (EnemigoBasico enemigo2 : arrEnemigos2) {
+            if (enemigo2.estado == Enemigo.Estado.ACTIVADO) {
+                enemigo2.render(batch);
+            }
+        }
 
     }
 
@@ -522,6 +463,8 @@ class PantallaTercerNivel extends Pantalla {
         timerBalas1 += 1;
         timerBalas2 += 1;
         timerBalas3 += 1;
+        moverEnemigos(delta);
+        llamarHorda();
         if(joystickPresionado){
             boogie.mover();
         }
@@ -595,11 +538,83 @@ class PantallaTercerNivel extends Pantalla {
         }
     }
 
+    private void llamarHorda(){
+        for(int i = 0; i < arrEnemigos1.size()-1; i++ ){
+            EnemigoBasico enemigoBasico = arrEnemigos1.get(i);
+            enemigoBasico.estado = Enemigo.Estado.ACTIVADO;
+        }
+        for(int i = 0; i < arrEnemigos2.size()-1; i++ ){
+            EnemigoBasico enemigoBasico = arrEnemigos2.get(i);
+            enemigoBasico.estado = Enemigo.Estado.ACTIVADO;
+        }
+    }
+
+    private void moverEnemigos(float delta) {
+        for (EnemigoBasico enemigoBasico : arrEnemigos1) {
+            if (enemigoBasico.estado == Enemigo.Estado.ACTIVADO){
+                enemigoBasico.moverH1Nvl3(4, -3);
+            }
+        }
+        for (EnemigoBasico enemigoBasico2:arrEnemigos2) {
+            if (enemigoBasico2.estado == Enemigo.Estado.ACTIVADO){
+                enemigoBasico2.moverH2Nvl3(4, 3);
+            }
+        }
+        numeroPasos++;
+        if (numeroPasos == 5000){
+            crearEnemigos();
+            numeroPasos=0;
+        }
+    }
+
     //Torres
     private void verificarColisiones() {
+        probarColisionesEnemigos();
         probarColisionesBalaTorre();
         probarColisionesTorres();
-        probarColisionesEscudos();
+    }
+
+    // Colisiones Enemigos.
+    private void probarColisionesEnemigos() {
+        if (listaBalas.size() > 0) {
+            for (int j = 0; j <= listaBalas.size()-1; j++) {
+                probarColisionesEnemigos(arrEnemigos1, listaBalas.get(j));
+            }
+            for (int j = 0; j <= listaBalas.size()-1; j++) {
+                probarColisionesEnemigos(arrEnemigos2, listaBalas.get(j));
+            }
+        }
+        probarColisionesBoogie(arrEnemigos1);
+        probarColisionesBoogie(arrEnemigos2);
+    }
+
+    private void probarColisionesBoogie(LinkedList<EnemigoBasico> enemigos){
+        for (int i = enemigos.size() - 1; i >= 0; i--) {
+            EnemigoBasico enemigoBasico = enemigos.get(i);
+            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+            Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+            if (rectEnemigoBasico.overlaps(rectBoogie)) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        }
+    }
+
+    private void probarColisionesEnemigos(LinkedList<EnemigoBasico> enemigos, Bala bala){
+        for (int i = enemigos.size() - 1; i >= 0; i--){
+            EnemigoBasico enemigoBasico = enemigos.get(i);
+            Rectangle rectEnemigoBasico = enemigoBasico.sprite.getBoundingRectangle();
+            Rectangle rectBala = bala.sprite.getBoundingRectangle();
+            if (rectEnemigoBasico.overlaps(rectBala)) {
+                listaBalas.remove(bala);
+                if (enemigoBasico.recibirDaño()){
+                    enemigos.remove(i);
+                    marcador.agregarPuntos(5);
+                }
+                break;
+            }
+        }
     }
 
     //colisiones bala torre
@@ -727,55 +742,6 @@ class PantallaTercerNivel extends Pantalla {
                         }
                         hit = 0;
                     }
-                }
-                break;
-            }
-        }
-    }
-
-    // Colisiones Escudos
-    private void probarColisionesEscudos() {
-        Rectangle rectEscudoTorre1 = escudoTorre1.getBoundaries(torre1.sprite.getX()-20,torre1.sprite.getY()-20, 100);  //coordenadas 0,0 en la esquina infereior izquierda
-        Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-20,torre3.sprite.getY()-20, 140);
-        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-20,torre4.sprite.getY()-10, 210, 400);
-        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
-
-        if (rectBoogie.overlaps(rectEscudoTorre1)) {
-            if (torre1.vida >= 0.0f) {
-                boogie.restarVida(1);
-                marcador.restarVidas(1);
-                boogie.sprite.setPosition(180, 10);
-            }
-        } else if (rectBoogie.overlaps(rectEscudoTorre3)) {
-            if (torre3.vida >= 0.0f) {
-                boogie.restarVida(1);
-                marcador.restarVidas(1);
-                boogie.sprite.setPosition(180, 10);
-            }
-        } else if (rectBoogie.overlaps(rectEscudoTorre4)) {
-            if (torre4.vida >= 0.0f) {
-                boogie.restarVida(1);
-                marcador.restarVidas(1);
-                boogie.sprite.setPosition(180, 10);
-            }
-        }
-
-
-        for (int j = 0; j < listaBalas.size(); j++) {
-            Rectangle rectBala = listaBalas.get(j).sprite.getBoundingRectangle();
-            if (rectEscudoTorre1.overlaps(rectBala)) {
-                if (torre2.vida >= 0.0f) {
-                    listaBalas.remove(j);
-                }
-                break;
-            } else if (rectEscudoTorre3.overlaps(rectBala)) {
-                if (torre1.vida >= 0.0f) {
-                    listaBalas.remove(j);
-                }
-                break;
-            } else if (rectEscudoTorre4.overlaps(rectBala)) {
-                if (torre3.vida >= 0.0f) {
-                    listaBalas.remove(j);
                 }
                 break;
             }
