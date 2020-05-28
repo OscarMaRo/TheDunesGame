@@ -100,7 +100,19 @@ class PantallaTercerNivel extends Pantalla {
     private  int numeroPasos = 0;
     private int numeroPasos2=0;
 
+    // Time
+    private Texto time;
+    private long startTime = System.currentTimeMillis();
+    private long elapsedTime;
 
+    // Estrellas
+    private Texture estrella;
+    private Image imgEstrella1;
+    private Image imgEstrella2;
+    private Image imgEstrella3;
+
+    // Fondo metálico
+    private Texture texturaRectangulo;
 
     public PantallaTercerNivel(Juego juego) { this.juego = juego; }
 
@@ -120,11 +132,16 @@ class PantallaTercerNivel extends Pantalla {
         texturaFondo = new Texture(("Fondos/FondoNivel3.png"));
         texturaEnemigos = new Texture("Sprites/enemigo2.png");
         texturaEnemigos2 = new Texture("Sprites/enemigo3.png");
-        texturaBoogie = new Texture("Sprites/boogie1_frente.png");
+        texturaBoogie = new Texture("Sprites/boogie3_frente.png");
         texturaBala = new Texture("Sprites/bala1.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonAcelerar = new Texture("Botones/disparar.png");
         ganar = new Texto("Fuentes/fuente.fnt");
+
+        // Cambiar textura por estrellas
+        estrella = new Texture("Sprites/estrella.png");
+        texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
+        time = new Texto("Fuentes/fuente.fnt");
 
         texturaTorreNivel3 = new Texture("Sprites/torreNivel3.png");
         texturaTorreNivel2 = new Texture("Sprites/torreNivel2.png");
@@ -144,6 +161,22 @@ class PantallaTercerNivel extends Pantalla {
         // Disparo
         shoot = manager.get("Musica/shoot.wav");
         shield = manager.get("Musica/shieldDown.mp3");
+    }
+
+
+    private void crearEstrella1() {
+        imgEstrella1 = new Image(estrella);
+        imgEstrella1.setPosition(ANCHO*0.3f,ALTO*0.55f);
+    }
+
+    private void crearEstrella2() {
+        imgEstrella2 = new Image(estrella);
+        imgEstrella2.setPosition(ANCHO*0.5f-estrella.getWidth()/2,ALTO*0.6f);
+    }
+
+    private void crearEstrella3() {
+        imgEstrella3 = new Image(estrella);
+        imgEstrella3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
     }
 
     public void crearHUD() {
@@ -360,6 +393,12 @@ class PantallaTercerNivel extends Pantalla {
 
         batch.draw(texturaFondo, 0, 0);
 
+        // Tiempo
+        if (estadoJuego == EstadoJuego.JUGANDO) {
+            elapsedTime = (System.currentTimeMillis() - startTime)/1000;
+            time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO-20f);
+        }
+
         //Dibujar elementos del juego
         if (estadoJuego == EstadoJuego.JUGANDO || estadoJuego == EstadoJuego.PAUSADO) {
             dibujarJuego(batch, delta);
@@ -405,7 +444,9 @@ class PantallaTercerNivel extends Pantalla {
 
     private void dibujarDerrota(SpriteBatch batch) {
         String mensaje = "Has sido derrotado";
-        ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
+        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
+        ganar.render(batch, mensaje, ANCHO / 2 - 20, ALTO / 2 + 10);
+        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO*0.5f+50f);
         estadoJuego = EstadoJuego.PERDIO;
 
         Gdx.input.setInputProcessor(escenaFinal);
@@ -413,9 +454,28 @@ class PantallaTercerNivel extends Pantalla {
 
     private void dibujarVictoria(SpriteBatch batch) {
         String mensaje = "Enhorabuena, has ganado!";
-        ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
-        marcador.render(batch, ANCHO/2 - 10, ALTO/2 + 55);
+        batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
+        ganar.render(batch, mensaje, ANCHO/2 - 5, ALTO/2 + 10 - 50);
+        marcador.render(batch, ANCHO/2 + 5, ALTO/2 + 55 - 50);
+        time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
         estadoJuego = EstadoJuego.GANO;
+
+        if (marcador.puntos >= 40 && elapsedTime < 60) {
+            crearEstrella1();
+            crearEstrella2();
+            crearEstrella3();
+            escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrella2);
+            escenaFinal.addActor(imgEstrella3);
+        } else if (marcador.puntos >= 30 && marcador.puntos < 40 && elapsedTime < 90) {
+            crearEstrella1();
+            crearEstrella3();
+            escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrella3);
+        } else {
+            crearEstrella2();
+            escenaFinal.addActor(imgEstrella2);
+        }
         Gdx.input.setInputProcessor(escenaFinal);
     }
 
