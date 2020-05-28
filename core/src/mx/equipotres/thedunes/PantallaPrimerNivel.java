@@ -36,6 +36,7 @@ class PantallaPrimerNivel extends Pantalla {
 
     // Juego: allows to create another screen when the listener is activated.
     private final Juego juego;
+    private Preferences prefsHighScore = Gdx.app.getPreferences("TheDunes.HighScore.Nivel1");
 
     //Juego
     private Texture texturaFondo;

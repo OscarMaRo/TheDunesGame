@@ -60,7 +60,7 @@ class PantallaMenu extends Pantalla {
         btnConfig.posicionarBoton(ANCHO/2 - btnConfig.getWidth()/2, (ALTO/2)-100);
         btnConfig.presionar(juego, 2);
 
-        btnAcercaDe = new Boton("Botones/botonAcercade.png", "Botones/botonAcercadePres.png");
+        btnAcercaDe = new Boton("Botones/botonAcercade2.png", "Botones/botonAcercadePres.png");
         btnAcercaDe.posicionarBoton(ANCHO/2 - btnAcercaDe.getWidth()/2, (ALTO/2)-200);
         btnAcercaDe.presionar(juego, 1);
 
