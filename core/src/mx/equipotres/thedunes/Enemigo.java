@@ -3,6 +3,8 @@ package mx.equipotres.thedunes;
 import com.badlogic.gdx.graphics.Texture;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
+
 public class Enemigo extends Objeto {
 
     public Estado estado;
@@ -50,8 +52,36 @@ public class Enemigo extends Objeto {
             sprite.setX(sprite.getX() + dx);
         }
     }
-    public void moverH2Nvl3(float dx, float dy){
-        sprite.setY(sprite.getY() + dy);
+    public void moverH2Nvl3(float dx, float dy, int pasos) {
+        if (pasos<690){
+            if (pasos < 550) {
+                if (sprite.getY() < 650 && sprite.getX() > 350) {
+                    sprite.setY(sprite.getY() + dy);
+                } else if (sprite.getY() >= 650 && sprite.getX() > 350) {
+                    sprite.setX(sprite.getX() - dx);
+                }
+            }
+            if (pasos >= 360 && sprite.getX() <= 350) {
+                if (sprite.getX() > 120 && sprite.getY() > 400) {
+                    sprite.setX(sprite.getX() - dx / 2);
+                    sprite.setY(sprite.getY() - dy);
+                } else if (sprite.getX() < 350) {
+                    sprite.setX(sprite.getX() + dx / 2);
+                    sprite.setY(sprite.getY() - dy);
+                }
+            }
+            if (pasos > 530 && sprite.getX() >= 350) {
+                if (sprite.getX() >= 350 && sprite.getY() < 350) {
+                    sprite.setX(sprite.getX() + dx / 2);
+                    sprite.setY(sprite.getY() + dy);
+                } else if (sprite.getY() >= 350 & sprite.getX() > 350) {
+                    sprite.setX(sprite.getX() - dx / 2);
+                    sprite.setY(sprite.getY() + dy);
+                }
+            }
+        }else {
+            sprite.setY((sprite.getY() - dy));
+        }
     }
 
     //Dependiendo del bloque en que está el boggie, ajusta la posición del sprite para estár más cerca del boogie 

@@ -75,6 +75,10 @@ class PantallaTercerNivel extends Pantalla {
     private Torre torre2;
     private Torre torre3;
     private Torre torre4;
+    private Escudo escudoTorre1;
+    private Escudo escudoTorre2;
+    private Escudo escudoTorre3;
+    private Escudo escudoTorre4;
     private BarraVida barraVidaTorre1;
     private BarraVida barraVidaTorre2;
     private BarraVida barraVidaTorre3;
@@ -94,6 +98,7 @@ class PantallaTercerNivel extends Pantalla {
     private Texture texturaEnemigos;
     private Texture texturaEnemigos2;
     private  int numeroPasos = 0;
+    private int numeroPasos2=0;
 
 
 
@@ -292,6 +297,21 @@ class PantallaTercerNivel extends Pantalla {
 
     }
 
+    private void crearEscudos() {
+        // Torre 1
+        escudoTorre1 = new Escudo(vista, batch, 85);
+        escudoTorre1.posicionarEscudo(0, 200);
+
+        // Torre 3
+        escudoTorre3 = new Escudo(vista, batch, 85);
+        escudoTorre3.posicionarEscudo(0, -200);
+
+        // Boss: modificar
+        escudoTorre4 = new Escudo(vista, batch, 200, 800);
+        escudoTorre4.posicionarEscudo(300, 110);
+
+    }
+
 
     private void crearBarraVidaTorre() {
         barraVidaTorre1 = new BarraVida();
@@ -312,7 +332,7 @@ class PantallaTercerNivel extends Pantalla {
         crearBoogie();
         crearMarcador();
         crearTorres();
-        //crearEscudos();
+        crearEscudos();
         crearBarraVidaTorre();
         crearBalasTorres();
         crearEnemigos();
@@ -358,7 +378,7 @@ class PantallaTercerNivel extends Pantalla {
 
         batch.setProjectionMatrix(cameraHUD.combined);
         if ( estadoJuego == EstadoJuego.JUGANDO) {
-
+            dibujarEscudos();
             escenaHUD.draw();
         }
 
@@ -367,6 +387,7 @@ class PantallaTercerNivel extends Pantalla {
                 estadoJuego = EstadoJuego.JUGANDO;
                 Gdx.input.setInputProcessor(escenaHUD);
             }
+            dibujarEscudos();
             escenaPausa.draw();
         }
 
@@ -396,6 +417,18 @@ class PantallaTercerNivel extends Pantalla {
         marcador.render(batch, ANCHO/2 - 10, ALTO/2 + 55);
         estadoJuego = EstadoJuego.GANO;
         Gdx.input.setInputProcessor(escenaFinal);
+    }
+
+    private void dibujarEscudos() {
+        if (torre2.vida >= 0.0f) {
+            escudoTorre1.draw();
+        }
+        if (torre1.vida >= 0.0f) {
+            escudoTorre3.draw();
+        }
+        if (torre3.vida >= 0.0f) {
+            escudoTorre4.draw();
+        }
     }
 
     public void dibujarJuego(SpriteBatch batch, float delta){
@@ -557,13 +590,18 @@ class PantallaTercerNivel extends Pantalla {
         }
         for (EnemigoBasico enemigoBasico2:arrEnemigos2) {
             if (enemigoBasico2.estado == Enemigo.Estado.ACTIVADO){
-                enemigoBasico2.moverH2Nvl3(4, 3);
+                enemigoBasico2.moverH2Nvl3(4, 3, numeroPasos2);
             }
         }
         numeroPasos++;
-        if (numeroPasos == 5000){
+        numeroPasos2++;
+        if (numeroPasos == 705){
             crearEnemigos();
             numeroPasos=0;
+        }
+        if (numeroPasos2 == 905){
+            crearEnemigos2();
+            numeroPasos2=0;
         }
     }
 
@@ -572,6 +610,7 @@ class PantallaTercerNivel extends Pantalla {
         probarColisionesEnemigos();
         probarColisionesBalaTorre();
         probarColisionesTorres();
+        probarColisionesEscudos();
     }
 
     // Colisiones Enemigos.
@@ -742,6 +781,55 @@ class PantallaTercerNivel extends Pantalla {
                         }
                         hit = 0;
                     }
+                }
+                break;
+            }
+        }
+    }
+
+    // Colisiones Escudos
+    private void probarColisionesEscudos() {
+        Rectangle rectEscudoTorre1 = escudoTorre1.getBoundaries(torre1.sprite.getX()-20,torre1.sprite.getY()-20, 100);  //coordenadas 0,0 en la esquina infereior izquierda
+        Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-20,torre3.sprite.getY()-20, 140);
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-20,torre4.sprite.getY()-10, 210, 400);
+        Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+
+        if (rectBoogie.overlaps(rectEscudoTorre1)) {
+            if (torre1.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        } else if (rectBoogie.overlaps(rectEscudoTorre3)) {
+            if (torre3.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        } else if (rectBoogie.overlaps(rectEscudoTorre4)) {
+            if (torre4.vida >= 0.0f) {
+                boogie.restarVida(1);
+                marcador.restarVidas(1);
+                boogie.sprite.setPosition(180, 10);
+            }
+        }
+
+
+        for (int j = 0; j < listaBalas.size(); j++) {
+            Rectangle rectBala = listaBalas.get(j).sprite.getBoundingRectangle();
+            if (rectEscudoTorre1.overlaps(rectBala)) {
+                if (torre2.vida >= 0.0f) {
+                    listaBalas.remove(j);
+                }
+                break;
+            } else if (rectEscudoTorre3.overlaps(rectBala)) {
+                if (torre1.vida >= 0.0f) {
+                    listaBalas.remove(j);
+                }
+                break;
+            } else if (rectEscudoTorre4.overlaps(rectBala)) {
+                if (torre3.vida >= 0.0f) {
+                    listaBalas.remove(j);
                 }
                 break;
             }
