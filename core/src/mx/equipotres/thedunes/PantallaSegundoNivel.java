@@ -116,6 +116,9 @@ class PantallaSegundoNivel extends Pantalla {
     // Fondo metálico
     private Texture texturaRectangulo;
 
+    // Archivos
+    private Preferences pref;
+    private Preferences block;
 
     public PantallaSegundoNivel(Juego juego) {
         this.juego = juego;
@@ -129,9 +132,14 @@ class PantallaSegundoNivel extends Pantalla {
         cargarMusica();
         crearHUD();
         crearEscenaFinal();
-
+        crearArchivos();
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
+    }
+
+    private void crearArchivos() {
+        pref = Gdx.app.getPreferences("preferencias-estrellas");
+        block = Gdx.app.getPreferences("preferencias-niveles");
     }
 
     private void cargarTexturas() {
@@ -454,28 +462,40 @@ class PantallaSegundoNivel extends Pantalla {
     }
 
     private void dibujarVictoria(SpriteBatch batch) {
-        String mensaje = "Enhorabuena, has ganado!";
+        estadoJuego = EstadoJuego.GANO;
+
+        block.putBoolean("tercer-nivel", true);
+
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
+        String mensaje = "Enhorabuena, has ganado!";
         ganar.render(batch, mensaje, ANCHO/2 - 5, ALTO/2 + 10 - 50);
         marcador.render(batch, ANCHO/2 + 5, ALTO/2 + 55 - 50);
         time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
-        estadoJuego = EstadoJuego.GANO;
 
-        if (marcador.puntos >= 40 && elapsedTime < 60) {
+        if (marcador.puntos >= 40 && elapsedTime < 130) {
             crearEstrella1();
             crearEstrella2();
             crearEstrella3();
             escenaFinal.addActor(imgEstrella1);
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrella3);
-        } else if (marcador.puntos >= 30 && marcador.puntos < 40 && elapsedTime < 90) {
+            pref.putBoolean("estrella-4",true);
+            pref.putBoolean("estrella-5",true);
+            pref.putBoolean("estrella-6",true);
+        } else if (marcador.puntos >= 30 && elapsedTime < 150) {
             crearEstrella1();
             crearEstrella3();
             escenaFinal.addActor(imgEstrella1);
             escenaFinal.addActor(imgEstrella3);
+            pref.putBoolean("estrella-4",true);
+            pref.putBoolean("estrella-5",true);
+            pref.putBoolean("estrella-6",false);
         } else {
             crearEstrella2();
             escenaFinal.addActor(imgEstrella2);
+            pref.putBoolean("estrella-4",true);
+            pref.putBoolean("estrella-5",false);
+            pref.putBoolean("estrella-6",false);
         }
 
         Gdx.input.setInputProcessor(escenaFinal);

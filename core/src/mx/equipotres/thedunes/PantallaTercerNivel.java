@@ -114,6 +114,9 @@ class PantallaTercerNivel extends Pantalla {
     // Fondo metálico
     private Texture texturaRectangulo;
 
+    // Archivos
+    private Preferences pref;
+
     public PantallaTercerNivel(Juego juego) { this.juego = juego; }
 
 
@@ -125,9 +128,15 @@ class PantallaTercerNivel extends Pantalla {
         cargarMusica();
         crearHUD();
         crearEscenaFinal();
+        crearArchivos();
 
         Gdx.input.setCatchKey(Input.Keys.BACK,true);
     }
+
+    private void crearArchivos() {
+        pref = Gdx.app.getPreferences("preferencias-estrellas");
+    }
+
     private void cargarTexturas() {
         texturaFondo = new Texture(("Fondos/FondoNivel3.png"));
         texturaEnemigos = new Texture("Sprites/enemigo2.png");
@@ -460,21 +469,30 @@ class PantallaTercerNivel extends Pantalla {
         time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
         estadoJuego = EstadoJuego.GANO;
 
-        if (marcador.puntos >= 40 && elapsedTime < 60) {
+        if (marcador.puntos >= 50 && elapsedTime < 120) {
             crearEstrella1();
             crearEstrella2();
             crearEstrella3();
             escenaFinal.addActor(imgEstrella1);
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrella3);
-        } else if (marcador.puntos >= 30 && marcador.puntos < 40 && elapsedTime < 90) {
+            pref.putBoolean("estrella-7",true);
+            pref.putBoolean("estrella-8",true);
+            pref.putBoolean("estrella-9",true);
+        } else if (marcador.puntos >= 30 && elapsedTime < 150) {
             crearEstrella1();
             crearEstrella3();
             escenaFinal.addActor(imgEstrella1);
             escenaFinal.addActor(imgEstrella3);
+            pref.putBoolean("estrella-7",true);
+            pref.putBoolean("estrella-8",true);
+            pref.putBoolean("estrella-9",false);
         } else {
             crearEstrella2();
             escenaFinal.addActor(imgEstrella2);
+            pref.putBoolean("estrella-7",true);
+            pref.putBoolean("estrella-8",false);
+            pref.putBoolean("estrella-9",false);
         }
         Gdx.input.setInputProcessor(escenaFinal);
     }

@@ -13,16 +13,12 @@ public class BotonNiveles extends Boton {
     public BotonNiveles(String btn, String btnPresionado, boolean bloqueado) {
         super(btn, btnPresionado);
         this.bloqueado = bloqueado;
-        bloquear(bloqueado);
+        //bloquear(bloqueado);
     }
 
-    public void bloquear(boolean bloqueado) {
+    public void desbloquear() {
         if (bloqueado) {
-            System.out.println("created");
-            Texture texturaCandado = new Texture("Sprites/locked.png");
-            imgCandado = new Image(texturaCandado);
-            posicionarCandado(super.getX() + super.getWidth() - imgCandado.getImageX(),
-                                 super.getY() + super.getHeight() - imgCandado.getImageY());
+            this.bloqueado = false;
         }
     }
 
