@@ -904,9 +904,9 @@ class PantallaPrimerNivel extends Pantalla {
     private void probarColisionesEscudos() {
         Rectangle rectEscudoTorre = escudoTorre.getBoundaries(ANCHO/2 - 30, ALTO/2 - 30, 100);
         Rectangle rectEscudoTorreInferiorDerecha = escudoTorreInferiorDerecha.getBoundaries(
-                ANCHO - texturaTorre.getWidth()/2 - 330 - 15, texturaTorre.getHeight()/2 + 145 - 60, 100);
+                torreInferiorDerecha.sprite.getX()-20, torreInferiorDerecha.sprite.getY()-20, torreInferiorDerecha.sprite.getHeight()+40);
         Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(
-                170 - 10, ALTO - texturaTorre.getHeight()/2 - 125 - 60, 100);
+                torreSuperiorIzquierda.sprite.getX()-20, torreSuperiorIzquierda.sprite.getY()-20, torreSuperiorIzquierda.sprite.getHeight() + 40);
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 
         if (rectBoogie.overlaps(rectEscudoTorreInferiorDerecha)) {

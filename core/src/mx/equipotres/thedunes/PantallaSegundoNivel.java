@@ -865,10 +865,10 @@ class PantallaSegundoNivel extends Pantalla {
 
     // Colisiones Escudos
     private void probarColisionesEscudos() {
-        Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX()-20,torre2.sprite.getY()-20, 100);  //coordenadas 0,0 en la esquina infereior izquierda
-        Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-20,torre3.sprite.getY()-20, 140);
-        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-10,torre4.sprite.getY()-10, 100);
-        Rectangle rectEscudoTorre5 = escudoTorre5.getBoundaries(torre5.sprite.getX()-20,torre5.sprite.getY()-20, 100);
+        Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX()-20,torre2.sprite.getY()-20, torre2.sprite.getHeight()+40);  //coordenadas 0,0 en la esquina infereior izquierda
+        Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-10,torre3.sprite.getY()-10, torre3.sprite.getHeight()+20);
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-10,torre4.sprite.getY()-10, torre4.sprite.getHeight()+20);
+        Rectangle rectEscudoTorre5 = escudoTorre5.getBoundaries(torre5.sprite.getX()-20,torre5.sprite.getY()-20, torre5.sprite.getHeight()+40);
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 
         if (rectBoogie.overlaps(rectEscudoTorre2)) {
