@@ -111,14 +111,18 @@ class PantallaTercerNivel extends Pantalla {
     private Image imgEstrella2;
     private Image imgEstrella3;
 
+    private Texture estrellaVacia;
+    private Image imgEstrellaVacia1;
+    private Image imgEstrellaVacia2;
+    private Image imgEstrellaVacia3;
+
     // Fondo metálico
     private Texture texturaRectangulo;
 
     // Archivos
     private Preferences pref;
 
-    public PantallaTercerNivel(Juego juego) { this.juego = juego; }
-
+    public PantallaTercerNivel(Juego juego) { this.juego = juego;}
 
     @Override
     public void show() {
@@ -149,6 +153,7 @@ class PantallaTercerNivel extends Pantalla {
 
         // Cambiar textura por estrellas
         estrella = new Texture("Sprites/estrella.png");
+        estrellaVacia = new Texture("Sprites/estrellaVacia.png");
         texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
         time = new Texto("Fuentes/fuente.fnt");
 
@@ -186,6 +191,21 @@ class PantallaTercerNivel extends Pantalla {
     private void crearEstrella3() {
         imgEstrella3 = new Image(estrella);
         imgEstrella3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
+    }
+
+    private void crearEstrellaVacia1() {
+        imgEstrellaVacia1 = new Image(estrellaVacia);
+        imgEstrellaVacia1.setPosition(ANCHO*0.3f,ALTO*0.55f);
+    }
+
+    private void crearEstrellaVacia2() {
+        imgEstrellaVacia2 = new Image(estrellaVacia);
+        imgEstrellaVacia2.setPosition(ANCHO*0.5f-estrella.getWidth()/2,ALTO*0.6f);
+    }
+
+    private void crearEstrellaVacia3() {
+        imgEstrellaVacia3 = new Image(estrellaVacia);
+        imgEstrellaVacia3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
     }
 
     public void crearHUD() {
@@ -343,7 +363,11 @@ class PantallaTercerNivel extends Pantalla {
         Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
         TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
         Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-144);
+        if (estadoJuego==EstadoJuego.PERDIO) {
+            btnVolverMenu.setPosition(ANCHO / 2 - 200, ALTO / 2 - 144);
+        } else if (estadoJuego==EstadoJuego.GANO){
+            btnVolverMenu.setPosition(ANCHO / 2 - 200, ALTO / 2 - 250);
+        }
 
         btnVolverMenu.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
@@ -479,6 +503,12 @@ class PantallaTercerNivel extends Pantalla {
     private void dibujarDerrota(SpriteBatch batch) {
         String mensaje = "Has sido derrotado";
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
+        crearEstrellaVacia1();
+        crearEstrellaVacia2();
+        crearEstrellaVacia3();
+        escenaFinal.addActor(imgEstrellaVacia1);
+        escenaFinal.addActor(imgEstrellaVacia2);
+        escenaFinal.addActor(imgEstrellaVacia3);
         ganar.render(batch, mensaje, ANCHO / 2 - 20, ALTO / 2 + 10);
         time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO*0.5f+50f);
         estadoJuego = EstadoJuego.PERDIO;
@@ -506,15 +536,21 @@ class PantallaTercerNivel extends Pantalla {
             pref.putBoolean("estrella-9",true);
         } else if (marcador.puntos >= 30 && elapsedTime < 150) {
             crearEstrella1();
+            crearEstrellaVacia2();
             crearEstrella3();
             escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrellaVacia2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-7",true);
             pref.putBoolean("estrella-8",true);
             pref.putBoolean("estrella-9",false);
         } else {
+            crearEstrellaVacia1();
             crearEstrella2();
+            crearEstrellaVacia3();
+            escenaFinal.addActor(imgEstrellaVacia1);
             escenaFinal.addActor(imgEstrella2);
+            escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-7",true);
             pref.putBoolean("estrella-8",false);
             pref.putBoolean("estrella-9",false);

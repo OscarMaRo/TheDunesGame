@@ -122,6 +122,11 @@ class PantallaPrimerNivel extends Pantalla {
     private Image imgEstrella2;
     private Image imgEstrella3;
 
+    private Texture estrellaVacia;
+    private Image imgEstrellaVacia1;
+    private Image imgEstrellaVacia2;
+    private Image imgEstrellaVacia3;
+
     // Fondo metálico
     private Texture texturaRectangulo;
 
@@ -340,8 +345,9 @@ class PantallaPrimerNivel extends Pantalla {
         texturaTorre = new Texture("Sprites/torre.png");
         texturaBotonPausa = new Texture("Botones/pausa.png");
         texturaBotonDisparar = new Texture("Botones/disparar.png");
-        // Cambiar textura por estrellas
+
         estrella = new Texture("Sprites/estrella.png");
+        estrellaVacia = new Texture("Sprites/estrellaVacia.png");
         texturaRectangulo = new Texture("Fondos/Fondopausa.jpeg");
 
         ganar = new Texto("Fuentes/fuente.fnt");
@@ -363,6 +369,21 @@ class PantallaPrimerNivel extends Pantalla {
         imgEstrella3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
     }
 
+    private void crearEstrellaVacia1() {
+        imgEstrellaVacia1 = new Image(estrellaVacia);
+        imgEstrellaVacia1.setPosition(ANCHO*0.3f,ALTO*0.55f);
+    }
+
+    private void crearEstrellaVacia2() {
+        imgEstrellaVacia2 = new Image(estrellaVacia);
+        imgEstrellaVacia2.setPosition(ANCHO*0.5f-estrella.getWidth()/2,ALTO*0.6f);
+    }
+
+    private void crearEstrellaVacia3() {
+        imgEstrellaVacia3 = new Image(estrellaVacia);
+        imgEstrellaVacia3.setPosition(ANCHO*0.7f-estrella.getWidth(),ALTO*0.55f);
+    }
+
     private void crearBoogie() {
         boogie = new Boogie(texturaBoogie, 180, 10);
     }
@@ -377,6 +398,7 @@ class PantallaPrimerNivel extends Pantalla {
         torreInferiorDerecha = new Torre(texturaTorre, ANCHO - texturaTorre.getWidth()/2 - 300, texturaTorre.getHeight()/2 + 100);
         torreSuperiorIzquierda = new Torre(texturaTorre, 200, ALTO - texturaTorre.getHeight()/2 - 170);
     }
+
     private void crearEscudos(){
         escudoTorre = new Escudo(vista, batch, 70);
         escudoTorre.posicionarEscudo(30, 30);
@@ -534,7 +556,12 @@ class PantallaPrimerNivel extends Pantalla {
         estadoJuego = EstadoJuego.PERDIO;
 
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
-
+        crearEstrellaVacia1();
+        crearEstrellaVacia2();
+        crearEstrellaVacia3();
+        escenaFinal.addActor(imgEstrellaVacia1);
+        escenaFinal.addActor(imgEstrellaVacia2);
+        escenaFinal.addActor(imgEstrellaVacia3);
         String mensaje = "Has sido derrotado";
         ganar.render(batch, mensaje, ANCHO/2 - 20, ALTO/2 + 10);
         time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f, ALTO*0.5f+50f);
@@ -566,16 +593,22 @@ class PantallaPrimerNivel extends Pantalla {
             pref.putBoolean("estrella-3",true);
         } else if (marcador.puntos >= 30  && elapsedTime < 120) {
             crearEstrella1();
+            crearEstrellaVacia2();
             crearEstrella3();
             escenaFinal.addActor(imgEstrella1);
+            escenaFinal.addActor(imgEstrellaVacia2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-1",true);
             pref.putBoolean("estrella-2",true);
             pref.putBoolean("estrella-3",false);
 
         } else {
+            crearEstrellaVacia1();
             crearEstrella2();
+            crearEstrellaVacia3();
+            escenaFinal.addActor(imgEstrellaVacia1);
             escenaFinal.addActor(imgEstrella2);
+            escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-1",true);
             pref.putBoolean("estrella-2",false);
             pref.putBoolean("estrella-3",false);
