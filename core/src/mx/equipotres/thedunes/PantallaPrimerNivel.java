@@ -290,8 +290,33 @@ class PantallaPrimerNivel extends Pantalla {
     }
 
     private void crearBala() {
-        float xBala = boogie.sprite.getX() + boogie.sprite.getWidth()/2;
-        float yBala = boogie.sprite.getY() + boogie.sprite.getHeight()/2;
+        float xBala = 0;
+        float yBala = 0;
+        if (boogie.sprite.getRotation()==0) {
+            xBala = boogie.sprite.getX() + boogie.sprite.getWidth() / 2 - texturaBala.getWidth()/2;
+            yBala = boogie.sprite.getY() + boogie.sprite.getHeight() / 2 + boogie.sprite.getHeight() / 3 + 10;
+        } else if (Math.abs(boogie.sprite.getRotation())==180) {
+            xBala = boogie.sprite.getX() + boogie.sprite.getWidth() / 2 - texturaBala.getWidth()/2;
+            yBala = boogie.sprite.getY() - texturaBala.getHeight() / 2;
+        } else if (boogie.sprite.getRotation() == -90 || boogie.sprite.getRotation() == 270) {
+            xBala = boogie.sprite.getX() + boogie.sprite.getWidth() + texturaBala.getWidth()/2;
+            yBala = boogie.sprite.getY() + boogie.sprite.getHeight()/2 - texturaBala.getHeight()/2;
+        } else if (boogie.sprite.getRotation() == 90 || boogie.sprite.getRotation() == -270) {
+            xBala = boogie.sprite.getX() - texturaBala.getWidth()*1.5f;
+            yBala = boogie.sprite.getY() + boogie.sprite.getHeight()/2 - texturaBala.getHeight()/2;
+        } else if (boogie.sprite.getRotation() == -45 || boogie.sprite.getRotation() == 315) {
+            xBala = boogie.sprite.getX() + boogie.sprite.getWidth() - texturaBala.getWidth()/2;
+            yBala = boogie.sprite.getY() + boogie.sprite.getHeight() - texturaBala.getHeight()*1.5f;
+        } else if (boogie.sprite.getRotation() == 45 || boogie.sprite.getRotation() == -315) {
+            xBala = boogie.sprite.getX() - texturaBala.getWidth()/2;
+            yBala = boogie.sprite.getY() + boogie.sprite.getHeight() - texturaBala.getHeight()*1.5f;
+        } else if (boogie.sprite.getRotation() == -135 || boogie.sprite.getRotation() == 225) {
+            xBala = boogie.sprite.getX() + boogie.sprite.getWidth() - texturaBala.getWidth()/2;
+            yBala = boogie.sprite.getY() + boogie.sprite.getHeight()/3 - texturaBala.getHeight()*1.9f;
+        } else if (boogie.sprite.getRotation() == 135 || boogie.sprite.getRotation() == -225) {
+            xBala = boogie.sprite.getX() - texturaBala.getWidth()/2;
+            yBala = boogie.sprite.getY() + boogie.sprite.getHeight()/3 - texturaBala.getHeight()*1.9f;
+        }
         listaBalas.add(new Bala(texturaBala, xBala, yBala));
         direccionBala = listaBalas.size() - 1;
         listaBalas.get((int) direccionBala).sprite.setRotation(boogie.sprite.getRotation());
