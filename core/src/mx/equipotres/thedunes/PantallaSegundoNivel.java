@@ -368,7 +368,7 @@ class PantallaSegundoNivel extends Pantalla {
         Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
         TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
         Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-144);
+        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-200);
 
         btnVolverMenu.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
@@ -543,7 +543,7 @@ class PantallaSegundoNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-4",true);
             pref.putBoolean("estrella-5",true);
-            pref.putBoolean("estrella-6",false);
+            //pref.putBoolean("estrella-6",false);
         } else {
             crearEstrellaVacia1();
             crearEstrella2();
@@ -552,8 +552,8 @@ class PantallaSegundoNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-4",true);
-            pref.putBoolean("estrella-5",false);
-            pref.putBoolean("estrella-6",false);
+            //pref.putBoolean("estrella-5",false);
+            //pref.putBoolean("estrella-6",false);
         }
 
         Gdx.input.setInputProcessor(escenaFinal);

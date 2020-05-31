@@ -363,11 +363,7 @@ class PantallaTercerNivel extends Pantalla {
         Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
         TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
         Image btnVolverMenu = new Image(trVM);
-        if (estadoJuego==EstadoJuego.PERDIO) {
-            btnVolverMenu.setPosition(ANCHO / 2 - 200, ALTO / 2 - 144);
-        } else if (estadoJuego==EstadoJuego.GANO){
-            btnVolverMenu.setPosition(ANCHO / 2 - 200, ALTO / 2 - 250);
-        }
+        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-200);
 
         btnVolverMenu.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
@@ -543,7 +539,7 @@ class PantallaTercerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-7",true);
             pref.putBoolean("estrella-8",true);
-            pref.putBoolean("estrella-9",false);
+            //pref.putBoolean("estrella-9",false);
         } else {
             crearEstrellaVacia1();
             crearEstrella2();
@@ -552,8 +548,8 @@ class PantallaTercerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-7",true);
-            pref.putBoolean("estrella-8",false);
-            pref.putBoolean("estrella-9",false);
+            //pref.putBoolean("estrella-8",false);
+            //pref.putBoolean("estrella-9",false);
         }
         Gdx.input.setInputProcessor(escenaFinal);
     }

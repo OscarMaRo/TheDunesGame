@@ -251,7 +251,7 @@ class PantallaPrimerNivel extends Pantalla {
         Texture texturaVolverMenu = new Texture("Botones/botonVolverMenu.png");
         TextureRegionDrawable trVM = new TextureRegionDrawable(new TextureRegion(texturaVolverMenu));
         Image btnVolverMenu = new Image(trVM);
-        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-144);
+        btnVolverMenu.setPosition(ANCHO/2-200, ALTO/2-200);
 
         btnVolverMenu.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
@@ -486,6 +486,7 @@ class PantallaPrimerNivel extends Pantalla {
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
+
         batch.draw(texturaFondo, 0, 0);
 
         // Tiempo
@@ -537,6 +538,7 @@ class PantallaPrimerNivel extends Pantalla {
             escenaFinal.draw();
 
         }
+
 
     }
 
@@ -600,7 +602,7 @@ class PantallaPrimerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-1",true);
             pref.putBoolean("estrella-2",true);
-            pref.putBoolean("estrella-3",false);
+            //pref.putBoolean("estrella-3",false);
 
         } else {
             crearEstrellaVacia1();
@@ -610,8 +612,8 @@ class PantallaPrimerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-1",true);
-            pref.putBoolean("estrella-2",false);
-            pref.putBoolean("estrella-3",false);
+            //pref.putBoolean("estrella-2",false);
+            //pref.putBoolean("estrella-3",false);
         }
 
         Gdx.input.setInputProcessor(escenaFinal);

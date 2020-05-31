@@ -70,10 +70,10 @@ public class PantallaDesarrolladores extends Pantalla
         desarrolladores.render(batch, desarrolladoPor, ANCHO/2, ALTO-60);
         String zoe = "Zoe  Caballero  Dominguez";
         desarrolladores.render(batch, zoe, ANCHO/2, ALTO-225);
-        String rodrigo = "Rodrigo  Cravioto  Caballero";
-        desarrolladores.render(batch, rodrigo, ANCHO/2, ALTO-300);
         String oscar = "Oscar  Macias  Rodriguez";
-        desarrolladores.render(batch, oscar, ANCHO/2, ALTO-375);
+        desarrolladores.render(batch, oscar, ANCHO/2, ALTO-300);
+        String rodrigo = "Rodrigo  Cravioto  Caballero";
+        desarrolladores.render(batch, rodrigo, ANCHO/2, ALTO-375);
         String alan = "Alan  Diaz  Carrera";
         desarrolladores.render(batch, alan, ANCHO/2, ALTO-450);
         batch.end();
