@@ -554,6 +554,7 @@ class PantallaTercerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-7",true);
             pref.flush();
+            //
             //pref.putBoolean("estrella-8",false);
             //pref.putBoolean("estrella-9",false);
         }
