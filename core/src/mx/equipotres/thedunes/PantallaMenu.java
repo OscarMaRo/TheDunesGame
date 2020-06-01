@@ -23,6 +23,8 @@ class PantallaMenu extends Pantalla {
     private Preferences prefsMusic;
     private Preferences prefsSoundFX;
 
+    private Preferences pref;
+
     // MENU: The values of the class are generated.
     private Stage escenaMenu;
 
