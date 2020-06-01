@@ -575,6 +575,7 @@ class PantallaPrimerNivel extends Pantalla {
         estadoJuego = EstadoJuego.GANO;
 
         block.putBoolean("segundo-nivel", true);
+        block.flush();
 
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
 
@@ -591,8 +592,11 @@ class PantallaPrimerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-1",true);
+            pref.flush();
             pref.putBoolean("estrella-2",true);
+            pref.flush();
             pref.putBoolean("estrella-3",true);
+            pref.flush();
         } else if (marcador.puntos >= 30  && elapsedTime < 120) {
             crearEstrella1();
             crearEstrellaVacia2();
@@ -601,7 +605,9 @@ class PantallaPrimerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrellaVacia2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-1",true);
+            pref.flush();
             pref.putBoolean("estrella-2",true);
+            pref.flush();
             //pref.putBoolean("estrella-3",false);
 
         } else {
@@ -612,6 +618,7 @@ class PantallaPrimerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-1",true);
+            pref.flush();
             //pref.putBoolean("estrella-2",false);
             //pref.putBoolean("estrella-3",false);
         }

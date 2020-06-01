@@ -528,8 +528,11 @@ class PantallaTercerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-7",true);
+            pref.flush();
             pref.putBoolean("estrella-8",true);
+            pref.flush();
             pref.putBoolean("estrella-9",true);
+            pref.flush();
         } else if (marcador.puntos >= 30 && elapsedTime < 150) {
             crearEstrella1();
             crearEstrellaVacia2();
@@ -538,7 +541,9 @@ class PantallaTercerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrellaVacia2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-7",true);
+            pref.flush();
             pref.putBoolean("estrella-8",true);
+            pref.flush();
             //pref.putBoolean("estrella-9",false);
         } else {
             crearEstrellaVacia1();
@@ -548,6 +553,7 @@ class PantallaTercerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-7",true);
+            pref.flush();
             //pref.putBoolean("estrella-8",false);
             //pref.putBoolean("estrella-9",false);
         }

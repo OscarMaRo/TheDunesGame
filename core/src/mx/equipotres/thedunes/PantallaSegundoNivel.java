@@ -517,6 +517,7 @@ class PantallaSegundoNivel extends Pantalla {
         estadoJuego = EstadoJuego.GANO;
 
         block.putBoolean("tercer-nivel", true);
+        block.flush();
 
         batch.draw(texturaRectangulo,ANCHO/2-texturaRectangulo.getWidth()/2,ALTO/2-texturaRectangulo.getHeight()/2);
         String mensaje = "Enhorabuena, has ganado!";
@@ -532,8 +533,11 @@ class PantallaSegundoNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-4",true);
+            pref.flush();
             pref.putBoolean("estrella-5",true);
+            pref.flush();
             pref.putBoolean("estrella-6",true);
+            pref.flush();
         } else if (marcador.puntos >= 30 && elapsedTime < 150) {
             crearEstrella1();
             crearEstrellaVacia2();
@@ -542,7 +546,9 @@ class PantallaSegundoNivel extends Pantalla {
             escenaFinal.addActor(imgEstrellaVacia2);
             escenaFinal.addActor(imgEstrella3);
             pref.putBoolean("estrella-4",true);
+            pref.flush();
             pref.putBoolean("estrella-5",true);
+            pref.flush();
             //pref.putBoolean("estrella-6",false);
         } else {
             crearEstrellaVacia1();
@@ -552,6 +558,7 @@ class PantallaSegundoNivel extends Pantalla {
             escenaFinal.addActor(imgEstrella2);
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-4",true);
+            pref.flush();
             //pref.putBoolean("estrella-5",false);
             //pref.putBoolean("estrella-6",false);
         }
