@@ -520,7 +520,7 @@ class PantallaTercerNivel extends Pantalla {
         time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
         estadoJuego = EstadoJuego.GANO;
 
-        if (marcador.puntos >= 50 && elapsedTime < 120) {
+        if (marcador.puntos >= 50 && elapsedTime < 70) {
             crearEstrella1();
             crearEstrella2();
             crearEstrella3();
@@ -533,7 +533,7 @@ class PantallaTercerNivel extends Pantalla {
             pref.flush();
             pref.putBoolean("estrella-9",true);
             pref.flush();
-        } else if (marcador.puntos >= 30 && elapsedTime < 150) {
+        } else if (marcador.puntos >= 40 && elapsedTime < 90) {
             crearEstrella1();
             crearEstrellaVacia2();
             crearEstrella3();
@@ -544,7 +544,6 @@ class PantallaTercerNivel extends Pantalla {
             pref.flush();
             pref.putBoolean("estrella-8",true);
             pref.flush();
-            //pref.putBoolean("estrella-9",false);
         } else {
             crearEstrellaVacia1();
             crearEstrella2();
@@ -554,9 +553,6 @@ class PantallaTercerNivel extends Pantalla {
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-7",true);
             pref.flush();
-            //k
-            //pref.putBoolean("estrella-8",false);
-            //pref.putBoolean("estrella-9",false);
         }
         Gdx.input.setInputProcessor(escenaFinal);
     }

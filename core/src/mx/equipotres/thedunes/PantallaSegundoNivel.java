@@ -525,7 +525,7 @@ class PantallaSegundoNivel extends Pantalla {
         marcador.render(batch, ANCHO/2 + 5, ALTO/2 + 55 - 50);
         time.render(batch,"Tiempo: " + elapsedTime,ANCHO*0.5f + 5, ALTO*0.5f + 100f - 50);
 
-        if (marcador.puntos >= 40 && elapsedTime < 130) {
+        if (marcador.puntos >= 50 && elapsedTime < 90) {
             crearEstrella1();
             crearEstrella2();
             crearEstrella3();
@@ -538,7 +538,7 @@ class PantallaSegundoNivel extends Pantalla {
             pref.flush();
             pref.putBoolean("estrella-6",true);
             pref.flush();
-        } else if (marcador.puntos >= 30 && elapsedTime < 150) {
+        } else if (marcador.puntos >= 40 && elapsedTime < 105) {
             crearEstrella1();
             crearEstrellaVacia2();
             crearEstrella3();
