@@ -1,5 +1,7 @@
 package mx.equipotres.thedunes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +16,7 @@ public class Boton {
 
     private ImageButton boton;
     private Pantalla pantalla;
+    private Preferences block = Gdx.app.getPreferences("preferencias-niveles");;
 
     // Botón normal
     public Boton(String btn) {
@@ -98,6 +101,7 @@ public class Boton {
             }
         });
     }
+
 
     public void agregar(Stage escena) {
         escena.addActor(boton);

@@ -2,11 +2,13 @@ package mx.equipotres.thedunes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -53,6 +55,8 @@ class PantallaMenuSeleccionNivel extends Pantalla {
     private BotonNiveles btnSegundoNivel;
     private BotonNiveles btnTercerNivel;
     private Boton btnRegresar;
+    private Boton btnDesbloqueoTempNivel2;
+    private Boton btnDesbloqueoTempNivel3;
 
     // Estrellas
     private Texture texturaEstrella;
@@ -179,7 +183,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         btnPrimerNivel = new BotonNiveles("Botones/botonPrimerNivel.png", "Botones/botonPrimerNivelPress.png", false);
         btnPrimerNivel.posicionarBoton(0,0);
         // Segundo Nivel
-        btnSegundoNivel = new BotonNiveles("Botones/botonSegundoNivel.png", "Botones/botonSegundoNivelPress.png", false);
+        btnSegundoNivel = new BotonNiveles("Botones/botonSegundoNivel.png", "Botones/botonSegundoNivelPress.png", true);
         btnSegundoNivel.posicionarBoton(btnPrimerNivel.getWidth(),0);
         // Tercer Nivel
         btnTercerNivel = new BotonNiveles("Botones/botonTercerNivel.png", "Botones/botonTercerNivelPress.png", true);
@@ -187,6 +191,11 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         // Regresar al Menú Principal
         btnRegresar = new Boton("Botones/botonRegresar.png");
         btnRegresar.posicionarBoton(escenaMenu.getWidth()-150, escenaMenu.getHeight()-150);
+        // Desbloque Temp
+        btnDesbloqueoTempNivel2 = new Boton("Botones/desbloqueoNivel2.png");
+        btnDesbloqueoTempNivel2.posicionarBoton(btnPrimerNivel.getWidth(),0);
+        btnDesbloqueoTempNivel3 = new Boton("Botones/desbloqueoNivel3.png");
+        btnDesbloqueoTempNivel3.posicionarBoton(btnSegundoNivel.getX() + btnSegundoNivel.getWidth(),0);
 
         if (block.getBoolean("segundo-nivel", false)) {
             btnSegundoNivel.desbloquear();
@@ -203,15 +212,21 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         if (!btnSegundoNivel.getBloqueado()) { btnSegundoNivel.presionar(juego, 10);}
         if (!btnTercerNivel.getBloqueado()) { btnTercerNivel.presionar(juego, 11);}
         btnRegresar.presionar(juego, 7);
+        // Temp
+        btnDesbloqueoTempNivel2.presionar(juego,10);
+        btnDesbloqueoTempNivel3.presionar(juego, 11);
 
         // Despliega las imagenes
         btnPrimerNivel.agregar(escenaMenu);
         btnSegundoNivel.agregar(escenaMenu);
         btnTercerNivel.agregar(escenaMenu);
         btnRegresar.agregar(escenaMenu);
+        btnDesbloqueoTempNivel2.agregar(escenaMenu);
+        btnDesbloqueoTempNivel3.agregar(escenaMenu);
 
         // Acciones
         Gdx.input.setInputProcessor(escenaMenu);
+        //Gdx.input.setInputProcessor(new ProcesadorEntrada());
     }
 
 
@@ -270,8 +285,6 @@ class PantallaMenuSeleccionNivel extends Pantalla {
             escenaMenu.addActor(imgEstrella9);
         }
 
-
-
         // Visibilidad
         escenaMenu.draw();
     }
@@ -291,4 +304,5 @@ class PantallaMenuSeleccionNivel extends Pantalla {
     public void dispose() {
         texturaFondoNiveles.dispose();
     }
+
 }
