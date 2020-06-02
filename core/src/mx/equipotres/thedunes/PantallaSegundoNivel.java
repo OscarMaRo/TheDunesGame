@@ -549,7 +549,6 @@ class PantallaSegundoNivel extends Pantalla {
             pref.flush();
             pref.putBoolean("estrella-5",true);
             pref.flush();
-            //pref.putBoolean("estrella-6",false);
         } else {
             crearEstrellaVacia1();
             crearEstrella2();
@@ -559,8 +558,6 @@ class PantallaSegundoNivel extends Pantalla {
             escenaFinal.addActor(imgEstrellaVacia3);
             pref.putBoolean("estrella-4",true);
             pref.flush();
-            //pref.putBoolean("estrella-5",false);
-            //pref.putBoolean("estrella-6",false);
         }
 
         Gdx.input.setInputProcessor(escenaFinal);
@@ -907,7 +904,7 @@ class PantallaSegundoNivel extends Pantalla {
     private void probarColisionesEscudos() {
         Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX()-20,torre2.sprite.getY()-20, torre2.sprite.getHeight()+40);  //coordenadas 0,0 en la esquina infereior izquierda
         Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-10,torre3.sprite.getY()-10, torre3.sprite.getHeight()+20);
-        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-10,torre4.sprite.getY()-10, torre4.sprite.getHeight()+20);
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-5,torre4.sprite.getY()-5, torre4.sprite.getHeight()+10);
         Rectangle rectEscudoTorre5 = escudoTorre5.getBoundaries(torre5.sprite.getX()-20,torre5.sprite.getY()-20, torre5.sprite.getHeight()+40);
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
 
@@ -925,6 +922,7 @@ class PantallaSegundoNivel extends Pantalla {
             }
         } else if (rectBoogie.overlaps(rectEscudoTorre4)) {
             if (torre4.vida >= 0.0f) {
+                System.out.println(rectBoogie + " " + rectEscudoTorre4);
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
                 boogie.sprite.setPosition(180, 10);
