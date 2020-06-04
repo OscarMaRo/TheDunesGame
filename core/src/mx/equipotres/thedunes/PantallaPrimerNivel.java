@@ -597,6 +597,7 @@ class PantallaPrimerNivel extends Pantalla {
             pref.flush();
             pref.putBoolean("estrella-3",true);
             pref.flush();
+
         } else if (marcador.puntos >= 40  && elapsedTime < 90) {
             crearEstrella1();
             crearEstrellaVacia2();
@@ -903,7 +904,6 @@ class PantallaPrimerNivel extends Pantalla {
                     hit++;
                     listaBalas.remove(j);
                     if (hit == 9) {
-                        System.out.println(hit);
                         if (prefsSoundFX.getBoolean("soundFXOn")==true) {
                             shield.play();
                         }
@@ -928,7 +928,6 @@ class PantallaPrimerNivel extends Pantalla {
                 torreSuperiorIzquierda.restarVida();
                 if (torreSuperiorIzquierda.vida >= 0.0f) {
                     hit++;
-                    System.out.println(hit);
                     listaBalas.remove(j);
                     if (hit == 9) {
                         if (prefsSoundFX.getBoolean("soundFXOn")==true) {

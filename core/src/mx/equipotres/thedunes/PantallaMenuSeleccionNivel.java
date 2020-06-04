@@ -72,15 +72,13 @@ class PantallaMenuSeleccionNivel extends Pantalla {
     private Image imgEstrella7;
     private Image imgEstrella8;
     private Image imgEstrella9;
-    // Estrellas vacías
-    private Texture texturaEstrellaVacia;
-    private Image imgEstrellaVacia1;
-    private Image imgEstrellaVacia2;
-    private Image imgEstrellaVacia3;
 
     // Archivos
     private Preferences pref;
     private Preferences block;
+
+    // Texto
+    private Texto finalizar;
 
     // MENU: The values of the class are generated.
     private Stage escenaMenu;
@@ -110,9 +108,10 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         texturaFondoNiveles = new Texture("Fondos/fondoNiveles.jpg");
         //Estrellas
         texturaEstrella = new Texture("Sprites/estrella.png");
-        texturaEstrellaVacia = new Texture("Sprites/estrellaVacia.png");
         // Candado
         texturaCandado = new Texture("Sprites/locked.png");
+        // Texto
+        finalizar = new Texto("Fuentes/fuente.fnt");
     }
 
     private void crearCandado2() {
@@ -236,6 +235,10 @@ class PantallaMenuSeleccionNivel extends Pantalla {
             juego.setScreen(new PantallaMenu(juego));
         }
 
+        actualizar();
+        reinicioFinal();
+
+
         // Init: Default initializers.
         borrarPantalla();
         batch.setProjectionMatrix(camara.combined);
@@ -243,9 +246,16 @@ class PantallaMenuSeleccionNivel extends Pantalla {
         // Dibuja el juego
         batch.begin();
         // Fondo
+
         batch.draw(texturaFondoNiveles,0,0);
+
         batch.end();
 
+        // Visibilidad
+        escenaMenu.draw();
+    }
+
+    private void actualizar() {
         // Estrellas
         // Nivel 1
         if (pref.getBoolean("estrella-1", false)) {
@@ -284,9 +294,42 @@ class PantallaMenuSeleccionNivel extends Pantalla {
             crearEstrella9();
             escenaMenu.addActor(imgEstrella9);
         }
+    }
 
-        // Visibilidad
-        escenaMenu.draw();
+    private void reinicioFinal() {
+        // Condiciones
+        if (pref.getBoolean("estrella-1") && pref.getBoolean("estrella-2") && pref.getBoolean("estrella-3") &&
+                pref.getBoolean("estrella-4") && pref.getBoolean("estrella-5") && pref.getBoolean("estrella-6") &&
+                pref.getBoolean("estrella-7") && pref.getBoolean("estrella-8") && pref.getBoolean("estrella-9")) {
+            reiniciarEstrellas();
+            //finalizar.render(batch, "Gracias por jugar, tenemos una sorpresa da click en cualquier boton y regresa por ella", 10, ALTO/2);
+        }
+    }
+
+    private void reinicioCounter() {
+        pref.putInteger("reinicio", 0);
+        pref.flush();
+    }
+
+    private void reiniciarNiveles() {
+        // Bloqueo de niveles
+        block.putBoolean("segundo-nivel", false);
+        block.putBoolean("tercer-nivel", false);
+        block.flush();
+    }
+
+    private void reiniciarEstrellas() {
+        // Reinicio de estrellas
+        pref.putBoolean("estrella-1", false);
+        pref.putBoolean("estrella-2", false);
+        pref.putBoolean("estrella-3", false);
+        pref.putBoolean("estrella-4", false);
+        pref.putBoolean("estrella-5", false);
+        pref.putBoolean("estrella-6", false);
+        pref.putBoolean("estrella-7", false);
+        pref.putBoolean("estrella-8", false);
+        pref.putBoolean("estrella-9", false);
+        pref.flush();
     }
 
 
