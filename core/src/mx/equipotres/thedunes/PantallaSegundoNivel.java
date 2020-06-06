@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -250,10 +252,10 @@ class PantallaSegundoNivel extends Pantalla {
             }
         });
         escenaHUD = new Stage(vistaHUD);
-        // Botón: Acelerar.
+        // Botón: Disparar.
         TextureRegionDrawable trdDisaparar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
         ImageButton btnDisparar = new ImageButton(trdDisaparar);
-        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth(), 0);
+        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth()*1.2f, 20);
 
         // Botón pausa
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
@@ -792,6 +794,18 @@ class PantallaSegundoNivel extends Pantalla {
         Rectangle rectTorre5 = torre5.sprite.getBoundingRectangle();
 
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+        // Except when moving up, down, left or right
+        if (boogie.sprite.getRotation() != 0 || Math.abs(boogie.sprite.getRotation()) != 180 ||
+                Math.abs(boogie.sprite.getRotation()) != 90 || Math.abs(boogie.sprite.getRotation()) != 270) {
+            float x = boogie.sprite.getX() + boogie.sprite.getWidth() / 2;
+            float y = boogie.sprite.getY() + boogie.sprite.getHeight() / 2;
+            float width = 50;
+            float height = 50;
+            rectBoogie.set(x, y, width, height);
+        } else {
+            rectBoogie.set(boogie.sprite.getBoundingRectangle());
+        }
+
 
         if (rectBoogie.overlaps(rectTorre2)) {
             if (torre2.vida >= 0.0f) {
@@ -806,12 +820,13 @@ class PantallaSegundoNivel extends Pantalla {
                 boogie.sprite.setPosition(180, 10);
             }
         } else if (rectBoogie.overlaps(rectTorre4)) {
-            if (torre4.vida > 0.0f) {
+            if (torre4.vida >= 0.0f) {
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
                 boogie.sprite.setPosition(180, 10);
             }
-        } else if (rectBoogie.overlaps(rectTorre5)) {
+        }
+        else if (rectBoogie.overlaps(rectTorre5)) {
             if (torre5.vida >= 0.0f) {
                 boogie.restarVida(1);
                 marcador.restarVidas(1);
@@ -833,7 +848,6 @@ class PantallaSegundoNivel extends Pantalla {
                     hit++;
                     listaBalas.remove(j);
                     if (hit == 9) {
-                        System.out.println(hit);
                         if (prefsSoundFX.getBoolean("soundFXOn")==true) {
                             shield.play();
                         }
@@ -847,7 +861,6 @@ class PantallaSegundoNivel extends Pantalla {
                     hit++;
                     listaBalas.remove(j);
                     if (hit == 9) {
-                        System.out.println(hit);
                         if (prefsSoundFX.getBoolean("soundFXOn")==true) {
                             shield.play();
                         }
@@ -872,7 +885,6 @@ class PantallaSegundoNivel extends Pantalla {
                 torre4.restarVida();
                 if (torre4.vida >= 0.0f) {
                     hit++;
-                    System.out.println(hit);
                     listaBalas.remove(j);
                     if (hit == 9) {
                         if (prefsSoundFX.getBoolean("soundFXOn")==true) {
@@ -886,7 +898,6 @@ class PantallaSegundoNivel extends Pantalla {
                 torre5.restarVida();
                 if (torre5.vida >= 0.0f) {
                     hit++;
-                    System.out.println(hit);
                     listaBalas.remove(j);
                     if (hit == 9) {
                         if (prefsSoundFX.getBoolean("soundFXOn")==true) {
@@ -904,9 +915,21 @@ class PantallaSegundoNivel extends Pantalla {
     private void probarColisionesEscudos() {
         Rectangle rectEscudoTorre2 = escudoTorre2.getBoundaries(torre2.sprite.getX()-20,torre2.sprite.getY()-20, torre2.sprite.getHeight()+40);  //coordenadas 0,0 en la esquina infereior izquierda
         Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-10,torre3.sprite.getY()-10, torre3.sprite.getHeight()+20);
-        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-5,torre4.sprite.getY()-5, torre4.sprite.getHeight()+10);
+        Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-10,torre4.sprite.getY()-10, torre4.sprite.getHeight()+25);
         Rectangle rectEscudoTorre5 = escudoTorre5.getBoundaries(torre5.sprite.getX()-20,torre5.sprite.getY()-20, torre5.sprite.getHeight()+40);
+
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+        // Except when moving up, down, left or right
+        if (boogie.sprite.getRotation() != 0 || Math.abs(boogie.sprite.getRotation()) != 180 ||
+                Math.abs(boogie.sprite.getRotation()) != 90 || Math.abs(boogie.sprite.getRotation()) != 270) {
+            float x = boogie.sprite.getX() + boogie.sprite.getWidth() / 2;
+            float y = boogie.sprite.getY() + boogie.sprite.getHeight() / 2;
+            float width = 50;
+            float height = 50;
+            rectBoogie.set(x, y, width, height);
+        } else {
+            rectBoogie.set(boogie.sprite.getBoundingRectangle());
+        }
 
         if (rectBoogie.overlaps(rectEscudoTorre2)) {
             if (torre2.vida >= 0.0f) {

@@ -11,13 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Escudo extends Stage {
+
+    // Variables
     protected Sprite sprite;
     private int ANCHO = 1280;
     private int ALTO = 720;
     protected Image imgEscudo;
 
+    // Colisiones
+    private float radius;
+    Circle circle;
+
     public Escudo(Viewport vista, SpriteBatch batch, int radius) {
         super(vista, batch);
+        this.radius = radius;
 
         Pixmap pixmap = new Pixmap((int)(ANCHO * 0.7f), (int)(ALTO * 0.8f), Pixmap.Format.RGBA8888);
         pixmap.setColor(0,0,0.7f,0.5f);
@@ -43,6 +50,8 @@ public class Escudo extends Stage {
 
     public void posicionarEscudo(float x, float y) {
         imgEscudo.setPosition(x, y);
+        circle = new Circle(x + 35, y + 35, radius);
+        System.out.println(circle);
     }
 
     public Rectangle getBoundaries(float x, float y, float size) {

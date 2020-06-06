@@ -246,7 +246,7 @@ class PantallaTercerNivel extends Pantalla {
         // Botón: Disparar.
         TextureRegionDrawable trdDisparar = new TextureRegionDrawable(new TextureRegion(texturaBotonAcelerar));
         ImageButton btnDisparar = new ImageButton(trdDisparar);
-        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth(), 0);
+        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth()*1.2f, 20);
 
         // Botón pausa
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
@@ -835,8 +835,18 @@ class PantallaTercerNivel extends Pantalla {
         Rectangle rectTorre3 = torre3.sprite.getBoundingRectangle();
         Rectangle rectTorre4 = torre4.sprite.getBoundingRectangle();
 
-
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+        // Except when moving up, down, left or right
+        if (boogie.sprite.getRotation() != 0 || Math.abs(boogie.sprite.getRotation()) != 180 ||
+                Math.abs(boogie.sprite.getRotation()) != 90 || Math.abs(boogie.sprite.getRotation()) != 270) {
+            float x = boogie.sprite.getX() + boogie.sprite.getWidth() / 2;
+            float y = boogie.sprite.getY() + boogie.sprite.getHeight() / 2;
+            float width = 50;
+            float height = 50;
+            rectBoogie.set(x, y, width, height);
+        } else {
+            rectBoogie.set(boogie.sprite.getBoundingRectangle());
+        }
 
         if (rectBoogie.overlaps(rectTorre2)) {
             if (torre2.vida >= 0.0f) {
@@ -930,7 +940,19 @@ class PantallaTercerNivel extends Pantalla {
         Rectangle rectEscudoTorre1 = escudoTorre1.getBoundaries(torre1.sprite.getX()-20,torre1.sprite.getY()-20, 100);  //coordenadas 0,0 en la esquina infereior izquierda
         Rectangle rectEscudoTorre3 = escudoTorre3.getBoundaries(torre3.sprite.getX()-20,torre3.sprite.getY()-20, 140);
         Rectangle rectEscudoTorre4 = escudoTorre4.getBoundaries(torre4.sprite.getX()-20,torre4.sprite.getY()-10, 210, 400);
+
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+        // Except when moving up, down, left or right
+        if (boogie.sprite.getRotation() != 0 || Math.abs(boogie.sprite.getRotation()) != 180 ||
+                Math.abs(boogie.sprite.getRotation()) != 90 || Math.abs(boogie.sprite.getRotation()) != 270) {
+            float x = boogie.sprite.getX() + boogie.sprite.getWidth() / 2;
+            float y = boogie.sprite.getY() + boogie.sprite.getHeight() / 2;
+            float width = 50;
+            float height = 50;
+            rectBoogie.set(x, y, width, height);
+        } else {
+            rectBoogie.set(boogie.sprite.getBoundingRectangle());
+        }
 
         if (rectBoogie.overlaps(rectEscudoTorre1)) {
             if (torre1.vida >= 0.0f) {

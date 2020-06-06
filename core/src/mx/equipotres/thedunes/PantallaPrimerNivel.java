@@ -190,10 +190,10 @@ class PantallaPrimerNivel extends Pantalla {
             }
         });
         escenaHUD = new Stage(vistaHUD);
-        // Botón: Acelerar.
+        // Botón: Disparar
         TextureRegionDrawable trdDisparar = new TextureRegionDrawable(new TextureRegion(texturaBotonDisparar));
         ImageButton btnDisparar = new ImageButton(trdDisparar);
-        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth(),0);
+        btnDisparar.setPosition(ANCHO - btnDisparar.getWidth()*1.2f,20);
 
         // Botón pausa
         TextureRegionDrawable trdPausa = new TextureRegionDrawable(new TextureRegion(texturaBotonPausa));
@@ -864,7 +864,19 @@ class PantallaPrimerNivel extends Pantalla {
         Rectangle rectTorreSuperiorDerecha = torreSuperiorDerecha.sprite.getBoundingRectangle();
         Rectangle rectTorreInferiorDerecha = torreInferiorDerecha.sprite.getBoundingRectangle();
         Rectangle rectTorreSuperiorIzquierda = torreSuperiorIzquierda.sprite.getBoundingRectangle();
+
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+        // Except when moving up, down, left or right
+        if (boogie.sprite.getRotation() != 0 || Math.abs(boogie.sprite.getRotation()) != 180 ||
+                Math.abs(boogie.sprite.getRotation()) != 90 || Math.abs(boogie.sprite.getRotation()) != 270) {
+            float x = boogie.sprite.getX() + boogie.sprite.getWidth() / 2;
+            float y = boogie.sprite.getY() + boogie.sprite.getHeight() / 2;
+            float width = 50;
+            float height = 50;
+            rectBoogie.set(x, y, width, height);
+        } else {
+            rectBoogie.set(boogie.sprite.getBoundingRectangle());
+        }
 
         if (rectBoogie.overlaps(rectTorreSuperiorDerecha)) {
             if (torreSuperiorDerecha.vida >= 0.0f) {
@@ -948,7 +960,27 @@ class PantallaPrimerNivel extends Pantalla {
                 torreInferiorDerecha.sprite.getX()-20, torreInferiorDerecha.sprite.getY()-20, torreInferiorDerecha.sprite.getHeight()+40);
         Rectangle rectEscudoTorreSuperiorIzquierda = escudoTorreSuperiorIzquierda.getBoundaries(
                 torreSuperiorIzquierda.sprite.getX()-20, torreSuperiorIzquierda.sprite.getY()-20, torreSuperiorIzquierda.sprite.getHeight() + 40);
+
         Rectangle rectBoogie = boogie.sprite.getBoundingRectangle();
+        // Except when moving up, down, left or right
+        if (boogie.sprite.getRotation() != 0 || Math.abs(boogie.sprite.getRotation()) != 180 ||
+                Math.abs(boogie.sprite.getRotation()) != 90 || Math.abs(boogie.sprite.getRotation()) != 270) {
+            float x = boogie.sprite.getX() + boogie.sprite.getWidth() / 2;
+            float y = boogie.sprite.getY() + boogie.sprite.getHeight() / 2;
+            float width = 50;
+            float height = 50;
+            rectBoogie.set(x, y, width, height);
+        } else {
+            rectBoogie.set(boogie.sprite.getBoundingRectangle());
+        }
+
+        if (boogie.sprite.getRotation() == -45 || boogie.sprite.getRotation() == 315) {
+            float x = boogie.sprite.getX();
+            float y = boogie.sprite.getY();
+            float width = 20;
+            float height = 20;
+            rectBoogie.set(x, y, width, height);
+        }
 
         if (rectBoogie.overlaps(rectEscudoTorreInferiorDerecha)) {
             if (torreInferiorDerecha.vida >= 0.0f) {

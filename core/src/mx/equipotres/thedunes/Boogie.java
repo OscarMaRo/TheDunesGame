@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
 
 public class Boogie extends Objeto {
 
@@ -12,11 +13,14 @@ public class Boogie extends Objeto {
     private final int PASO = 2;
     public int vidas;
     public Texture textura;
+    // Colisiones
+
 
     // Constructor principal.
     public Boogie(Texture textura, float x, float y) {
         super(textura, x, y);
         vidas = 5;
+
     }
 
     public void setTextura(Texture textura) {
@@ -123,7 +127,6 @@ public class Boogie extends Objeto {
     }
 
     public void rotacion(float x, float y){
-        System.out.println(x + " " + y);
         // Arriba
         if (x <= 0.35 && x >= -0.35 && y > 0){
             sprite.setRotation(0);
