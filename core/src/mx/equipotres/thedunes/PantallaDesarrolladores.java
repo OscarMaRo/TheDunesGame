@@ -48,11 +48,11 @@ public class PantallaDesarrolladores extends Pantalla
         btnRegresar.posicionarBoton(escenaPantallaDesarrolladores.getWidth() - 150,escenaPantallaDesarrolladores.getHeight() - 150);
         btnRegresar.presionar(juego, 1);
 
-        btnInfo = new Boton("Botones/info.png");
-        btnInfo.posicionarBoton(ANCHO/2-btnInfo.getWidth()/2, 130);
+        //btnInfo = new Boton("Botones/info.png");
+        //btnInfo.posicionarBoton(ANCHO/2-btnInfo.getWidth()/2, 130);
 
         btnRegresar.agregar(escenaPantallaDesarrolladores);
-        btnInfo.agregar(escenaPantallaDesarrolladores);
+        //btnInfo.agregar(escenaPantallaDesarrolladores);
 
         Gdx.input.setInputProcessor(escenaPantallaDesarrolladores);
     }
@@ -80,7 +80,7 @@ public class PantallaDesarrolladores extends Pantalla
         String alan = "Alan  Diaz  Carrera";
         desarrolladores.render(batch, alan, ANCHO/2, ALTO-450);
 
-        desarrolladores.render(batch, "zora.tec@gmail.com", ANCHO/2, 120);
+        desarrolladores.render(batch, "zora.itesm@gmail.com", ANCHO/2, 120);
 
         batch.end();
 
