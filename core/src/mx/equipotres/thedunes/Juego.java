@@ -19,6 +19,6 @@ public class Juego extends Game {
 	@Override
 	public void create () {
 
-		setScreen(new PantallaMenu(this));
+		setScreen(new PantallaLogo(this));
 	}
 }
