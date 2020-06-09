@@ -177,7 +177,7 @@ class PantallaMenuSeleccionNivel extends Pantalla {
 
     private void crearMenu() {
         escenaMenu = new Stage(vista);
-
+        //listo
         // Primer Nivel
         btnPrimerNivel = new BotonNiveles("Botones/botonPrimerNivel.png", "Botones/botonPrimerNivelPress.png", false);
         btnPrimerNivel.posicionarBoton(0,0);
