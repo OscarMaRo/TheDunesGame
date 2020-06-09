@@ -76,13 +76,13 @@ public class Boton {
                 pantalla = new PantallaMenuSeleccionNivel(juego);
                 break;
             case 9:
-                pantalla = new PantallaPrimerNivel(juego);
+                pantalla = new PantallaCargandoPrimerNivel(juego);
                 break;
             case 10:
-                pantalla = new PantallaSegundoNivel(juego);
+                pantalla = new PantallaCargandoSegundoNivel(juego);
                 break;
             case 11:
-                pantalla = new PantallaTercerNivel(juego);
+                pantalla = new PantallaCargandoTercerNivel(juego);
                 break;
             default:
                 System.out.println("Screen is not available");
